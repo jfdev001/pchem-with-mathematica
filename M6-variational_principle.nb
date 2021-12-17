@@ -1,0 +1,2664 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    124193,       2656]
+NotebookOptionsPosition[    120310,       2601]
+NotebookOutlinePosition[    120653,       2616]
+CellTagsIndexPosition[    120610,       2613]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Jared", " ", "Frazier"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Variational", "-", "method", "-", "m6"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Description", ":", "\n", "\n", 
+    RowBox[{
+    "Reproduction", " ", "of", " ", "variational", " ", "principle", " ", 
+     "findings", " ", "from", " ", "Physical", " ", "Chemistry"}], ":", " ", 
+    RowBox[{"A", " ", "Molecular", " ", "Approach", " ", 
+     RowBox[{"(", "1997", ")"}], "\n", "with", " ", "demonstrated", " ", 
+     "trial", " ", 
+     RowBox[{"functions", "."}]}]}], "\n", "\n", "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Date", ":", " ", 
+    RowBox[{
+     RowBox[{"11", "/", "18"}], "/", "2020"}]}], "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Question", " ", "1"}], ":", " ", 
+     RowBox[{
+      RowBox[{
+      "Approximate", " ", "Solution", " ", "to", " ", "Particle", " ", "in", 
+       " ", "1", "D"}], "-", "box"}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{
+                    "--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}\
+]}], "*)"}], "\n", "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<\n(*-----------------------------------------------------*)\n\
+(*Question 1: Approximate Solution to Particle in 1D-box*)\n\
+(*----------------------------------------------------*)\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(1) Find the normalization constant A and assume L = 1\>\"", "]"}], 
+   "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(2) Normalization constant can be be found by \n\
+\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \
+\(L\)]\)|\[Phi]\!\(\*SuperscriptBox[\(|\), \(2\)]\)dx = 1 where \[Phi] = \
+Ax(x-L)\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(3) Substituting \[Phi] into step (2), \n\!\(\*SubsuperscriptBox[\(\
+\[Integral]\), \(0\), \(L\)]\)(Ax(x-L)\!\(\*SuperscriptBox[\()\), \(2\)]\)dx \
+= \!\(\*SuperscriptBox[\(A\), \
+\(2\)]\)\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \
+\(L\)]\)\!\(\*SuperscriptBox[\(x\), \(2\)]\)(x-L\!\(\*SuperscriptBox[\()\), \
+\(2\)]\)dx = 1\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Definite", " ", "integral", " ", "calculation"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"L", " ", "=", " ", "1"}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"Length", " ", "of", " ", "box"}], "*)"}], "\n", 
+    RowBox[{"phi", " ", "=", " ", 
+     RowBox[{"A", "*", "x", "*", 
+      RowBox[{"(", 
+       RowBox[{"x", "-", "L"}], ")"}]}]}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{
+     "Phi", " ", "trial", " ", "function", " ", "without", " ", 
+      "normalization", " ", "const"}], "*)"}], "\n", 
+    RowBox[{"closedIntegralPhiSquare", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"phi", "^", "2"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", " ", "0", ",", " ", "L"}], "}"}]}], "]"}]}], ";", 
+    " ", 
+    RowBox[{"(*", 
+     RowBox[{"Result", " ", "of", " ", "integral"}], "*)"}], "\n", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"/", "Definite"}], " ", "integral", " ", "calculation"}], 
+     "*)"}], "\n", "\n", 
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<(4) Using Mathematica to calculate the definite integral\nwhere L = \
+1, \>\"", ",", " ", "closedIntegralPhiSquare", ",", " ", "\"\< = 1\>\""}], 
+     "]"}]}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(5) Normalization constant A therefore is A = \
++-\!\(\*SqrtBox[\(30\)]\)\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(6)The Hamiltonian for a harmonic oscillator (particle\nin a 1D-box) \
+is given by \!\(\*OverscriptBox[\(H\), \(^\)]\) = \
+-\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \
+\(2\)]]\) + V(x) where V(x) = 0\nin the bounds of the box 0 to L (L = \
+1).\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(7) \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = \!\(\*FractionBox[\(\(\
+\(<\)\(\\\ \)\(\[Phi]\)\)\\\  | \\\ \*OverscriptBox[\(H\), \(^\)]\\\  | \\\ \
+\(\(\[Phi]\)\(\\\ \)\(>\)\)\), \(\(\(<\)\(\\\ \)\(\[Phi]\)\)\\\  | \\\ \(\(\
+\[Phi]\)\(\\\ \)\(>\)\)\)]\) = \!\(\*FractionBox[\(\*SubsuperscriptBox[\(\
+\[Integral]\), \(0\), \(L\)]\(\*SuperscriptBox[\(\[Phi]\), \(*\)] \
+\*OverscriptBox[\(H\), \(^\)] \(\[Phi]dx\)\(\\\ \)\)\), \
+\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \
+\(L\)]\(\(|\)\(\[Phi]\)\*SuperscriptBox[\(|\), \(2\)]\(dx\)\(\\\ \)\)\)]\) =\n\
+= \!\(\*FractionBox[\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]Ax \
+\((x - L)\) - \*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  m\)] \
+\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \(2\)]] Ax \
+\((x - L)\) dx\), \(1\)]\) =  \
+\!\(\*FractionBox[\(\(-\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\) \(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]Ax \((x - L)\) \
+\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \(2\)]] Ax \
+\((x - L)\) dx\)\), \(1\)]\)\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Second", " ", "derivative", " ", "of", " ", "\[Phi]", " ", "with", " ", 
+     "respect", " ", "to", " ", "x", " ", "and", " ", "integral", " ", "of", 
+     " ", "phi"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"secondDerivPhi", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"phi", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", " ", "2"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"closedIntegralPhi", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{"phi", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", " ", "0", ",", " ", "L"}], "}"}]}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Second"}], " ", "derivative", " ", "of", " ", "\[Phi]", 
+     " ", "with", " ", "respect", " ", "to", " ", "x"}], "*)"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(8) The second derivative with respect to x of the integral\nin the \
+denominator of step (6) is \>\"", ",", " ", "secondDerivPhi", ",", " ", 
+     "\"\< \nthen \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = \
+\!\(\*FractionBox[\(\(-2\) A \*FractionBox[SuperscriptBox[\(\[HBar]\), \
+\(2\)], \(2  m\)] \(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]Ax \((x \
+- L)\) dx\)\), \(1\)]\) where the integral is \>\"", ",", " ", "\n", 
+     "closedIntegralPhi", ",", " ", 
+     "\"\< then \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) =\!\(\*FractionBox[\(\
+\*SuperscriptBox[\(A\), \(2\)] \*SuperscriptBox[\(\[HBar]\), \(2\)]\), \(6  m\
+\)]\) = \!\(\*FractionBox[\(30 \*SuperscriptBox[\(h\), \(2\)]\), \(24 \
+\*SuperscriptBox[\(m\[Pi]\), \(2\)]\)]\)\>\""}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Calculation", " ", "of", " ", 
+     SubscriptBox["E", "\[Phi]"], " ", "and", " ", 
+     SubscriptBox["E", "o"]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"h", " ", "=", " ", 
+     RowBox[{"Quantity", "[", "\"\<PlanckConstant\>\"", "]"}]}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"J", "/", "s"}], "*)"}], "\n", 
+    RowBox[{"electronMass", " ", "=", " ", 
+     RowBox[{"Quantity", "[", "\"\<ElectronMass\>\"", "]"}]}], ";", " ", 
+    RowBox[{"(*", "kg", "*)"}], " ", "\n", 
+    RowBox[{"ePhi", " ", "=", " ", 
+     FractionBox[
+      RowBox[{"30", "*", 
+       RowBox[{
+        RowBox[{"(", "h", ")"}], "^", "2"}]}], 
+      RowBox[{"24", "*", 
+       RowBox[{"(", "electronMass", ")"}], "*", 
+       RowBox[{"Pi", "^", "2"}]}]]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"eNaught", " ", "=", " ", 
+     FractionBox[
+      RowBox[{
+       RowBox[{"(", "h", ")"}], "^", "2"}], 
+      RowBox[{"8", "*", 
+       RowBox[{"(", "electronMass", ")"}]}]]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Calculation"}], " ", "of", " ", 
+     SubscriptBox["E", "\[Phi]"], " ", "and", " ", 
+     SubscriptBox["E", "0"]}], "*)"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(9) Using mathematica, \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = \
+\>\"", ",", " ", 
+     RowBox[{"N", "[", 
+      RowBox[{"ePhi", ",", " ", "4"}], "]"}]}], "]"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(10) This is a reasonable answer because \!\(\*SubscriptBox[\(E\), \
+\(\[Phi]\)]\) > \!\(\*SubscriptBox[\(E\), \(0\)]\), where \!\(\*SubscriptBox[\
+\(E\), \(0\)]\) = \!\(\*FractionBox[\(\*SuperscriptBox[\(\[Pi]\), \(2\)] \
+\*SuperscriptBox[\(\[HBar]\), \(2\)]\), \(2 \*SuperscriptBox[\(mL\), \
+\(2\)]\)]\) = \>\"", ",", " ", 
+     RowBox[{"N", "[", 
+      RowBox[{"eNaught", ",", " ", "4"}], "]"}]}], " ", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Calculation", " ", "of", " ", "percent", " ", "error"}], "*)"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"percentError", " ", "=", 
+     RowBox[{"N", "[", 
+      RowBox[{
+       RowBox[{
+        FractionBox[
+         RowBox[{" ", 
+          RowBox[{"ePhi", " ", "-", " ", "eNaught"}]}], "eNaught"], " ", "*", 
+        " ", "100"}], ",", " ", "4"}], "]"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Calculation"}], " ", "of", " ", "percent", " ", "error"}], 
+    "*)"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(11) Therefore, \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = \>\"", ",",
+      " ", "ePhi", ",", " ", "\"\< with \>\"", ",", " ", "percentError", ",", 
+     " ", "\"\<% error.\>\""}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+    "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Question", " ", "2"}], ":", " ", 
+     RowBox[{"One", " ", "parameter", " ", "trial", " ", "function"}]}], 
+    "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", 
+                    RowBox[{"--", "-"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], 
+    "*)"}], "\n", 
+   RowBox[{
+   "Print", "[", "\n", 
+    "\"\<\\n(*---------------------------------------*)\n(*Question 2: One \
+parameter trial function*)\n(*---------------------------------------*)\>\"", 
+    "\n", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(1) First normalizing the function \[Phi](\[Alpha]) = \
+A(\!\(\*SuperscriptBox[\(L\), \(2\)]\)- \!\(\*SuperscriptBox[\(x\), \
+\(2\)]\))(\!\(\*SuperscriptBox[\(L\), \
+\(2\)]\)-\!\(\*SuperscriptBox[\(\[Alpha]x\), \(2\)]\)) and using\n\
+\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \
+\(L\)]\)|\[Phi]\!\(\*SuperscriptBox[\(|\), \(2\)]\)dx = 1, therefore \
+\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \
+\(L\)]\)(A(\!\(\*SuperscriptBox[\(L\), \(2\)]\)- \!\(\*SuperscriptBox[\(x\), \
+\(2\)]\))(\!\(\*SuperscriptBox[\(L\), \
+\(2\)]\)-\!\(\*SuperscriptBox[\(\[Alpha]x\), \
+\(2\)]\))\!\(\*SuperscriptBox[\()\), \(2\)]\)dx = 1\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Normalization", " ", "integral"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"phiAlpha", " ", "=", " ", 
+     RowBox[{"A", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"L", "^", "2"}], "-", 
+        RowBox[{"x", "^", "2"}]}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"L", "^", "2"}], "-", 
+        RowBox[{"\[Alpha]", "*", 
+         RowBox[{"x", "^", "2"}]}]}], ")"}]}]}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"Without", " ", "A"}], "*)"}], "\n", 
+    RowBox[{"normIntegralPhiAlpha", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{"phiAlpha", "^", "2"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", " ", "0", ",", " ", "L"}], "}"}]}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Normalization"}], " ", "integral"}], "*)"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(2) Using Mathematica, the result of integration is\n\>\"", ",", " ",
+      "normIntegralPhiAlpha", ",", " ", "\"\< = 1\>\""}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Solve", " ", "for", " ", "A"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"normConstant", " ", "=", " ", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{"normIntegralPhiAlpha", " ", "\[Equal]", " ", "1"}], ",", " ", 
+       "A"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"positiveNormConstant", " ", "=", " ", 
+     RowBox[{"A", "/.", 
+      RowBox[{"normConstant", "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"phiAlphaOnly", " ", "=", " ", 
+     RowBox[{"positiveNormConstant", "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"L", "^", "2"}], "-", 
+        RowBox[{"x", "^", "2"}]}], ")"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"L", "^", "2"}], "-", 
+        RowBox[{"\[Alpha]", "*", 
+         RowBox[{"x", "^", "2"}]}]}], ")"}]}]}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"In", " ", "terms", " ", "of", " ", "alpha"}], ",", " ", "x", 
+      ",", " ", 
+      RowBox[{"and", " ", "L", " ", "only"}]}], "*)"}], "\n", 
+    RowBox[{"(*", 
+     RowBox[{
+      RowBox[{"/", "Solve"}], " ", "for", " ", "A"}], "*)"}], "\n", "\n", 
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<(3) Using Mathematica, the normalization constant\nis A = \>\"", 
+      ",", " ", "positiveNormConstant"}], "]"}]}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(4) Knowing the normalization constant,\nE(\[Alpha]) = \
+\!\(\*FractionBox[\(\(\(<\)\(\\\ \)\(\[Phi] \((\[Alpha])\)\)\)\\\  | \\\ \
+\*OverscriptBox[\(H\), \(^\)]\\\  | \\\ \(\(\[Phi] \((\[Alpha])\)\)\(\\\ \
+\)\(>\)\)\), \(\(\(<\)\(\\\ \)\(\[Phi] \((\[Alpha])\)\)\)\\\  | \\\ \
+\(\(\[Phi] \((\[Alpha])\)\)\(\\\ \)\(>\)\)\)]\) = \
+\!\(\*FractionBox[\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \
+\(L\)]\(\*SuperscriptBox[\((\[Phi] \((\[Alpha])\))\), \(*\)] \*OverscriptBox[\
+\(H\), \(^\)] \(\[Phi]\) \((\[Alpha])\) \(dx\)\(\\\ \)\)\), \
+\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]\(\(|\)\(\[Phi] \((\
+\[Alpha])\)\)\*SuperscriptBox[\(|\), \(2\)]\(dx\)\(\\\ \)\)\)]\) = \
+\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]\)(\[Phi](\[Alpha])\!\(\
+\*SuperscriptBox[\()\), \(*\)]\)\!\(\*OverscriptBox[\(H\), \(^\)]\)\[Phi](\
+\[Alpha])dx\>\"", "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(5) \!\(\*OverscriptBox[\(H\), \(^\)]\) = \
+-\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \
+\(2\)]]\) + V(x) but V(x) = 0 in the 1D box, so substituting\n\
+\!\(\*OverscriptBox[\(H\), \(^\)]\) and \[Phi](\[Alpha]) into step (4), E(\
+\[Alpha]) = -\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]\)\>\"", ",", " ",
+      "phiAlphaOnly", ",", 
+     "\"\< \!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], \
+SuperscriptBox[\(dx\), \(2\)]]\)\>\"", ",", " ", "phiAlphaOnly", ",", " ", 
+     "\"\< dx\>\""}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Second", " ", "derivative", " ", "of", " ", "\[Phi]", " ", "with", " ", 
+     "respect", " ", "to", " ", "x", " ", "and", " ", "integral", " ", "of", 
+     " ", "phiAlpha"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"secondDerivPhiAlpha", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"phiAlphaOnly", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", " ", "2"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Second"}], " ", "derivative", " ", "of", " ", "\[Phi]", 
+     " ", "with", " ", "respect", " ", "to", " ", "x", " ", "and", " ", 
+     "integral", " ", "of", " ", "phiAlpha"}], "*)"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(5) Second derivative inside the integrand is \n\
+\!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \
+\(2\)]]\)\>\"", ",", " ", "phiAlphaOnly", ",", " ", "\"\< = \>\"", ",", "  ", 
+     
+     RowBox[{"Simplify", "[", "secondDerivPhiAlpha", "]"}], ",", " ", 
+     "\"\< The integral now becomes\nE(\[Alpha]) = \
+-\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]\)\>\"", ",", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"phiAlphaOnly", "*", "secondDerivPhiAlpha"}], "]"}], ",", " ", 
+     "\"\<dx\>\""}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Solution", " ", "to", " ", "integral"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"phiAlphaIntegrand", " ", "=", " ", 
+     RowBox[{"phiAlphaOnly", "*", "secondDerivPhiAlpha"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"integralPhiAlpha", " ", "=", " ", 
+     RowBox[{"Integrate", "[", 
+      RowBox[{"phiAlphaIntegrand", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", " ", "0", ",", " ", "L"}], "}"}]}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Solution"}], " ", "to", " ", "integral"}], "*)"}], "\n", 
+   "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(6) The result of that integral is E(\[Alpha]) = \>\"", ",", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{
+       FractionBox[
+        RowBox[{"-", 
+         RowBox[{"h", "^", "2"}]}], 
+        RowBox[{"8", "*", "electronMass", "*", 
+         RowBox[{"Pi", "^", "2"}]}]], "*", " ", "integralPhiAlpha"}], "]"}]}],
+     "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Derivative", " ", "ePhi", " ", "with", " ", "respect", " ", "to", " ", 
+     "\[Alpha]", " ", "set", " ", "to", " ", "0"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"eAlpha", " ", "=", " ", 
+     RowBox[{
+      FractionBox[
+       RowBox[{"-", 
+        RowBox[{"h", "^", "2"}]}], 
+       RowBox[{"8", "*", "electronMass", "*", 
+        RowBox[{"Pi", "^", "2"}]}]], " ", "*", " ", "integralPhiAlpha"}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"eAlphaFunc", "[", "\[Alpha]_", "]"}], " ", "=", " ", 
+     RowBox[{
+      FractionBox[
+       RowBox[{"-", 
+        RowBox[{"h", "^", "2"}]}], 
+       RowBox[{"8", "*", "electronMass", "*", 
+        RowBox[{"Pi", "^", "2"}]}]], " ", "*", " ", "integralPhiAlpha"}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"derivEAlpha", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"eAlpha", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"\[Alpha]", ",", " ", "1"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"optimizedEAlpha", " ", "=", " ", 
+     RowBox[{"NSolve", "[", 
+      RowBox[{
+       RowBox[{"derivEAlpha", " ", "\[Equal]", " ", "0"}], ",", " ", 
+       "\[Alpha]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"alphaOne", " ", "=", " ", 
+     RowBox[{"\[Alpha]", "/.", 
+      RowBox[{"optimizedEAlpha", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"alphaTwo", " ", "=", " ", 
+     RowBox[{"\[Alpha]", "/.", 
+      RowBox[{"optimizedEAlpha", "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Derivative"}], " ", "ePhi", " ", "with", " ", "respect", 
+     " ", "to", " ", "\[Alpha]", " ", "set", " ", "to", " ", "0"}], "*)"}], 
+   "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(7) Then optimizing the parameter \[Alpha], \!\(\*FractionBox[\(\
+\[PartialD]E \((\[Alpha])\)\), \(\[PartialD]\[Alpha]\)]\) = \>\"", ",", " ", 
+     RowBox[{"Simplify", "[", "derivEAlpha", "]"}], ",", " ", 
+     "\"\< = 0\>\""}], " ", "]"}], "\n", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{
+     "\"\<(8) \!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\) = \>\"", ",", " ", 
+      RowBox[{"N", "[", 
+       RowBox[{"alphaOne", ",", " ", "3"}], "]"}], ",", " ", 
+      "\"\< or \!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\) = \>\"", ",", " ", 
+      RowBox[{"N", "[", 
+       RowBox[{"alphaTwo", ",", " ", "3"}], "]"}]}], "]"}], ";"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(9) For \!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\) = \>\"", ",", " ", 
+     
+     RowBox[{"N", "[", 
+      RowBox[{"alphaOne", ",", " ", "3"}], "]"}], ",", " ", 
+     "\"\< E(\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\)) = \>\"", ",", " ", 
+     RowBox[{"eAlphaFunc", "[", "alphaOne", "]"}]}], "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<    For \!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\) = \>\"", ",", " ", 
+     
+     RowBox[{"N", "[", 
+      RowBox[{"alphaTwo", ",", " ", "3"}], "]"}], ",", " ", 
+     "\"\< E(\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\)) = \>\"", ",", " ", 
+     RowBox[{"eAlphaFunc", "[", "alphaTwo", "]"}]}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"%", "error", " ", "both", " ", "instances"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"percentErrorAlpha1", " ", "=", " ", 
+     RowBox[{
+      FractionBox[
+       RowBox[{
+        RowBox[{"eAlphaFunc", "[", "alphaOne", "]"}], " ", "-", " ", 
+        "eNaught"}], "eNaught"], "*", "100"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "%"}], "error", " ", "both", " ", "instances"}], "*)"}], 
+   "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(10) The optimal parameter value for this function must therefore be\
+\n\!\(\*SubscriptBox[\(\[Alpha]\), \(\(1\)\(\\\ \)\)]\)= \>\"", ",", " ", 
+     "alphaOne", ",", " ", 
+     "\"\< with corresponding energy E(\!\(\*SubscriptBox[\(\[Alpha]\), \
+\(1\)]\)) = \>\"", ",", " ", 
+     RowBox[{"eAlphaFunc", "[", "alphaOne", "]"}]}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Residual", " ", "Plot"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"exactPsi", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"Sqrt", "[", "2", "]"}], "*", 
+      RowBox[{"Sin", "[", 
+       RowBox[{"Pi", "*", "x"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"phiOptimalAlphaOnly", " ", "=", " ", 
+     RowBox[{"phiAlphaOnly", "/.", 
+      RowBox[{"\[Alpha]", "\[Rule]", "alphaOne"}]}]}], ";"}], "\n", 
+   RowBox[{"Plot", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"exactPsi", "-", "phiOptimalAlphaOnly"}], ",", " ", 
+       "phiOptimalAlphaOnly", ",", " ", "\n", "\t", "exactPsi"}], "}"}], ",", 
+     "\n", "\t", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", " ", "0", ",", " ", "L"}], "}"}], ",", " ", 
+     RowBox[{"PlotLabel", "\[Rule]", "\"\<Residual plot\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", "\"\<Length\>\"", "}"}]}], ",", " ", 
+     RowBox[{"PlotRange", "\[Rule]", "Full"}], ",", " ", 
+     RowBox[{"ImageSize", "\[Rule]", "Large"}], ",", "\n", "\t", 
+     RowBox[{"PlotLegends", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<\!\(\*SubscriptBox[\(\[Psi]\), \(1\)]\) - \
+\[Phi](\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\),x)\>\"", ",", " ", 
+        "\"\<\[Phi](\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\),x)\>\"", ",", 
+        " ", "\"\<\!\(\*SubscriptBox[\(\[Psi]\), \(1\)]\)\>\""}], "}"}]}]}], 
+    "\n", "]"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "*)"}],
+    "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Question", " ", "3"}], ":", " ", 
+     RowBox[{"Gaussian", " ", "Trial", " ", "Function"}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Pg", " ", "382", " ", "MCQ", " ", "2", "e"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"--", 
+     RowBox[{"--", 
+      RowBox[{"--", 
+       RowBox[{"--", 
+        RowBox[{"--", 
+         RowBox[{"--", 
+          RowBox[{"--", 
+           RowBox[{"--", 
+            RowBox[{"--", 
+             RowBox[{"--", 
+              RowBox[{"--", 
+               RowBox[{"--", 
+                RowBox[{"--", 
+                 RowBox[{"--", 
+                  RowBox[{"--", 
+                   RowBox[{"--", "--"}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}], "*)"}],
+    "\n", 
+   RowBox[{
+   "Print", "[", "\n", 
+    "\"\<\\n(*----------------------------------*)\n(*Question 3: Gaussian \
+Trial Function*)\n(*----------------------------------*)\>\"", "\n", "]"}], 
+   "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(1) Find normaliztion constant A of \[Phi](r,\[Alpha]) = \
+\!\(\*SuperscriptBox[\(Ae\), \(-\*SuperscriptBox[\(\[Alpha]r\), \(2\)]\)]\) \
+using procedures\nin previous steps (i.e. Denominator is < \[Phi] | \[Phi] > \
+=\!\(\*SubsuperscriptBox[\(\[Integral]\), \(-\[Infinity]\), \
+\(\[Infinity]\)]\)|\[Phi]\!\(\*SuperscriptBox[\(|\), \
+\(2\)]\)\!\(\*SuperscriptBox[\(r\), \(2\)]\)dr = 1\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Normalize", " ", "the", " ", "Gaussian"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"gaussian", " ", "=", " ", 
+     RowBox[{"A", "*", 
+      RowBox[{"Exp", "[", 
+       RowBox[{
+        RowBox[{"-", "1"}], "*", "\[Alpha]", "*", 
+        RowBox[{"r", "^", "2"}]}], "]"}]}]}], ";", " ", 
+    RowBox[{"(*", 
+     RowBox[{"Gaussian", " ", "trial", " ", "function"}], "*)"}], "\n", 
+    RowBox[{"gaussianNormalizationIntegral", " ", "=", " ", 
+     RowBox[{"Normal", "[", 
+      RowBox[{"Integrate", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"r", "^", "2"}], "*", 
+         RowBox[{"gaussian", "^", "2"}]}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"r", ",", " ", "0", ",", " ", "Infinity"}], "}"}]}], "]"}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"gaussianNormalizationConst", " ", "=", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"A", "/.", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Solve", "[", 
+          RowBox[{
+           RowBox[{
+           "gaussianNormalizationIntegral", " ", "\[Equal]", " ", "1"}], ",", 
+           " ", "A"}], "]"}], ")"}], "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"normalizedGaussian", " ", "=", " ", 
+     RowBox[{"gaussian", "/.", 
+      RowBox[{"A", "\[Rule]", "gaussianNormalizationConst"}]}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Normalize"}], " ", "the", " ", "Gaussian"}], "*)"}], "\n", 
+   "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(2) The normalization constant A therefore is A = \>\"", ",", " ", 
+     "gaussianNormalizationConst"}], "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(3) Numerator of E(\[Alpha]) = \!\(\*SubsuperscriptBox[\(\[Integral]\
+\), \(0\), \(\[Infinity]\)]\)\!\(\*SuperscriptBox[\(\[Phi]\), \
+\(*\)]\)\!\(\*OverscriptBox[\(H\), \(^\)]\)\!\(\*SuperscriptBox[\(\[Phi]r\), \
+\(2\)]\)dr where \!\(\*OverscriptBox[\(H\), \(^\)]\) = -\!\(\*FractionBox[\(1\
+\), \(2\)]\)(\!\(\*FractionBox[\(d\), SuperscriptBox[\(dr\), \
+\(2\)]]\)+\!\(\*FractionBox[\(2\), \(r\)]\)\!\(\*FractionBox[\(d\), \
+\(dr\)]\))-\!\(\*FractionBox[\(1\), \(r\)]\)\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Hamiltonian", " ", "operator"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"secondDerivGaussian", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"normalizedGaussian", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"r", ",", " ", "2"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"firstDerivGaussian", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"normalizedGaussian", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"r", ",", " ", "1"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"divRGaussian", " ", "=", " ", 
+     RowBox[{"normalizedGaussian", "/", "r"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"hamiltonianOnGaussian", " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       FractionBox[
+        RowBox[{"-", "1"}], "2"], "*", 
+       RowBox[{"(", 
+        RowBox[{"secondDerivGaussian", "+", 
+         RowBox[{
+          FractionBox["2", "r"], "*", "firstDerivGaussian"}]}], ")"}]}], " ", 
+      "-", " ", "divRGaussian"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Hamilitonian"}], " ", "operator"}], "*)"}], "\n", "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(4) \!\(\*OverscriptBox[\(H\), \(^\)]\)\[Phi] = \
+-\!\(\*FractionBox[\(A\), \(2\)]\)(\!\(\*FractionBox[\(d\), \
+SuperscriptBox[\(dr\), \(2\)]]\)\[Phi] + \!\(\*FractionBox[\(2\), \
+\(r\)]\)\!\(\*FractionBox[\(d\), \(dr\)]\)\[Phi]) - \
+\!\(\*FractionBox[\(\[Phi]\), \(r\)]\) = \>\"", ",", " ", 
+     RowBox[{"Simplify", "[", "hamiltonianOnGaussian", "]"}]}], "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(5) Then E(\[Alpha]) = \!\(\*SubsuperscriptBox[\(\[Integral]\), \
+\(0\), \(\[Infinity]\)]\)\>\"", ",", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"normalizedGaussian", "*", "hamiltonianOnGaussian"}], "]"}], 
+     ",", " ", "\"\< \!\(\*SuperscriptBox[\(r\), \(2\)]\)dr\>\""}], "]"}], 
+   "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Evaluate", " ", "Hamiltonian", " ", "with", " ", "L"}], " ", 
+     "=", " ", 
+     RowBox[{"Infinity", " ", "for", " ", "hydrogen"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"eHAtom", " ", "=", " ", 
+     RowBox[{"Simplify", "[", 
+      RowBox[{"Normal", "[", 
+       RowBox[{"Integrate", "[", 
+        RowBox[{
+         RowBox[{"normalizedGaussian", "*", "hamiltonianOnGaussian", "*", 
+          RowBox[{"r", "^", "2"}]}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{"r", ",", " ", "0", ",", " ", "Infinity"}], "}"}]}], "]"}], 
+       "]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"/", "Evaluate"}], " ", "Hamiltonian", " ", "with", " ", "L"}], 
+     " ", "=", " ", 
+     RowBox[{"Infinity", " ", "for", " ", "hydrogen"}]}], "*)"}], "\n", "\n", 
+   
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<(6) E(\[Alpha]) = \>\"", ",", " ", "eHAtom"}], "]"}], "\n", 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Optimize", " ", "E", 
+     RowBox[{"(", "\[Alpha]", ")"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"firstDerivEHAtom", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"eHAtom", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"\[Alpha]", ",", " ", "1"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"optimizedEHAtom", " ", "=", " ", 
+     RowBox[{"NSolve", "[", 
+      RowBox[{
+       RowBox[{"firstDerivEHAtom", " ", "\[Equal]", " ", "0"}], ",", " ", 
+       "\[Alpha]"}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"alphaEHAtom", " ", "=", " ", 
+     RowBox[{"\[Alpha]", "/.", 
+      RowBox[{"optimizedEHAtom", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"functionEHAtom", "[", "a_", "]"}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "2"}], "*", 
+       RowBox[{"Sqrt", "[", 
+        RowBox[{"2", "/", "Pi"}], "]"}], "*", 
+       RowBox[{"Sqrt", "[", "a", "]"}]}], "+", 
+      RowBox[{"(", 
+       RowBox[{"3", "*", 
+        RowBox[{"a", "/", "2"}]}], ")"}]}]}], ";"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"/", "Optimize"}], " ", "E", 
+     RowBox[{"(", "\[Alpha]", ")"}]}], "*)"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(7) Optimization of E(\[Alpha]) => \!\(\*FractionBox[\(\[PartialD]E \
+\((\[Alpha])\)\), \(\[PartialD]\[Alpha]\)]\) = \>\"", ",", " ", 
+     "firstDerivEHAtom", ",", " ", "\"\< = 0\>\""}], "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(8) Optimal parameter for \[Alpha] = \>\"", ",", " ", 
+     "alphaEHAtom"}], "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{"\"\<(9) Minimum energy is E(\[Alpha]) = \>\"", ",", " ", 
+     RowBox[{"functionEHAtom", "[", "alphaEHAtom", "]"}], ",", " ", 
+     "\"\<. This\nis a reasonable value since \!\(\*SubscriptBox[\(E\), \(min\
+\)]\) in the textbook is the same constant (-0.424) times\n\!\(\*FractionBox[\
+\(\*SubscriptBox[\(m\), \(e\)] \*SuperscriptBox[\(e\), \(4\)]\), \(16 \
+\*SuperscriptBox[\(\[Pi]\), \(2\)] \*SuperscriptBox[SubscriptBox[\(\[Epsilon]\
+\), \(0\)], \(2\)] \*SuperscriptBox[\(\[HBar]\), \(2\)]\)]\) and \
+\!\(\*SubscriptBox[\(E\), \(0\)]\)'s constant is -0.500 times the \
+\!\(\*FractionBox[\(\*SubscriptBox[\(m\), \(e\)] \*SuperscriptBox[\(e\), \
+\(4\)]\), \(16 \*SuperscriptBox[\(\[Pi]\), \(2\)] \
+\*SuperscriptBox[SubscriptBox[\(\[Epsilon]\), \(0\)], \(2\)] \
+\*SuperscriptBox[\(\[HBar]\), \(2\)]\)]\) for Gaussian trial function\nfor \
+H-atom\>\""}], "]"}]}]}]], "Code",
+ CellChangeTimes->{{3.814705868682296*^9, 3.814705899665002*^9}, {
+   3.814706060630938*^9, 3.814706089835739*^9}, {3.814706128895714*^9, 
+   3.8147061655322943`*^9}, {3.814706496600151*^9, 3.814706513010581*^9}, {
+   3.814706726675861*^9, 3.814706739133054*^9}, {3.814706772321248*^9, 
+   3.814706828491844*^9}, {3.8147068750407763`*^9, 3.814706881626605*^9}, {
+   3.8147069317131443`*^9, 3.8147072159412603`*^9}, {3.8147078723962*^9, 
+   3.814707918293717*^9}, {3.814708102196752*^9, 3.814708246454378*^9}, {
+   3.814708449692203*^9, 3.814708457496799*^9}, {3.814708651627108*^9, 
+   3.814708734546159*^9}, {3.814708892177145*^9, 3.8147089454689493`*^9}, {
+   3.814709127259222*^9, 3.814709198064446*^9}, {3.814709233690846*^9, 
+   3.814709237399325*^9}, {3.814709268654792*^9, 3.8147094659358788`*^9}, {
+   3.814709512985714*^9, 3.814709843515184*^9}, {3.814709998231182*^9, 
+   3.81471017736379*^9}, {3.814710951423171*^9, 3.814710951533024*^9}, {
+   3.814711082205212*^9, 3.81471108969534*^9}, {3.814711195400669*^9, 
+   3.8147112976383047`*^9}, {3.8147113465426273`*^9, 3.814711351693918*^9}, {
+   3.8147114575594053`*^9, 3.81471163592566*^9}, {3.814711670061957*^9, 
+   3.8147118465804768`*^9}, {3.8147119077749434`*^9, 3.814712102614841*^9}, {
+   3.814726558764839*^9, 3.8147266247499743`*^9}, {3.8147267652695007`*^9, 
+   3.814726766144738*^9}, {3.814726847358543*^9, 3.814726851260106*^9}, {
+   3.814727234252799*^9, 3.814727506399707*^9}, {3.8147275678520603`*^9, 
+   3.8147276077227573`*^9}, {3.81472764553268*^9, 3.814727824143017*^9}, {
+   3.814728103068417*^9, 3.8147281677080927`*^9}, {3.8147283351601048`*^9, 
+   3.814728427194077*^9}, {3.814728461381116*^9, 3.814728461629421*^9}, {
+   3.814728540165004*^9, 3.814728540329028*^9}, {3.814728650818137*^9, 
+   3.81472865096926*^9}, 3.8147287957833643`*^9, {3.8147288276734953`*^9, 
+   3.814728828346603*^9}, {3.814728861883246*^9, 3.814728887398848*^9}, {
+   3.8147289623212013`*^9, 3.814728963558313*^9}, {3.814729089426488*^9, 
+   3.814729115407605*^9}, {3.8147291921518383`*^9, 3.814729258284384*^9}, {
+   3.814729479083715*^9, 3.814729533023829*^9}, {3.814729585849821*^9, 
+   3.814729615188554*^9}, {3.814729652880897*^9, 3.814729710117054*^9}, 
+   3.8147297933066597`*^9, {3.814729830424037*^9, 3.8147298850791473`*^9}, {
+   3.814729922423704*^9, 3.814729936589325*^9}, {3.814730241311294*^9, 
+   3.8147302572991533`*^9}, {3.814730577009448*^9, 3.814730657242196*^9}, {
+   3.814731151092286*^9, 3.814731182862391*^9}, {3.814731227484158*^9, 
+   3.814731319242816*^9}, {3.814731548127035*^9, 3.814731559916862*^9}, {
+   3.814731641703933*^9, 3.814731659263566*^9}, {3.814731700412993*^9, 
+   3.814731701538558*^9}, {3.8147318448677797`*^9, 3.81473193500784*^9}, {
+   3.814731966411717*^9, 3.81473202852286*^9}, {3.814732638252922*^9, 
+   3.814732674405814*^9}, {3.8147328573226013`*^9, 3.814732861959708*^9}, {
+   3.814733051843494*^9, 3.814733142023945*^9}, 3.8147331867712097`*^9, 
+   3.8147335481993837`*^9, {3.8147337277925377`*^9, 3.814733734160164*^9}, {
+   3.8147340393218203`*^9, 3.8147340427860518`*^9}, {3.8147340754276733`*^9, 
+   3.814734075869968*^9}, {3.814734113300387*^9, 3.814734195620216*^9}, 
+   3.81473422627351*^9, {3.814734299560904*^9, 3.8147343582990437`*^9}, {
+   3.814734811243474*^9, 3.8147348182327127`*^9}, {3.814734848701755*^9, 
+   3.814734941571097*^9}, {3.814734978611411*^9, 3.814735008692124*^9}, {
+   3.814735183183194*^9, 3.8147352078118668`*^9}, {3.814735267153668*^9, 
+   3.814735390936172*^9}, {3.814735444607337*^9, 3.814735477458151*^9}, {
+   3.8147355078671722`*^9, 3.8147355463822823`*^9}, {3.81473558233963*^9, 
+   3.814735597347562*^9}, {3.814735832274395*^9, 3.814735857466906*^9}, {
+   3.814735948549065*^9, 3.814736018156549*^9}, 3.814737979622052*^9, {
+   3.814738028853294*^9, 3.814738113454803*^9}, {3.8148025918533688`*^9, 
+   3.814802603519362*^9}, {3.814802658503147*^9, 3.8148027517090807`*^9}, {
+   3.814802791543952*^9, 3.814802795913147*^9}, {3.814803266953637*^9, 
+   3.8148032717253237`*^9}, {3.814803453032215*^9, 3.81480348231374*^9}, {
+   3.814803741921196*^9, 3.814803780207007*^9}, {3.814803932091421*^9, 
+   3.814804145416086*^9}, {3.814804179559085*^9, 3.814804181499119*^9}, {
+   3.814804277870081*^9, 3.814804300067278*^9}, {3.81480438626991*^9, 
+   3.8148044109264307`*^9}, 3.814804542990775*^9, 3.81480628603036*^9, {
+   3.814806332327483*^9, 3.8148063350741253`*^9}, {3.814806368570321*^9, 
+   3.8148063758168097`*^9}, {3.814806410290683*^9, 3.814806414922855*^9}, {
+   3.8148064790210342`*^9, 3.814806507977489*^9}, {3.814806612471808*^9, 
+   3.814806613055147*^9}, {3.814806965489311*^9, 3.814807010707388*^9}, 
+   3.814807290191435*^9, {3.814807326658984*^9, 3.814807327676793*^9}, {
+   3.814807364998765*^9, 3.81480743840405*^9}, {3.814807504118795*^9, 
+   3.814807506651815*^9}, {3.814807600708044*^9, 3.814807713265336*^9}, {
+   3.8148077519241467`*^9, 3.814807779402055*^9}, {3.8148078132056017`*^9, 
+   3.814807937409337*^9}, {3.8148079766828423`*^9, 3.8148079778624268`*^9}, {
+   3.814808045578693*^9, 3.814808096528099*^9}, {3.814808194422202*^9, 
+   3.814808262690908*^9}, {3.814808755660845*^9, 3.814809009954421*^9}, {
+   3.814809040995178*^9, 3.814809043134211*^9}, {3.8148090766911373`*^9, 
+   3.81480911465687*^9}, {3.814809196693055*^9, 3.814809197146289*^9}, {
+   3.8148093001548977`*^9, 3.814809300583321*^9}, {3.8148095039810553`*^9, 
+   3.8148095793431273`*^9}, {3.814809609547906*^9, 3.814809615985808*^9}, {
+   3.8148096662629843`*^9, 3.814809724621685*^9}, {3.8148097646507483`*^9, 
+   3.814809773804257*^9}, {3.814809804165894*^9, 3.814809804278653*^9}, {
+   3.814809853140224*^9, 3.8148098541184263`*^9}, {3.814809906822339*^9, 
+   3.814809927847775*^9}, {3.814809973222517*^9, 3.814809995523693*^9}, {
+   3.814813274153976*^9, 3.814813276093274*^9}, {3.814813333016717*^9, 
+   3.814813357911574*^9}, 3.814813415157157*^9, {3.81481451139333*^9, 
+   3.814814513861291*^9}, {3.814814594564683*^9, 3.8148147123865747`*^9}, {
+   3.814814793974188*^9, 3.814814797847063*^9}, {3.814814866082348*^9, 
+   3.81481488398374*^9}, {3.8148149513823853`*^9, 3.814815024111253*^9}, 
+   3.81481505438839*^9, {3.814815097538465*^9, 3.8148151271402073`*^9}, {
+   3.8148155187417507`*^9, 3.814815521032395*^9}, 3.8148157899651413`*^9, {
+   3.8148158234930143`*^9, 3.814815883427805*^9}, {3.814815967582967*^9, 
+   3.814815974693657*^9}, 3.814816111444763*^9, {3.814816265282013*^9, 
+   3.814816281490505*^9}, 3.814817280382594*^9, {3.8148176905285378`*^9, 
+   3.8148177458136044`*^9}, {3.814817814552968*^9, 3.8148178742022867`*^9}, {
+   3.8148179389871397`*^9, 3.8148179409338417`*^9}, {3.81481799491147*^9, 
+   3.8148180082174*^9}, {3.8148197545344057`*^9, 3.814819796165563*^9}, {
+   3.814819843922765*^9, 3.814819863373619*^9}, {3.8148199259629374`*^9, 
+   3.8148200172111263`*^9}, {3.814820106259053*^9, 3.814820136098032*^9}, 
+   3.8148206556188927`*^9, {3.814821125500291*^9, 3.814821148714774*^9}, {
+   3.814821190419595*^9, 3.8148212504971437`*^9}, {3.814821495985579*^9, 
+   3.814821497905205*^9}, {3.8148266769228277`*^9, 3.8148267828431797`*^9}, {
+   3.8148269107698517`*^9, 3.814827031576387*^9}, {3.8148279049964647`*^9, 
+   3.814827917202332*^9}, {3.814828025354941*^9, 3.814828053767228*^9}, {
+   3.814828109258276*^9, 3.814828149201333*^9}, {3.814828419420349*^9, 
+   3.814828431996435*^9}, {3.8148284622206707`*^9, 3.814828618119722*^9}, {
+   3.814828669804565*^9, 3.814828684608099*^9}, {3.81482871528913*^9, 
+   3.814828842907168*^9}, {3.814828884459592*^9, 3.814829045394112*^9}, {
+   3.814829105333785*^9, 3.814829108842074*^9}, {3.814829145003162*^9, 
+   3.8148291535240297`*^9}, {3.814829223227687*^9, 3.814829245721216*^9}, {
+   3.814829639817404*^9, 3.8148298131198597`*^9}, {3.8148299868413773`*^9, 
+   3.814830088690928*^9}, {3.814830160683941*^9, 3.814830163439477*^9}, {
+   3.8148302107089043`*^9, 3.814830289606483*^9}, {3.814830339045388*^9, 
+   3.814830403390849*^9}, {3.814830435507131*^9, 3.8148304388858967`*^9}, {
+   3.814830470495698*^9, 3.81483065818174*^9}, {3.8148308287045383`*^9, 
+   3.814830894889798*^9}, {3.814831285569799*^9, 3.8148312883126497`*^9}, {
+   3.814831388252412*^9, 3.814831448283866*^9}, {3.8148314921982193`*^9, 
+   3.814831555111579*^9}, {3.814831641331338*^9, 3.8148317068778677`*^9}, {
+   3.814831981234016*^9, 3.814832063327023*^9}, {3.8148321284801283`*^9, 
+   3.8148321849247303`*^9}, 3.814832313806403*^9, {3.814833837561676*^9, 
+   3.8148338424217863`*^9}, {3.814833935950234*^9, 3.814833936123292*^9}, {
+   3.814836463066656*^9, 3.814836466630444*^9}, {3.814836498433354*^9, 
+   3.814836668199638*^9}, {3.814836701979146*^9, 3.8148367705428457`*^9}, 
+   3.814837105883005*^9, {3.814837170457336*^9, 3.814837215649117*^9}, {
+   3.814837523355064*^9, 3.814837596694913*^9}, {3.814837860925242*^9, 
+   3.8148378745685663`*^9}, {3.814838402273789*^9, 3.8148384135794992`*^9}, {
+   3.8148386638074512`*^9, 3.814838704014463*^9}, {3.814838762053581*^9, 
+   3.814838765737591*^9}, 3.81483882725257*^9, {3.8148404954716387`*^9, 
+   3.8148405148344517`*^9}, {3.8148405609288*^9, 3.81484056277217*^9}, {
+   3.814840731832345*^9, 3.8148407456883163`*^9}, {3.8148409369868307`*^9, 
+   3.814840944840126*^9}, {3.81484108317798*^9, 3.814841090439706*^9}, {
+   3.814841146071803*^9, 3.814841154073221*^9}, {3.814841196819952*^9, 
+   3.814841222253084*^9}, {3.8148435853181887`*^9, 3.814843592620697*^9}, {
+   3.814869866011409*^9, 3.8148698662000523`*^9}, {3.814869908359563*^9, 
+   3.81486992659589*^9}, {3.8148699862158813`*^9, 3.8148699888100023`*^9}, {
+   3.814870184863469*^9, 3.8148701859821453`*^9}, {3.8148704758715343`*^9, 
+   3.8148705331559*^9}, {3.8148706152263937`*^9, 3.814870653495747*^9}, {
+   3.814870685790965*^9, 3.81487069138018*^9}, {3.814870744311688*^9, 
+   3.8148708034700747`*^9}, {3.814870849729739*^9, 3.8148710351544952`*^9}, {
+   3.814871086542349*^9, 3.814871166035986*^9}, {3.814871387416399*^9, 
+   3.814871440022911*^9}, {3.814871511972013*^9, 3.814871623439962*^9}, {
+   3.814871666184778*^9, 3.814871706129382*^9}, {3.814871749542452*^9, 
+   3.814871796826736*^9}, {3.8148719757179728`*^9, 3.814871986766138*^9}, {
+   3.814872025608801*^9, 3.814872097726585*^9}, {3.814872153519464*^9, 
+   3.81487233050695*^9}, {3.8148724236291428`*^9, 3.81487252670435*^9}, {
+   3.814872677819738*^9, 3.814872819917828*^9}, {3.8148728537714663`*^9, 
+   3.814872864767537*^9}, {3.8148729025291853`*^9, 3.8148729130167627`*^9}, {
+   3.8148731122134438`*^9, 3.8148731189488153`*^9}, {3.8148785079531527`*^9, 
+   3.8148785200898247`*^9}, {3.814878555155592*^9, 3.814878568773942*^9}, {
+   3.81487861005768*^9, 3.8148786652211847`*^9}, {3.814878757289554*^9, 
+   3.814878855906517*^9}, {3.848746593939273*^9, 3.8487466077615623`*^9}, {
+   3.8487467411376877`*^9, 
+   3.848746779121972*^9}},ExpressionUUID->"fc788961-dcd5-4334-a802-\
+483123680b0b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"\\n(*-----------------------------------------------------*)\
+\\n(*Question 1: Approximate Solution to Particle in \
+1D-box*)\\n(*----------------------------------------------------*)\"\>"], \
+"Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.84874664840248*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"8be0d257-d44b-4a3f-ab72-9216395593da"],
+
+Cell[BoxData["\<\"(1) Find the normalization constant A and assume L = \
+1\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.84874664840248*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"784aa809-42d0-4bf4-8a30-80d1dbbb9ef8"],
+
+Cell[BoxData["\<\"(2) Normalization constant can be be found by \
+\\n\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]\\)|\[Phi]\\!\\(\\*SuperscriptBox[\\(|\\), \\(2\\)]\\)dx = 1 where \
+\[Phi] = Ax(x-L)\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484181037`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"cd4d2449-4565-4663-a720-9c2d61e1a7b0"],
+
+Cell[BoxData["\<\"(3) Substituting \[Phi] into step (2), \
+\\n\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \\(L\\)]\\)(Ax(x-L)\
+\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\)dx = \\!\\(\\*SuperscriptBox[\\(A\
+\\), \\(2\\)]\\)\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]\\)\\!\\(\\*SuperscriptBox[\\(x\\), \
+\\(2\\)]\\)(x-L\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\)dx = 1\"\>"], \
+"Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484181037`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"a1dfd17d-bfe8-4287-b0d2-9ba295234929"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(4) Using Mathematica to calculate the definite \
+integral\\nwhere L = 1, \"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    SuperscriptBox["A", "2"], "30"], "\[InvisibleSpace]", "\<\" = 1\"\>"}],
+  SequenceForm[
+  "(4) Using Mathematica to calculate the definite integral\nwhere L = 1, ", 
+   Rational[1, 30] $CellContext`A^2, " = 1"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484181037`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"868852cc-e6cb-4489-b6ee-d2c054a9f977"],
+
+Cell[BoxData["\<\"(5) Normalization constant A therefore is A = \
++-\\!\\(\\*SqrtBox[\\(30\\)]\\)\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484337435`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"70d568ac-52e3-42bd-9f0a-8f27138cde06"],
+
+Cell[BoxData["\<\"(6)The Hamiltonian for a harmonic oscillator (particle\\nin \
+a 1D-box) is given by \\!\\(\\*OverscriptBox[\\(H\\), \\(^\\)]\\) = \
+-\\!\\(\\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \\(2\\)], \\(2  \
+m\\)]\\)\\!\\(\\*FractionBox[SuperscriptBox[\\(d\\), \\(2\\)], \
+SuperscriptBox[\\(dx\\), \\(2\\)]]\\) + V(x) where V(x) = 0\\nin the bounds \
+of the box 0 to L (L = 1).\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484337435`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"5ac37a63-74ea-4d8c-9a32-4bce534df89d"],
+
+Cell[BoxData["\<\"(7) \\!\\(\\*SubscriptBox[\\(E\\), \\(\[Phi]\\)]\\) = \
+\\!\\(\\*FractionBox[\\(\\(\\(<\\)\\(\\\\ \\)\\(\[Phi]\\)\\)\\\\  | \\\\ \
+\\*OverscriptBox[\\(H\\), \\(^\\)]\\\\  | \\\\ \\(\\(\[Phi]\\)\\(\\\\ \\)\\(>\
+\\)\\)\\), \\(\\(\\(<\\)\\(\\\\ \\)\\(\[Phi]\\)\\)\\\\  | \\\\ \
+\\(\\(\[Phi]\\)\\(\\\\ \\)\\(>\\)\\)\\)]\\) = \
+\\!\\(\\*FractionBox[\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \\(L\
+\\)]\\(\\*SuperscriptBox[\\(\[Phi]\\), \\(*\\)] \\*OverscriptBox[\\(H\\), \
+\\(^\\)] \\(\[Phi]dx\\)\\(\\\\ \\)\\)\\), \\(\\*SubsuperscriptBox[\\(\
+\[Integral]\\), \\(0\\), \\(L\\)]\\(\\(|\\)\\(\[Phi]\\)\\*SuperscriptBox[\\(|\
+\\), \\(2\\)]\\(dx\\)\\(\\\\ \\)\\)\\)]\\) =\\n= \
+\\!\\(\\*FractionBox[\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \\(L\
+\\)]Ax \\((x - L)\\) - \\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \\(2\\)], \
+\\(2  m\\)] \\*FractionBox[SuperscriptBox[\\(d\\), \\(2\\)], \
+SuperscriptBox[\\(dx\\), \\(2\\)]] Ax \\((x - L)\\) dx\\), \\(1\\)]\\) =  \\!\
+\\(\\*FractionBox[\\(\\(-\\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \
+\\(2\\)], \\(2  m\\)]\\) \\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]Ax \\((x - L)\\) \\*FractionBox[SuperscriptBox[\\(d\\), \\(2\\)], \
+SuperscriptBox[\\(dx\\), \\(2\\)]] Ax \\((x - L)\\) dx\\)\\), \
+\\(1\\)]\\)\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746648449376*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"f20e71ec-f1b9-4619-ba53-1554f1fc6a1d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(8) The second derivative with respect to x of the \
+integral\\nin the denominator of step (6) is \"\>", "\[InvisibleSpace]", 
+   RowBox[{"2", " ", "A"}], 
+   "\[InvisibleSpace]", "\<\" \\nthen \\!\\(\\*SubscriptBox[\\(E\\), \
+\\(\[Phi]\\)]\\) = \\!\\(\\*FractionBox[\\(\\(-2\\) A \
+\\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \\(2\\)], \\(2  m\\)] \
+\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \\(L\\)]Ax \\((x - L)\\) \
+dx\\)\\), \\(1\\)]\\) where the integral is \"\>", "\[InvisibleSpace]", 
+   RowBox[{"-", 
+    FractionBox["A", "6"]}], 
+   "\[InvisibleSpace]", "\<\" then \\!\\(\\*SubscriptBox[\\(E\\), \
+\\(\[Phi]\\)]\\) =\\!\\(\\*FractionBox[\\(\\*SuperscriptBox[\\(A\\), \\(2\\)] \
+\\*SuperscriptBox[\\(\[HBar]\\), \\(2\\)]\\), \\(6  m\\)]\\) = \
+\\!\\(\\*FractionBox[\\(30 \\*SuperscriptBox[\\(h\\), \\(2\\)]\\), \\(24 \
+\\*SuperscriptBox[\\(m\[Pi]\\), \\(2\\)]\\)]\\)\"\>"}],
+  SequenceForm[
+  "(8) The second derivative with respect to x of the integral\nin the \
+denominator of step (6) is ", 2 $CellContext`A, 
+   " \nthen \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = \
+\!\(\*FractionBox[\(\(-2\) A \*FractionBox[SuperscriptBox[\(\[HBar]\), \
+\(2\)], \(2  m\)] \(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]Ax \((x \
+- L)\) dx\)\), \(1\)]\) where the integral is ", 
+   Rational[-1, 6] $CellContext`A, 
+   " then \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) \
+=\!\(\*FractionBox[\(\*SuperscriptBox[\(A\), \(2\)] \
+\*SuperscriptBox[\(\[HBar]\), \(2\)]\), \(6  m\)]\) = \!\(\*FractionBox[\(30 \
+\*SuperscriptBox[\(h\), \(2\)]\), \(24 \*SuperscriptBox[\(m\[Pi]\), \(2\)]\)]\
+\)"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484649734`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"3685a681-9e8b-49e3-9de2-6144d5aca40e"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(9) Using mathematica, \\!\\(\\*SubscriptBox[\\(E\\), \
+\\(\[Phi]\\)]\\) = \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{"0.1266514795529222143`4.",RowBox[{
+       SuperscriptBox[
+        StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+       "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+       SubscriptBox[
+        StyleBox["\"m\"", Italic, StripOnInput -> False], 
+        StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+     "Planck constants squared per electron mass",FractionBox[
+      SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+    "Quantity"]}],
+  SequenceForm[
+  "(9) Using mathematica, \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = ", 
+   Quantity[0.1266514795529222143`4., "ElectronMass"^(-1) "PlanckConstant"^2]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484714813`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"d73b03ac-d04e-445c-984d-54d94df30e3b"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(10) This is a reasonable answer because \
+\\!\\(\\*SubscriptBox[\\(E\\), \\(\[Phi]\\)]\\) > \
+\\!\\(\\*SubscriptBox[\\(E\\), \\(0\\)]\\), where \
+\\!\\(\\*SubscriptBox[\\(E\\), \\(0\\)]\\) = \
+\\!\\(\\*FractionBox[\\(\\*SuperscriptBox[\\(\[Pi]\\), \\(2\\)] \
+\\*SuperscriptBox[\\(\[HBar]\\), \\(2\\)]\\), \\(2 \
+\\*SuperscriptBox[\\(mL\\), \\(2\\)]\\)]\\) = \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{"0.125`4.",RowBox[{
+       SuperscriptBox[
+        StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+       "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+       SubscriptBox[
+        StyleBox["\"m\"", Italic, StripOnInput -> False], 
+        StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+     "Planck constants squared per electron mass",FractionBox[
+      SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+    "Quantity"]}],
+  SequenceForm[
+  "(10) This is a reasonable answer because \!\(\*SubscriptBox[\(E\), \
+\(\[Phi]\)]\) > \!\(\*SubscriptBox[\(E\), \(0\)]\), where \!\(\*SubscriptBox[\
+\(E\), \(0\)]\) = \!\(\*FractionBox[\(\*SuperscriptBox[\(\[Pi]\), \(2\)] \
+\*SuperscriptBox[\(\[HBar]\), \(2\)]\), \(2 \*SuperscriptBox[\(mL\), \
+\(2\)]\)]\) = ", 
+   Quantity[0.125`4., "ElectronMass"^(-1) "PlanckConstant"^2]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466484714813`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"fbf3e079-c283-42ef-bc8b-25576d0fe056"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(11) Therefore, \\!\\(\\*SubscriptBox[\\(E\\), \
+\\(\[Phi]\\)]\\) = \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{FractionBox["5", 
+      RowBox[{"4", " ", 
+        SuperscriptBox["\[Pi]", "2"]}]],RowBox[{
+       SuperscriptBox[
+        StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+       "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+       SubscriptBox[
+        StyleBox["\"m\"", Italic, StripOnInput -> False], 
+        StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+     "Planck constants squared per electron mass",FractionBox[
+      SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+    "Quantity"], "\[InvisibleSpace]", "\<\" with \"\>", "\[InvisibleSpace]", 
+   "1.3211836423377714637`4.", "\[InvisibleSpace]", "\<\"% error.\"\>"}],
+  SequenceForm["(11) Therefore, \!\(\*SubscriptBox[\(E\), \(\[Phi]\)]\) = ", 
+   Quantity[Rational[5, 4] Pi^(-2), "ElectronMass"^(-1) "PlanckConstant"^2], 
+   " with ", 1.3211836423377714637`4., "% error."],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746648487114*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"c2778ac8-c008-4497-957d-9d8b9bb729d3"],
+
+Cell[BoxData["\<\"\\n(*---------------------------------------*)\\n(*Question \
+2: One parameter trial \
+function*)\\n(*---------------------------------------*)\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746648487114*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"8a946d92-1586-4978-8cb9-d77eeb184634"],
+
+Cell[BoxData["\<\"(1) First normalizing the function \[Phi](\[Alpha]) = A(\\!\
+\\(\\*SuperscriptBox[\\(L\\), \\(2\\)]\\)- \\!\\(\\*SuperscriptBox[\\(x\\), \
+\\(2\\)]\\))(\\!\\(\\*SuperscriptBox[\\(L\\), \
+\\(2\\)]\\)-\\!\\(\\*SuperscriptBox[\\(\[Alpha]x\\), \\(2\\)]\\)) and \
+using\\n\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \\(L\\)]\\)|\
+\[Phi]\\!\\(\\*SuperscriptBox[\\(|\\), \\(2\\)]\\)dx = 1, therefore \
+\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]\\)(A(\\!\\(\\*SuperscriptBox[\\(L\\), \\(2\\)]\\)- \
+\\!\\(\\*SuperscriptBox[\\(x\\), \
+\\(2\\)]\\))(\\!\\(\\*SuperscriptBox[\\(L\\), \
+\\(2\\)]\\)-\\!\\(\\*SuperscriptBox[\\(\[Alpha]x\\), \
+\\(2\\)]\\))\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\)dx = 1\"\>"], "Print",\
+
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746648487114*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"291c065b-8893-4dec-bb3d-a510c1020923"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(2) Using Mathematica, the result of integration is\\n\"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{
+    FractionBox["8", "315"], " ", 
+    SuperscriptBox["A", "2"], " ", 
+    RowBox[{"(", 
+     RowBox[{"21", "-", 
+      RowBox[{"6", " ", "\[Alpha]"}], "+", 
+      SuperscriptBox["\[Alpha]", "2"]}], ")"}]}], 
+   "\[InvisibleSpace]", "\<\" = 1\"\>"}],
+  SequenceForm[
+  "(2) Using Mathematica, the result of integration is\n", 
+   Rational[8, 315] $CellContext`A^2 (21 - 
+    6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2), " = 1"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466485869665`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"89069a86-27f7-4e7b-83ec-d7469ab7bc35"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(3) Using Mathematica, the normalization constant\\nis A = \
+\"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"3", " ", 
+     SqrtBox[
+      FractionBox["35", "2"]]}], 
+    RowBox[{"2", " ", 
+     SqrtBox[
+      RowBox[{"21", "-", 
+       RowBox[{"6", " ", "\[Alpha]"}], "+", 
+       SuperscriptBox["\[Alpha]", "2"]}]]}]]}],
+  SequenceForm[
+  "(3) Using Mathematica, the normalization constant\nis A = ", 
+   Rational[3, 2] 
+   Rational[35, 2]^
+    Rational[1, 2] (21 - 6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2)^
+    Rational[-1, 2]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466485869665`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"ff81aa69-4805-4213-b938-a31b78b0cd92"],
+
+Cell[BoxData["\<\"(4) Knowing the normalization constant,\\nE(\[Alpha]) = \\!\
+\\(\\*FractionBox[\\(\\(\\(<\\)\\(\\\\ \\)\\(\[Phi] \
+\\((\[Alpha])\\)\\)\\)\\\\  | \\\\ \\*OverscriptBox[\\(H\\), \\(^\\)]\\\\  | \
+\\\\ \\(\\(\[Phi] \\((\[Alpha])\\)\\)\\(\\\\ \\)\\(>\\)\\)\\), \
+\\(\\(\\(<\\)\\(\\\\ \\)\\(\[Phi] \\((\[Alpha])\\)\\)\\)\\\\  | \\\\ \\(\\(\
+\[Phi] \\((\[Alpha])\\)\\)\\(\\\\ \\)\\(>\\)\\)\\)]\\) = \
+\\!\\(\\*FractionBox[\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \\(L\
+\\)]\\(\\*SuperscriptBox[\\((\[Phi] \\((\[Alpha])\\))\\), \\(*\\)] \
+\\*OverscriptBox[\\(H\\), \\(^\\)] \\(\[Phi]\\) \\((\[Alpha])\\) \
+\\(dx\\)\\(\\\\ \\)\\)\\), \\(\\*SubsuperscriptBox[\\(\[Integral]\\), \
+\\(0\\), \\(L\\)]\\(\\(|\\)\\(\[Phi] \
+\\((\[Alpha])\\)\\)\\*SuperscriptBox[\\(|\\), \\(2\\)]\\(dx\\)\\(\\\\ \
+\\)\\)\\)]\\) = \\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]\\)(\[Phi](\[Alpha])\\!\\(\\*SuperscriptBox[\\()\\), \
+\\(*\\)]\\)\\!\\(\\*OverscriptBox[\\(H\\), \
+\\(^\\)]\\)\[Phi](\[Alpha])dx\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746648602593*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"93633f71-ece1-445c-af94-cf3abdfce1c6"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(5) \\!\\(\\*OverscriptBox[\\(H\\), \\(^\\)]\\) = \
+-\\!\\(\\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \\(2\\)], \\(2  \
+m\\)]\\)\\!\\(\\*FractionBox[SuperscriptBox[\\(d\\), \\(2\\)], \
+SuperscriptBox[\\(dx\\), \\(2\\)]]\\) + V(x) but V(x) = 0 in the 1D box, so \
+substituting\\n\\!\\(\\*OverscriptBox[\\(H\\), \\(^\\)]\\) and \
+\[Phi](\[Alpha]) into step (4), E(\[Alpha]) = \
+-\\!\\(\\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \\(2\\)], \\(2  \
+m\\)]\\)\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]\\)\"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"3", " ", 
+     SqrtBox[
+      FractionBox["35", "2"]], " ", 
+     RowBox[{"(", 
+      RowBox[{"1", "-", 
+       SuperscriptBox["x", "2"]}], ")"}], " ", 
+     RowBox[{"(", 
+      RowBox[{"1", "-", 
+       RowBox[{
+        SuperscriptBox["x", "2"], " ", "\[Alpha]"}]}], ")"}]}], 
+    RowBox[{"2", " ", 
+     SqrtBox[
+      RowBox[{"21", "-", 
+       RowBox[{"6", " ", "\[Alpha]"}], "+", 
+       SuperscriptBox["\[Alpha]", "2"]}]]}]], 
+   "\[InvisibleSpace]", "\<\" \\!\\(\\*FractionBox[SuperscriptBox[\\(d\\), \
+\\(2\\)], SuperscriptBox[\\(dx\\), \\(2\\)]]\\)\"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"3", " ", 
+     SqrtBox[
+      FractionBox["35", "2"]], " ", 
+     RowBox[{"(", 
+      RowBox[{"1", "-", 
+       SuperscriptBox["x", "2"]}], ")"}], " ", 
+     RowBox[{"(", 
+      RowBox[{"1", "-", 
+       RowBox[{
+        SuperscriptBox["x", "2"], " ", "\[Alpha]"}]}], ")"}]}], 
+    RowBox[{"2", " ", 
+     SqrtBox[
+      RowBox[{"21", "-", 
+       RowBox[{"6", " ", "\[Alpha]"}], "+", 
+       SuperscriptBox["\[Alpha]", "2"]}]]}]], 
+   "\[InvisibleSpace]", "\<\" dx\"\>"}],
+  SequenceForm[
+  "(5) \!\(\*OverscriptBox[\(H\), \(^\)]\) = \
+-\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \
+\(2\)]]\) + V(x) but V(x) = 0 in the 1D box, so substituting\n\
+\!\(\*OverscriptBox[\(H\), \(^\)]\) and \[Phi](\[Alpha]) into step (4), E(\
+\[Alpha]) = -\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]\)", 
+   Rational[3, 2] 
+   Rational[35, 2]^Rational[1, 2] (1 - $CellContext`x^2) (
+    1 - $CellContext`x^2 $CellContext`\[Alpha]) (21 - 
+     6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2)^Rational[-1, 2], 
+   " \!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \
+\(2\)]]\)", Rational[3, 2] 
+   Rational[35, 2]^Rational[1, 2] (1 - $CellContext`x^2) (
+    1 - $CellContext`x^2 $CellContext`\[Alpha]) (21 - 
+     6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2)^Rational[-1, 2], 
+   " dx"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746648602593*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"b54fc9c9-e14f-445c-a941-1dbca6c3a7f4"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(5) Second derivative inside the integrand is \
+\\n\\!\\(\\*FractionBox[SuperscriptBox[\\(d\\), \\(2\\)], \
+SuperscriptBox[\\(dx\\), \\(2\\)]]\\)\"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"3", " ", 
+     SqrtBox[
+      FractionBox["35", "2"]], " ", 
+     RowBox[{"(", 
+      RowBox[{"1", "-", 
+       SuperscriptBox["x", "2"]}], ")"}], " ", 
+     RowBox[{"(", 
+      RowBox[{"1", "-", 
+       RowBox[{
+        SuperscriptBox["x", "2"], " ", "\[Alpha]"}]}], ")"}]}], 
+    RowBox[{"2", " ", 
+     SqrtBox[
+      RowBox[{"21", "-", 
+       RowBox[{"6", " ", "\[Alpha]"}], "+", 
+       SuperscriptBox["\[Alpha]", "2"]}]]}]], 
+   "\[InvisibleSpace]", "\<\" = \"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"3", " ", 
+     SqrtBox[
+      FractionBox["35", "2"]], " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"-", "1"}], "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"-", "1"}], "+", 
+          RowBox[{"6", " ", 
+           SuperscriptBox["x", "2"]}]}], ")"}], " ", "\[Alpha]"}]}], ")"}]}], 
+    
+    SqrtBox[
+     RowBox[{"21", "-", 
+      RowBox[{"6", " ", "\[Alpha]"}], "+", 
+      SuperscriptBox["\[Alpha]", "2"]}]]], 
+   "\[InvisibleSpace]", "\<\" The integral now becomes\\nE(\[Alpha]) = \
+-\\!\\(\\*FractionBox[SuperscriptBox[\\(\[HBar]\\), \\(2\\)], \\(2  \
+m\\)]\\)\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(L\\)]\\)\"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"315", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"-", "1"}], "+", 
+       SuperscriptBox["x", "2"]}], ")"}], " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"-", "1"}], "+", 
+       RowBox[{
+        SuperscriptBox["x", "2"], " ", "\[Alpha]"}]}], ")"}], " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"-", "1"}], "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"-", "1"}], "+", 
+          RowBox[{"6", " ", 
+           SuperscriptBox["x", "2"]}]}], ")"}], " ", "\[Alpha]"}]}], ")"}]}], 
+    
+    RowBox[{"4", " ", 
+     RowBox[{"(", 
+      RowBox[{"21", "-", 
+       RowBox[{"6", " ", "\[Alpha]"}], "+", 
+       SuperscriptBox["\[Alpha]", "2"]}], ")"}]}]], 
+   "\[InvisibleSpace]", "\<\"dx\"\>"}],
+  SequenceForm[
+  "(5) Second derivative inside the integrand is \n\
+\!\(\*FractionBox[SuperscriptBox[\(d\), \(2\)], SuperscriptBox[\(dx\), \
+\(2\)]]\)", Rational[3, 2] 
+   Rational[35, 2]^Rational[1, 2] (1 - $CellContext`x^2) (
+    1 - $CellContext`x^2 $CellContext`\[Alpha]) (21 - 
+     6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2)^Rational[-1, 2], 
+   " = ", 3 Rational[35, 2]^
+    Rational[1, 2] (-1 + (-1 + 6 $CellContext`x^2) $CellContext`\[Alpha]) (21 - 
+     6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2)^Rational[-1, 2], 
+   " The integral now becomes\nE(\[Alpha]) = \
+-\!\(\*FractionBox[SuperscriptBox[\(\[HBar]\), \(2\)], \(2  \
+m\)]\)\!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(L\)]\)", 
+   Rational[315, 
+     4] (-1 + $CellContext`x^2) (-1 + $CellContext`x^2 $CellContext`\[Alpha]) \
+(-1 + (-1 + 6 $CellContext`x^2) $CellContext`\[Alpha])/(21 - 
+   6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2), "dx"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466486338573`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"8bd28a46-3abc-4444-ad49-026d99c38460"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(6) The result of that integral is E(\[Alpha]) = \"\>", 
+   "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"35", "-", 
+       RowBox[{"14", " ", "\[Alpha]"}], "+", 
+       RowBox[{"11", " ", 
+        SuperscriptBox["\[Alpha]", "2"]}]}], ")"}], " ", 
+     RowBox[{"(", 
+      TemplateBox[{FractionBox["3", 
+         RowBox[{"16", " ", 
+           SuperscriptBox["\[Pi]", "2"]}]],RowBox[{
+          SuperscriptBox[
+           StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+          "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+          SubscriptBox[
+           StyleBox["\"m\"", Italic, StripOnInput -> False], 
+           StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+        "Planck constants squared per electron mass",FractionBox[
+         SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+       "Quantity"], ")"}]}], 
+    RowBox[{"21", "-", 
+     RowBox[{"6", " ", "\[Alpha]"}], "+", 
+     SuperscriptBox["\[Alpha]", "2"]}]]}],
+  SequenceForm[
+  "(6) The result of that integral is E(\[Alpha]) = ", (21 - 
+     6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2)^(-1) (35 - 
+    14 $CellContext`\[Alpha] + 11 $CellContext`\[Alpha]^2) 
+   Quantity[Rational[3, 16] Pi^(-2), "ElectronMass"^(-1) "PlanckConstant"^2]],
+  
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746649166191*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"119068bb-e399-4fc2-8336-cf4583ee37b6"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(7) Then optimizing the parameter \[Alpha], \
+\\!\\(\\*FractionBox[\\(\[PartialD]E \\((\[Alpha])\\)\\), \\(\[PartialD]\
+\[Alpha]\\)]\\) = \"\>", "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "3"}], "+", "\[Alpha]"}], ")"}], " ", 
+      RowBox[{"(", 
+       RowBox[{"35", "-", 
+        RowBox[{"14", " ", "\[Alpha]"}], "+", 
+        RowBox[{"11", " ", 
+         SuperscriptBox["\[Alpha]", "2"]}]}], ")"}], " ", 
+      RowBox[{"(", 
+       TemplateBox[{RowBox[{"-", 
+           FractionBox["3", 
+            RowBox[{"2", " ", 
+              SuperscriptBox["\[Pi]", "2"]}]]}],RowBox[{
+           SuperscriptBox[
+            StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+           "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+           SubscriptBox[
+            StyleBox["\"m\"", Italic, StripOnInput -> False], 
+            StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+         "Planck constants squared per electron mass",FractionBox[
+          SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+        "Quantity"], ")"}]}], "+", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "7"}], "+", 
+        RowBox[{"11", " ", "\[Alpha]"}]}], ")"}], " ", 
+      RowBox[{"(", 
+       RowBox[{"21", "-", 
+        RowBox[{"6", " ", "\[Alpha]"}], "+", 
+        SuperscriptBox["\[Alpha]", "2"]}], ")"}], " ", 
+      RowBox[{"(", 
+       TemplateBox[{FractionBox["3", 
+          RowBox[{"2", " ", 
+            SuperscriptBox["\[Pi]", "2"]}]],RowBox[{
+           SuperscriptBox[
+            StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+           "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+           SubscriptBox[
+            StyleBox["\"m\"", Italic, StripOnInput -> False], 
+            StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+         "Planck constants squared per electron mass",FractionBox[
+          SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+        "Quantity"], ")"}]}]}], 
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{"42", "+", 
+       RowBox[{"2", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"-", "6"}], "+", "\[Alpha]"}], ")"}], " ", "\[Alpha]"}]}], 
+      ")"}], "2"]], "\[InvisibleSpace]", "\<\" = 0\"\>"}],
+  SequenceForm[
+  "(7) Then optimizing the parameter \[Alpha], \
+\!\(\*FractionBox[\(\[PartialD]E \((\[Alpha])\)\), \(\[PartialD]\[Alpha]\)]\) \
+= ", (42 + 
+     2 (-6 + $CellContext`\[Alpha]) $CellContext`\[Alpha])^(-2) ((-3 + \
+$CellContext`\[Alpha]) (35 - 14 $CellContext`\[Alpha] + 
+      11 $CellContext`\[Alpha]^2) 
+     Quantity[Rational[-3, 2] Pi^(-2), "ElectronMass"^(-1) 
+       "PlanckConstant"^2] + (-7 + 11 $CellContext`\[Alpha]) (21 - 
+      6 $CellContext`\[Alpha] + $CellContext`\[Alpha]^2) 
+     Quantity[Rational[3, 2] Pi^(-2), "ElectronMass"^(-1) 
+       "PlanckConstant"^2]), " = 0"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466538470306`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"fd7645e5-3d6a-49ab-bca1-79c09f6a69b2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(8) \\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(1\\)]\\) = \"\>", 
+   "\[InvisibleSpace]", "7.317711567591014121`3.", 
+   "\[InvisibleSpace]", "\<\" or \\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \
+\\(2\\)]\\) = \"\>", "\[InvisibleSpace]", "0.2207499708705243417`3."}],
+  SequenceForm[
+  "(8) \!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\) = ", 7.317711567591014121`3.,
+    " or \!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\) = ", 
+   0.2207499708705243417`3.],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466538470306`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"7e65c341-d26a-4ea2-a90d-394690635c86"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(9) For \\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(1\\)]\\) = \"\
+\>", "\[InvisibleSpace]", "7.317711567591014121`3.", 
+   "\[InvisibleSpace]", "\<\" E(\\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \
+\\(1\\)]\\)) = \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{"0.3233736829392654869`5.868004722379727",RowBox[{
+       SuperscriptBox[
+        StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+       "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+       SubscriptBox[
+        StyleBox["\"m\"", Italic, StripOnInput -> False], 
+        StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+     "Planck constants squared per electron mass",FractionBox[
+      SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+    "Quantity"]}],
+  SequenceForm[
+  "(9) For \!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\) = ", 
+   7.317711567591014121`3., 
+   " E(\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\)) = ", 
+   Quantity[
+   0.3233736829392654869`5.868004722379727, "ElectronMass"^(-1) 
+    "PlanckConstant"^2]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466538470306`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"99cf91ed-8eee-4a2d-9016-8a782aada420"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"    For \\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(2\\)]\\) = \"\
+\>", "\[InvisibleSpace]", "0.2207499708705243417`3.", 
+   "\[InvisibleSpace]", "\<\" E(\\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \
+\\(1\\)]\\)) = \"\>", "\[InvisibleSpace]", 
+   TemplateBox[{"0.0312504598089167136`7.231854129171227",RowBox[{
+       SuperscriptBox[
+        StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+       "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+       SubscriptBox[
+        StyleBox["\"m\"", Italic, StripOnInput -> False], 
+        StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+     "Planck constants squared per electron mass",FractionBox[
+      SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+    "Quantity"]}],
+  SequenceForm[
+  "    For \!\(\*SubscriptBox[\(\[Alpha]\), \(2\)]\) = ", 
+   0.2207499708705243417`3., 
+   " E(\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\)) = ", 
+   Quantity[
+   0.0312504598089167136`7.231854129171227, "ElectronMass"^(-1) 
+    "PlanckConstant"^2]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746653878276*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"6ea1d63e-7922-4d5b-8d8d-495b944df19a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(10) The optimal parameter value for this function must \
+therefore be\\n\\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(\\(1\\)\\(\\\\ \
+\\)\\)]\\)= \"\>", "\[InvisibleSpace]", 
+   "7.317711567591014121`6.522878745280337", 
+   "\[InvisibleSpace]", "\<\" with corresponding energy \
+E(\\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(1\\)]\\)) = \"\>", 
+   "\[InvisibleSpace]", 
+   TemplateBox[{"0.3233736829392654869`5.868004722379727",RowBox[{
+       SuperscriptBox[
+        StyleBox["\"h\"", Italic, StripOnInput -> False], "2"], 
+       "\[NegativeMediumSpace]", "\"/\"", "\[InvisibleSpace]", 
+       SubscriptBox[
+        StyleBox["\"m\"", Italic, StripOnInput -> False], 
+        StyleBox["\"e\"", Italic, StripOnInput -> False]]}],
+     "Planck constants squared per electron mass",FractionBox[
+      SuperscriptBox["\"PlanckConstant\"", "2"], "\"ElectronMass\""]},
+    "Quantity"]}],
+  SequenceForm[
+  "(10) The optimal parameter value for this function must therefore be\n\!\(\
+\*SubscriptBox[\(\[Alpha]\), \(\(1\)\(\\ \)\)]\)= ", 
+   7.317711567591014121`6.522878745280337, 
+   " with corresponding energy E(\!\(\*SubscriptBox[\(\[Alpha]\), \(1\)]\)) = \
+", 
+   Quantity[
+   0.3233736829392654869`5.868004722379727, "ElectronMass"^(-1) 
+    "PlanckConstant"^2]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746653900421*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"0e9570fd-a8fe-4208-a99e-9c835e201541"]
+}, Open  ]],
+
+Cell[BoxData[
+ TemplateBox[{GraphicsBox[{{{{}, {}, 
+       TagBox[{
+         Directive[
+          Opacity[1.], 
+          RGBColor[0.368417, 0.506779, 0.709798], 
+          AbsoluteThickness[1.6]], 
+         LineBox[CompressedData["
+1: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
+          "]]}, 
+        Annotation[#, "Charting`Private`Tag$58340#1"]& ], 
+       TagBox[{
+         Directive[
+          Opacity[1.], 
+          RGBColor[0.880722, 0.611041, 0.142051], 
+          AbsoluteThickness[1.6]], 
+         LineBox[CompressedData["
+1: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
+oQ==
+          "]]}, Annotation[#, "Charting`Private`Tag$58340#2"]& ], 
+       TagBox[{
+         Directive[
+          Opacity[1.], 
+          RGBColor[0.560181, 0.691569, 0.194885], 
+          AbsoluteThickness[1.6]], 
+         LineBox[CompressedData["
+1:eJwV2Hk4VesXB3CiKEVEopIhkjRJGsi3QoNU5qFbSKbkZ6xESjKEhCSpkMpN
+pqQoSqUuDa5ZZTrO3ucYkumUnC2Zfu/9az+fZ7/Ps5693/WutfZWcvI2d5kh
+ICAgJCgg8N/V2KW3ofy7lb7M6sowtvUZfWEDeR9KTht9UbW+GRbW2HAnJfWp
+nCFCm9Yv9LZwxb6a5idpcpZwzGwTsbQ4DRvn0VeJcs64Hp08pWcRiY61lwyu
+yJ1E2PA7XzGLZGTIHIyMkQtHivu92EPmDxAq+nRFtFwSLjjqvr578Bls7e4W
+/PiZieA+sSK9DR8gNh16eLdCAS6m7vQwX90AVbOh3n8uFwEbFdb/L+krAmq3
+IGWkFHs9G0UVbVmQLZJkCwq+QWL24q1mtTSecQ2q6/Te4aWxw6n9yZ1455G2
+2G6gApp2nqo2uj3gq22TyP/fBxQtGt/1ILUXM8Zy5y9WrUJP2qxHjgv7oTPt
++MziUTX6jGSithkPojpcu/a9Rh3anQ0Lv1jzsCyhfyx7qB4aQ335ss9/oH+U
+Yn9Z1wij9R6Lft/5icy+l1XicU0QHlQwHIoahvjSLF5X12eUZpxV+WX7C7HH
+i10zln+Fvecm0wKRETDbc7vcQ5ohG5Wr5FYwgrLM/tsB4c1I+bLdPb9wBBdF
+NS0io5vRLGjpPvx0BOL1eW/vX2tGU61z0pmSEag5PEpnZzVjKNY45dTbEVif
+K7S1rG/GORvddVpNIygufV4NpRYkZJ3LL+KP4KRWRdHCf1qg9FdCZLMOH67a
+ihlXP7ZA5aNcw8hmPmx1gi/PrW1BnWRw4nxdPnS3ajvNaG2B7OK1gQbgY8bO
+TImhoRb4OcxvTN7NR7xZuEelfCvKZqsn/LLhI8fHUPGkXytc2qp0wgP4oB5V
+XG5QasPzZmGrP4V81A8KD2itaEO3uINm3lM+yjWNTJI027AgUOvC4WI+MnIq
+59psasPpo9WpJSV8OD14f4Vl0galqsgH9m/4ZJ8+xn8LaMMaiR3co9V8DMZW
+X5usacPryafrDbv5YP87d8S+qQ0lCz87VPbwUTtnv2V5SxvyBlmzjHr5eBRV
+Ix3W2Yao7m1v0M+HT3jtddGxNvi4WH9V/snHyNn6GwuWt2NW7KxLdyb4GPf4
+fHtlUDvcFq3Y4SfFwFLnyNU1Ie14tKSjNXcBgzzBnsgN4e0wTQta3CXNwD5l
+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
+
+          "]]}, Annotation[#, "Charting`Private`Tag$58340#3"]& ]}}, {}, {}}, {
+    DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
+     AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, 
+        Charting`ScaledFrameTicks[{Identity, Identity}]}, {Automatic, 
+        Charting`ScaledFrameTicks[{Identity, Identity}]}}, 
+     GridLines -> {None, None}, DisplayFunction -> Identity, 
+     PlotRangePadding -> {{
+        Scaled[0.02], 
+        Scaled[0.02]}, {
+        Scaled[0.05], 
+        Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, 
+     DisplayFunction -> Identity, AspectRatio -> 
+     NCache[GoldenRatio^(-1), 0.6180339887498948], Axes -> {True, True}, 
+     AxesLabel -> {
+       FormBox["\"Length\"", TraditionalForm], None}, AxesOrigin -> {0, 0}, 
+     DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, 
+     FrameLabel -> {{None, None}, {None, None}}, 
+     FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
+     GridLines -> {None, None}, GridLinesStyle -> Directive[
+       GrayLevel[0.5, 0.4]], ImageSize -> Large, 
+     Method -> {
+      "DefaultBoundaryStyle" -> Automatic, "DefaultMeshStyle" -> 
+       AbsolutePointSize[6], "ScalingFunctions" -> None, 
+       "CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+           (Identity[#]& )[
+            Part[#, 1]], 
+           (Identity[#]& )[
+            Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+           (Identity[#]& )[
+            Part[#, 1]], 
+           (Identity[#]& )[
+            Part[#, 2]]}& )}}, PlotLabel -> 
+     FormBox["\"Residual plot\"", TraditionalForm], 
+     PlotRange -> {{0, 1}, {-1.5457225109881692`, 2.646707215765569}}, 
+     PlotRangeClipping -> True, PlotRangePadding -> {{
+        Scaled[0.02], 
+        Scaled[0.02]}, {
+        Scaled[0.02], 
+        Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}],FormBox[
+    FormBox[
+     TemplateBox[{
+      "\"\\!\\(\\*SubscriptBox[\\(\[Psi]\\), \\(1\\)]\\) - \
+\[Phi](\\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(1\\)]\\),x)\"", 
+       "\"\[Phi](\\!\\(\\*SubscriptBox[\\(\[Alpha]\\), \\(1\\)]\\),x)\"", 
+       "\"\\!\\(\\*SubscriptBox[\\(\[Psi]\\), \\(1\\)]\\)\""}, "LineLegend", 
+      DisplayFunction -> (FormBox[
+        StyleBox[
+         StyleBox[
+          PaneBox[
+           TagBox[
+            GridBox[{{
+               TagBox[
+                GridBox[{{
+                   GraphicsBox[{{
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    Opacity[1.], 
+                    RGBColor[0.368417, 0.506779, 0.709798], 
+                    AbsoluteThickness[1.6]], {
+                    LineBox[{{0, 10}, {20, 10}}]}}, {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    Opacity[1.], 
+                    RGBColor[0.368417, 0.506779, 0.709798], 
+                    AbsoluteThickness[1.6]], {}}}, AspectRatio -> Full, 
+                    ImageSize -> {20, 10}, PlotRangePadding -> None, 
+                    ImagePadding -> Automatic, 
+                    BaselinePosition -> (Scaled[0.1] -> Baseline)], #}, {
+                   GraphicsBox[{{
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    Opacity[1.], 
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    AbsoluteThickness[1.6]], {
+                    LineBox[{{0, 10}, {20, 10}}]}}, {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    Opacity[1.], 
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    AbsoluteThickness[1.6]], {}}}, AspectRatio -> Full, 
+                    ImageSize -> {20, 10}, PlotRangePadding -> None, 
+                    ImagePadding -> Automatic, 
+                    BaselinePosition -> (Scaled[0.1] -> Baseline)], #2}, {
+                   GraphicsBox[{{
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    Opacity[1.], 
+                    RGBColor[0.560181, 0.691569, 0.194885], 
+                    AbsoluteThickness[1.6]], {
+                    LineBox[{{0, 10}, {20, 10}}]}}, {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.5], 
+                    Opacity[1.], 
+                    RGBColor[0.560181, 0.691569, 0.194885], 
+                    AbsoluteThickness[1.6]], {}}}, AspectRatio -> Full, 
+                    ImageSize -> {20, 10}, PlotRangePadding -> None, 
+                    ImagePadding -> Automatic, 
+                    BaselinePosition -> (Scaled[0.1] -> Baseline)], #3}}, 
+                 GridBoxAlignment -> {
+                  "Columns" -> {Center, Left}, "Rows" -> {{Baseline}}}, 
+                 AutoDelete -> False, 
+                 GridBoxDividers -> {
+                  "Columns" -> {{False}}, "Rows" -> {{False}}}, 
+                 GridBoxItemSize -> {"Columns" -> {{All}}, "Rows" -> {{All}}},
+                  GridBoxSpacings -> {
+                  "Columns" -> {{0.5}}, "Rows" -> {{0.8}}}], "Grid"]}}, 
+             GridBoxAlignment -> {"Columns" -> {{Left}}, "Rows" -> {{Top}}}, 
+             AutoDelete -> False, 
+             GridBoxItemSize -> {
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+             GridBoxSpacings -> {"Columns" -> {{1}}, "Rows" -> {{0}}}], 
+            "Grid"], Alignment -> Left, AppearanceElements -> None, 
+           ImageMargins -> {{5, 5}, {5, 5}}, ImageSizeAction -> 
+           "ResizeToFit"], LineIndent -> 0, StripOnInput -> False], {
+         FontFamily -> "Arial"}, Background -> Automatic, StripOnInput -> 
+         False], TraditionalForm]& ), 
+      InterpretationFunction :> (RowBox[{"LineLegend", "[", 
+         RowBox[{
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"Directive", "[", 
+                 RowBox[{
+                   RowBox[{"Opacity", "[", "1.`", "]"}], ",", 
+                   InterpretationBox[
+                    ButtonBox[
+                    TooltipBox[
+                    GraphicsBox[{{
+                    GrayLevel[0], 
+                    RectangleBox[{0, 0}]}, {
+                    GrayLevel[0], 
+                    RectangleBox[{1, -1}]}, {
+                    RGBColor[0.368417, 0.506779, 0.709798], 
+                    RectangleBox[{0, -1}, {2, 1}]}}, DefaultBaseStyle -> 
+                    "ColorSwatchGraphics", AspectRatio -> 1, Frame -> True, 
+                    FrameStyle -> 
+                    RGBColor[
+                    0.24561133333333335`, 0.3378526666666667, 
+                    0.4731986666666667], FrameTicks -> None, PlotRangePadding -> 
+                    None, ImageSize -> 
+                    Dynamic[{
+                    Automatic, 1.35 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], 
+                    StyleBox[
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.368417`", ",", "0.506779`", ",", "0.709798`"}],
+                     "]"}], NumberMarks -> False]], Appearance -> None, 
+                    BaseStyle -> {}, BaselinePosition -> Baseline, 
+                    DefaultBaseStyle -> {}, ButtonFunction :> 
+                    With[{Typeset`box$ = EvaluationBox[]}, 
+                    If[
+                    Not[
+                    AbsoluteCurrentValue["Deployed"]], 
+                    SelectionMove[Typeset`box$, All, Expression]; 
+                    FrontEnd`Private`$ColorSelectorInitialAlpha = 1; 
+                    FrontEnd`Private`$ColorSelectorInitialColor = 
+                    RGBColor[0.368417, 0.506779, 0.709798]; 
+                    FrontEnd`Private`$ColorSelectorUseMakeBoxes = True; 
+                    MathLink`CallFrontEnd[
+                    FrontEnd`AttachCell[Typeset`box$, 
+                    FrontEndResource["RGBColorValueSelector"], {
+                    0, {Left, Bottom}}, {Left, Top}, 
+                    "ClosingActions" -> {
+                    "SelectionDeparture", "ParentChanged", 
+                    "EvaluatorQuit"}]]]], BaseStyle -> Inherited, Evaluator -> 
+                    Automatic, Method -> "Preemptive"], 
+                    RGBColor[0.368417, 0.506779, 0.709798], Editable -> False,
+                     Selectable -> False], ",", 
+                   RowBox[{"AbsoluteThickness", "[", "1.6`", "]"}]}], "]"}], 
+               ",", 
+               RowBox[{"Directive", "[", 
+                 RowBox[{
+                   RowBox[{"Opacity", "[", "1.`", "]"}], ",", 
+                   InterpretationBox[
+                    ButtonBox[
+                    TooltipBox[
+                    GraphicsBox[{{
+                    GrayLevel[0], 
+                    RectangleBox[{0, 0}]}, {
+                    GrayLevel[0], 
+                    RectangleBox[{1, -1}]}, {
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    RectangleBox[{0, -1}, {2, 1}]}}, DefaultBaseStyle -> 
+                    "ColorSwatchGraphics", AspectRatio -> 1, Frame -> True, 
+                    FrameStyle -> 
+                    RGBColor[
+                    0.587148, 0.40736066666666665`, 0.09470066666666668], 
+                    FrameTicks -> None, PlotRangePadding -> None, ImageSize -> 
+                    Dynamic[{
+                    Automatic, 1.35 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], 
+                    StyleBox[
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.880722`", ",", "0.611041`", ",", "0.142051`"}],
+                     "]"}], NumberMarks -> False]], Appearance -> None, 
+                    BaseStyle -> {}, BaselinePosition -> Baseline, 
+                    DefaultBaseStyle -> {}, ButtonFunction :> 
+                    With[{Typeset`box$ = EvaluationBox[]}, 
+                    If[
+                    Not[
+                    AbsoluteCurrentValue["Deployed"]], 
+                    SelectionMove[Typeset`box$, All, Expression]; 
+                    FrontEnd`Private`$ColorSelectorInitialAlpha = 1; 
+                    FrontEnd`Private`$ColorSelectorInitialColor = 
+                    RGBColor[0.880722, 0.611041, 0.142051]; 
+                    FrontEnd`Private`$ColorSelectorUseMakeBoxes = True; 
+                    MathLink`CallFrontEnd[
+                    FrontEnd`AttachCell[Typeset`box$, 
+                    FrontEndResource["RGBColorValueSelector"], {
+                    0, {Left, Bottom}}, {Left, Top}, 
+                    "ClosingActions" -> {
+                    "SelectionDeparture", "ParentChanged", 
+                    "EvaluatorQuit"}]]]], BaseStyle -> Inherited, Evaluator -> 
+                    Automatic, Method -> "Preemptive"], 
+                    RGBColor[0.880722, 0.611041, 0.142051], Editable -> False,
+                     Selectable -> False], ",", 
+                   RowBox[{"AbsoluteThickness", "[", "1.6`", "]"}]}], "]"}], 
+               ",", 
+               RowBox[{"Directive", "[", 
+                 RowBox[{
+                   RowBox[{"Opacity", "[", "1.`", "]"}], ",", 
+                   InterpretationBox[
+                    ButtonBox[
+                    TooltipBox[
+                    GraphicsBox[{{
+                    GrayLevel[0], 
+                    RectangleBox[{0, 0}]}, {
+                    GrayLevel[0], 
+                    RectangleBox[{1, -1}]}, {
+                    RGBColor[0.560181, 0.691569, 0.194885], 
+                    RectangleBox[{0, -1}, {2, 1}]}}, DefaultBaseStyle -> 
+                    "ColorSwatchGraphics", AspectRatio -> 1, Frame -> True, 
+                    FrameStyle -> 
+                    RGBColor[
+                    0.37345400000000006`, 0.461046, 0.12992333333333334`], 
+                    FrameTicks -> None, PlotRangePadding -> None, ImageSize -> 
+                    Dynamic[{
+                    Automatic, 1.35 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], 
+                    StyleBox[
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.560181`", ",", "0.691569`", ",", "0.194885`"}],
+                     "]"}], NumberMarks -> False]], Appearance -> None, 
+                    BaseStyle -> {}, BaselinePosition -> Baseline, 
+                    DefaultBaseStyle -> {}, ButtonFunction :> 
+                    With[{Typeset`box$ = EvaluationBox[]}, 
+                    If[
+                    Not[
+                    AbsoluteCurrentValue["Deployed"]], 
+                    SelectionMove[Typeset`box$, All, Expression]; 
+                    FrontEnd`Private`$ColorSelectorInitialAlpha = 1; 
+                    FrontEnd`Private`$ColorSelectorInitialColor = 
+                    RGBColor[0.560181, 0.691569, 0.194885]; 
+                    FrontEnd`Private`$ColorSelectorUseMakeBoxes = True; 
+                    MathLink`CallFrontEnd[
+                    FrontEnd`AttachCell[Typeset`box$, 
+                    FrontEndResource["RGBColorValueSelector"], {
+                    0, {Left, Bottom}}, {Left, Top}, 
+                    "ClosingActions" -> {
+                    "SelectionDeparture", "ParentChanged", 
+                    "EvaluatorQuit"}]]]], BaseStyle -> Inherited, Evaluator -> 
+                    Automatic, Method -> "Preemptive"], 
+                    RGBColor[0.560181, 0.691569, 0.194885], Editable -> False,
+                     Selectable -> False], ",", 
+                   RowBox[{"AbsoluteThickness", "[", "1.6`", "]"}]}], "]"}]}],
+              "}"}], ",", 
+           RowBox[{"{", 
+             RowBox[{#, ",", #2, ",", #3}], "}"}], ",", 
+           RowBox[{"LegendMarkers", "\[Rule]", "None"}], ",", 
+           RowBox[{"LabelStyle", "\[Rule]", 
+             RowBox[{"{", "}"}]}], ",", 
+           RowBox[{"LegendLayout", "\[Rule]", "\"Column\""}]}], "]"}]& ), 
+      Editable -> True], TraditionalForm], TraditionalForm]},
+  "Legended",
+  DisplayFunction->(GridBox[{{
+      TagBox[
+       ItemBox[
+        PaneBox[
+         TagBox[#, "SkipImageSizeLevel"], Alignment -> {Center, Baseline}, 
+         BaselinePosition -> Baseline], DefaultBaseStyle -> "Labeled"], 
+       "SkipImageSizeLevel"], 
+      ItemBox[#2, DefaultBaseStyle -> "LabeledLabel"]}}, 
+    GridBoxAlignment -> {"Columns" -> {{Center}}, "Rows" -> {{Center}}}, 
+    AutoDelete -> False, GridBoxItemSize -> Automatic, 
+    BaselinePosition -> {1, 1}]& ),
+  Editable->True,
+  InterpretationFunction->(RowBox[{"Legended", "[", 
+     RowBox[{#, ",", 
+       RowBox[{"Placed", "[", 
+         RowBox[{#2, ",", "After"}], "]"}]}], "]"}]& )]], "Output",
+ CellChangeTimes->{{3.8487466441540976`*^9, 3.8487466540006905`*^9}},
+ CellLabel->
+  "Out[746]=",ExpressionUUID->"e44c37ea-a1b3-41a9-a68c-ef4ea3ed5e38"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"\\n(*----------------------------------*)\\n(*Question 3: \
+Gaussian Trial Function*)\\n(*----------------------------------*)\"\>"], \
+"Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466540163116`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"99a14158-fd4f-48d5-a4de-f8d12e1cb098"],
+
+Cell[BoxData["\<\"(1) Find normaliztion constant A of \[Phi](r,\[Alpha]) = \
+\\!\\(\\*SuperscriptBox[\\(Ae\\), \\(-\\*SuperscriptBox[\\(\[Alpha]r\\), \\(2\
+\\)]\\)]\\) using procedures\\nin previous steps (i.e. Denominator is < \
+\[Phi] | \[Phi] > =\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(-\
+\[Infinity]\\), \\(\[Infinity]\\)]\\)|\[Phi]\\!\\(\\*SuperscriptBox[\\(|\\), \
+\\(2\\)]\\)\\!\\(\\*SuperscriptBox[\\(r\\), \\(2\\)]\\)dr = 1\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466540319376`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"739c9dc3-3ec6-41e3-8315-1de2d4897971"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(2) The normalization constant A therefore is A = \"\>", 
+   "\[InvisibleSpace]", 
+   FractionBox[
+    RowBox[{"2", " ", 
+     SuperscriptBox["2", 
+      RowBox[{"3", "/", "4"}]], " ", 
+     SuperscriptBox["\[Alpha]", 
+      RowBox[{"3", "/", "4"}]]}], 
+    SuperscriptBox["\[Pi]", 
+     RowBox[{"1", "/", "4"}]]]}],
+  SequenceForm[
+  "(2) The normalization constant A therefore is A = ", 2 2^Rational[3, 4] 
+   Pi^Rational[-1, 4] $CellContext`\[Alpha]^Rational[3, 4]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746655165578*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"4af248e5-2712-440c-aa7d-840a1532fb9b"],
+
+Cell[BoxData["\<\"(3) Numerator of E(\[Alpha]) = \
+\\!\\(\\*SubsuperscriptBox[\\(\[Integral]\\), \\(0\\), \
+\\(\[Infinity]\\)]\\)\\!\\(\\*SuperscriptBox[\\(\[Phi]\\), \
+\\(*\\)]\\)\\!\\(\\*OverscriptBox[\\(H\\), \
+\\(^\\)]\\)\\!\\(\\*SuperscriptBox[\\(\[Phi]r\\), \\(2\\)]\\)dr where \
+\\!\\(\\*OverscriptBox[\\(H\\), \\(^\\)]\\) = -\\!\\(\\*FractionBox[\\(1\\), \
+\\(2\\)]\\)(\\!\\(\\*FractionBox[\\(d\\), SuperscriptBox[\\(dr\\), \
+\\(2\\)]]\\)+\\!\\(\\*FractionBox[\\(2\\), \
+\\(r\\)]\\)\\!\\(\\*FractionBox[\\(d\\), \
+\\(dr\\)]\\))-\\!\\(\\*FractionBox[\\(1\\), \\(r\\)]\\)\"\>"], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746655165578*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"240d4653-4ee6-416c-862a-88e48799d5fe"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(4) \\!\\(\\*OverscriptBox[\\(H\\), \\(^\\)]\\)\[Phi] = \
+-\\!\\(\\*FractionBox[\\(A\\), \\(2\\)]\\)(\\!\\(\\*FractionBox[\\(d\\), \
+SuperscriptBox[\\(dr\\), \\(2\\)]]\\)\[Phi] + \\!\\(\\*FractionBox[\\(2\\), \
+\\(r\\)]\\)\\!\\(\\*FractionBox[\\(d\\), \\(dr\\)]\\)\[Phi]) - \
+\\!\\(\\*FractionBox[\\(\[Phi]\\), \\(r\\)]\\) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{"-", 
+    FractionBox[
+     RowBox[{"2", " ", 
+      SuperscriptBox["2", 
+       RowBox[{"3", "/", "4"}]], " ", 
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{
+        RowBox[{"-", 
+         SuperscriptBox["r", "2"]}], " ", "\[Alpha]"}]], " ", 
+      SuperscriptBox["\[Alpha]", 
+       RowBox[{"3", "/", "4"}]], " ", 
+      RowBox[{"(", 
+       RowBox[{"1", "-", 
+        RowBox[{"3", " ", "r", " ", "\[Alpha]"}], "+", 
+        RowBox[{"2", " ", 
+         SuperscriptBox["r", "3"], " ", 
+         SuperscriptBox["\[Alpha]", "2"]}]}], ")"}]}], 
+     RowBox[{
+      SuperscriptBox["\[Pi]", 
+       RowBox[{"1", "/", "4"}]], " ", "r"}]]}]}],
+  SequenceForm[
+  "(4) \!\(\*OverscriptBox[\(H\), \(^\)]\)\[Phi] = -\!\(\*FractionBox[\(A\), \
+\(2\)]\)(\!\(\*FractionBox[\(d\), SuperscriptBox[\(dr\), \(2\)]]\)\[Phi] + \!\
+\(\*FractionBox[\(2\), \(r\)]\)\!\(\*FractionBox[\(d\), \(dr\)]\)\[Phi]) - \!\
+\(\*FractionBox[\(\[Phi]\), \(r\)]\) = ", (-2) 2^Rational[3, 4] 
+   E^(-$CellContext`r^2 $CellContext`\[Alpha]) 
+   Pi^Rational[-1, 4] $CellContext`r^(-1) $CellContext`\[Alpha]^
+    Rational[3, 4] (1 - 3 $CellContext`r $CellContext`\[Alpha] + 
+    2 $CellContext`r^3 $CellContext`\[Alpha]^2)],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466552033486`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"6eab918a-a0cb-42d9-af4d-611522b1f5cf"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(5) Then E(\[Alpha]) = \\!\\(\\*SubsuperscriptBox[\\(\
+\[Integral]\\), \\(0\\), \\(\[Infinity]\\)]\\)\"\>", "\[InvisibleSpace]", 
+   RowBox[{"-", 
+    FractionBox[
+     RowBox[{"8", " ", 
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{
+        RowBox[{"-", "2"}], " ", 
+        SuperscriptBox["r", "2"], " ", "\[Alpha]"}]], " ", 
+      SqrtBox[
+       FractionBox["2", "\[Pi]"]], " ", 
+      SuperscriptBox["\[Alpha]", 
+       RowBox[{"3", "/", "2"}]], " ", 
+      RowBox[{"(", 
+       RowBox[{"1", "-", 
+        RowBox[{"3", " ", "r", " ", "\[Alpha]"}], "+", 
+        RowBox[{"2", " ", 
+         SuperscriptBox["r", "3"], " ", 
+         SuperscriptBox["\[Alpha]", "2"]}]}], ")"}]}], "r"]}], 
+   "\[InvisibleSpace]", "\<\" \\!\\(\\*SuperscriptBox[\\(r\\), \
+\\(2\\)]\\)dr\"\>"}],
+  SequenceForm[
+  "(5) Then E(\[Alpha]) = \!\(\*SubsuperscriptBox[\(\[Integral]\), \(0\), \(\
+\[Infinity]\)]\)", (-8) 
+   E^((-2) $CellContext`r^2 $CellContext`\[Alpha]) (2/Pi)^
+    Rational[1, 2] $CellContext`r^(-1) $CellContext`\[Alpha]^Rational[3, 2] (
+    1 - 3 $CellContext`r $CellContext`\[Alpha] + 
+    2 $CellContext`r^3 $CellContext`\[Alpha]^2), 
+   " \!\(\*SuperscriptBox[\(r\), \(2\)]\)dr"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746655234593*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"10c8d35e-bbf2-4f3b-8ada-a41821bc06ea"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(6) E(\[Alpha]) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "2"}], " ", 
+     SqrtBox[
+      FractionBox["2", "\[Pi]"]], " ", 
+     SqrtBox["\[Alpha]"]}], "+", 
+    FractionBox[
+     RowBox[{"3", " ", "\[Alpha]"}], "2"]}]}],
+  SequenceForm[
+  "(6) E(\[Alpha]) = ", (-2) (2/Pi)^Rational[1, 2] $CellContext`\[Alpha]^
+     Rational[1, 2] + Rational[3, 2] $CellContext`\[Alpha]],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466575573072`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"13feb311-332f-41d4-882a-19720f1e0dd2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(7) Optimization of E(\[Alpha]) => \\!\\(\\*FractionBox[\\(\
+\[PartialD]E \\((\[Alpha])\\)\\), \\(\[PartialD]\[Alpha]\\)]\\) = \"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{
+    FractionBox["3", "2"], "-", 
+    FractionBox[
+     SqrtBox[
+      FractionBox["2", "\[Pi]"]], 
+     SqrtBox["\[Alpha]"]]}], "\[InvisibleSpace]", "\<\" = 0\"\>"}],
+  SequenceForm[
+  "(7) Optimization of E(\[Alpha]) => \!\(\*FractionBox[\(\[PartialD]E \((\
+\[Alpha])\)\), \(\[PartialD]\[Alpha]\)]\) = ", 
+   Rational[3, 2] - (2/Pi)^Rational[1, 2] $CellContext`\[Alpha]^
+    Rational[-1, 2], " = 0"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.8487466575672703`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"779d3457-4e2b-4797-92e3-7b03defd9f9a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(8) Optimal parameter for \[Alpha] = \"\>", 
+   "\[InvisibleSpace]", "0.28294212105225836`"}],
+  SequenceForm["(8) Optimal parameter for \[Alpha] = ", 0.28294212105225836`],
+  
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746657582899*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"339c1862-92d9-49b2-b2a8-0c462a0e19cc"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(9) Minimum energy is E(\[Alpha]) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{"-", "0.42441318157838753`"}], 
+   "\[InvisibleSpace]", "\<\". This\\nis a reasonable value since \
+\\!\\(\\*SubscriptBox[\\(E\\), \\(min\\)]\\) in the textbook is the same \
+constant (-0.424) times\\n\\!\\(\\*FractionBox[\\(\\*SubscriptBox[\\(m\\), \
+\\(e\\)] \\*SuperscriptBox[\\(e\\), \\(4\\)]\\), \\(16 \\*SuperscriptBox[\\(\
+\[Pi]\\), \\(2\\)] \\*SuperscriptBox[SubscriptBox[\\(\[Epsilon]\\), \\(0\\)], \
+\\(2\\)] \\*SuperscriptBox[\\(\[HBar]\\), \\(2\\)]\\)]\\) and \
+\\!\\(\\*SubscriptBox[\\(E\\), \\(0\\)]\\)'s constant is -0.500 times the \\!\
+\\(\\*FractionBox[\\(\\*SubscriptBox[\\(m\\), \\(e\\)] \\*SuperscriptBox[\\(e\
+\\), \\(4\\)]\\), \\(16 \\*SuperscriptBox[\\(\[Pi]\\), \\(2\\)] \
+\\*SuperscriptBox[SubscriptBox[\\(\[Epsilon]\\), \\(0\\)], \\(2\\)] \
+\\*SuperscriptBox[\\(\[HBar]\\), \\(2\\)]\\)]\\) for Gaussian trial \
+function\\nfor H-atom\"\>"}],
+  SequenceForm[
+  "(9) Minimum energy is E(\[Alpha]) = ", -0.42441318157838753`, 
+   ". This\nis a reasonable value since \!\(\*SubscriptBox[\(E\), \(min\)]\) \
+in the textbook is the same constant (-0.424) times\n\
+\!\(\*FractionBox[\(\*SubscriptBox[\(m\), \(e\)] \*SuperscriptBox[\(e\), \
+\(4\)]\), \(16 \*SuperscriptBox[\(\[Pi]\), \(2\)] \
+\*SuperscriptBox[SubscriptBox[\(\[Epsilon]\), \(0\)], \(2\)] \
+\*SuperscriptBox[\(\[HBar]\), \(2\)]\)]\) and \!\(\*SubscriptBox[\(E\), \
+\(0\)]\)'s constant is -0.500 times the \
+\!\(\*FractionBox[\(\*SubscriptBox[\(m\), \(e\)] \*SuperscriptBox[\(e\), \
+\(4\)]\), \(16 \*SuperscriptBox[\(\[Pi]\), \(2\)] \
+\*SuperscriptBox[SubscriptBox[\(\[Epsilon]\), \(0\)], \(2\)] \
+\*SuperscriptBox[\(\[HBar]\), \(2\)]\)]\) for Gaussian trial function\nfor \
+H-atom"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.848746638239538*^9, 3.848746657582899*^9}},
+ CellLabel->
+  "During evaluation of \
+In[700]:=",ExpressionUUID->"c0ff0fca-2a46-4f5d-8f4f-99c5b976b8c3"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1920, 997},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 45605, 1015, 4576, "Code",ExpressionUUID->"fc788961-dcd5-4334-a802-483123680b0b"],
+Cell[CellGroupData[{
+Cell[46210, 1041, 391, 7, 77, "Print",ExpressionUUID->"8be0d257-d44b-4a3f-ab72-9216395593da"],
+Cell[46604, 1050, 261, 5, 22, "Print",ExpressionUUID->"784aa809-42d0-4bf4-8a30-80d1dbbb9ef8"],
+Cell[46868, 1057, 409, 7, 60, "Print",ExpressionUUID->"cd4d2449-4565-4663-a720-9c2d61e1a7b0"],
+Cell[47280, 1066, 593, 10, 60, "Print",ExpressionUUID->"a1dfd17d-bfe8-4287-b0d2-9ba295234929"],
+Cell[47876, 1078, 587, 13, 69, "Print",ExpressionUUID->"868852cc-e6cb-4489-b6ee-d2c054a9f977"],
+Cell[48466, 1093, 287, 5, 28, "Print",ExpressionUUID->"70d568ac-52e3-42bd-9f0a-8f27138cde06"],
+Cell[48756, 1100, 579, 9, 90, "Print",ExpressionUUID->"5ac37a63-74ea-4d8c-9a32-4bce534df89d"],
+Cell[49338, 1111, 1488, 22, 136, "Print",ExpressionUUID->"f20e71ec-f1b9-4619-ba53-1554f1fc6a1d"],
+Cell[50829, 1135, 1850, 34, 104, "Print",ExpressionUUID->"3685a681-9e8b-49e3-9de2-6144d5aca40e"],
+Cell[52682, 1171, 1022, 21, 37, "Print",ExpressionUUID->"d73b03ac-d04e-445c-984d-54d94df30e3b"],
+Cell[53707, 1194, 1517, 30, 51, "Print",ExpressionUUID->"fbf3e079-c283-42ef-bc8b-25576d0fe056"],
+Cell[55227, 1226, 1242, 24, 59, "Print",ExpressionUUID->"c2778ac8-c008-4497-957d-9d8b9bb729d3"],
+Cell[56472, 1252, 349, 6, 77, "Print",ExpressionUUID->"8a946d92-1586-4978-8cb9-d77eeb184634"],
+Cell[56824, 1260, 933, 16, 62, "Print",ExpressionUUID->"291c065b-8893-4dec-bb3d-a510c1020923"],
+Cell[57760, 1278, 787, 20, 66, "Print",ExpressionUUID->"89069a86-27f7-4e7b-83ec-d7469ab7bc35"],
+Cell[58550, 1300, 804, 23, 113, "Print",ExpressionUUID->"ff81aa69-4805-4213-b938-a31b78b0cd92"],
+Cell[59357, 1325, 1209, 19, 92, "Print",ExpressionUUID->"93633f71-ece1-445c-af94-cf3abdfce1c6"],
+Cell[60569, 1346, 2917, 68, 143, "Print",ExpressionUUID->"b54fc9c9-e14f-445c-a941-1dbca6c3a7f4"],
+Cell[63489, 1416, 3409, 92, 171, "Print",ExpressionUUID->"8bd28a46-3abc-4444-ad49-026d99c38460"],
+Cell[66901, 1510, 1553, 37, 74, "Print",ExpressionUUID->"119068bb-e399-4fc2-8336-cf4583ee37b6"],
+Cell[68457, 1549, 3199, 76, 76, "Print",ExpressionUUID->"fd7645e5-3d6a-49ab-bca1-79c09f6a69b2"],
+Cell[71659, 1627, 695, 14, 22, "Print",ExpressionUUID->"7e65c341-d26a-4ea2-a90d-394690635c86"],
+Cell[72357, 1643, 1263, 27, 37, "Print",ExpressionUUID->"99cf91ed-8eee-4a2d-9016-8a782aada420"],
+Cell[73623, 1672, 1263, 27, 37, "Print",ExpressionUUID->"6ea1d63e-7922-4d5b-8d8d-495b944df19a"],
+Cell[74889, 1701, 1508, 32, 56, "Print",ExpressionUUID->"0e9570fd-a8fe-4208-a99e-9c835e201541"]
+}, Open  ]],
+Cell[76412, 1736, 34207, 635, 363, "Output",ExpressionUUID->"e44c37ea-a1b3-41a9-a68c-ef4ea3ed5e38"],
+Cell[CellGroupData[{
+Cell[110644, 2375, 336, 6, 77, "Print",ExpressionUUID->"99a14158-fd4f-48d5-a4de-f8d12e1cb098"],
+Cell[110983, 2383, 631, 9, 67, "Print",ExpressionUUID->"739c9dc3-3ec6-41e3-8315-1de2d4897971"],
+Cell[111617, 2394, 720, 19, 51, "Print",ExpressionUUID->"4af248e5-2712-440c-aa7d-840a1532fb9b"],
+Cell[112340, 2415, 765, 13, 47, "Print",ExpressionUUID->"240d4653-4ee6-416c-862a-88e48799d5fe"],
+Cell[113108, 2430, 1813, 40, 55, "Print",ExpressionUUID->"6eab918a-a0cb-42d9-af4d-611522b1f5cf"],
+Cell[114924, 2472, 1442, 35, 75, "Print",ExpressionUUID->"10c8d35e-bbf2-4f3b-8ada-a41821bc06ea"],
+Cell[116369, 2509, 658, 18, 61, "Print",ExpressionUUID->"13feb311-332f-41d4-882a-19720f1e0dd2"],
+Cell[117030, 2529, 826, 20, 81, "Print",ExpressionUUID->"779d3457-4e2b-4797-92e3-7b03defd9f9a"],
+Cell[117859, 2551, 427, 10, 22, "Print",ExpressionUUID->"339c1862-92d9-49b2-b2a8-0c462a0e19cc"],
+Cell[118289, 2563, 1993, 34, 113, "Print",ExpressionUUID->"c0ff0fca-2a46-4f5d-8f4f-99c5b976b8c3"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

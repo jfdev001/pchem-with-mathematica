@@ -1,0 +1,1914 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     93240,       1906]
+NotebookOptionsPosition[     90527,       1858]
+NotebookOutlinePosition[     90869,       1873]
+CellTagsIndexPosition[     90826,       1870]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Jared", " ", "Frazier"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Microstates", "-", "M7"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Description", ":", "\n", "\n", 
+    RowBox[{
+    "Relate", " ", "the", " ", "multiplicity", " ", "of", " ", "macrostates", 
+     " ", "to", " ", "principles", " ", "of", " ", 
+     RowBox[{"thermodynamics", "."}]}]}], "\n", "\n", "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Date", ":", " ", 
+    RowBox[{
+     RowBox[{"02", "/", "15"}], "/", "2021"}]}], "*)"}], "\n", 
+  RowBox[{
+   RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"**", "**"}], "**"}], "**"}], "**"}], "**"}], 
+                    "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], 
+                    "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], 
+                 "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], 
+          "**"}], "**"}], "**"}], "**"}], "**"}], "**"}], "*******)"}], "\n", 
+   "                ", 
+   RowBox[{"(*", 
+    RowBox[{"Part", " ", 
+     RowBox[{"1", " ", "--"}], " ", "The", " ", "Multiplicity", " ", "of", 
+     " ", "Macrostates"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   "\n", "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Subroutines", " ", "in", " ", "for", " ", "multiplicity", " ", 
+     "function"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"totalStatesM", "[", "N_", "]"}], " ", ":=", " ", 
+    RowBox[{"2", " ", "^", " ", "N"}]}], " ", "\n", 
+   RowBox[{
+    RowBox[{"multiplicity", "[", 
+     RowBox[{"N_", ",", " ", "n_"}], "]"}], " ", ":=", " ", 
+    RowBox[{
+     RowBox[{"N", "!"}], " ", "/", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"n", "!"}], " ", "*", " ", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"N", "-", "n"}], ")"}], "!"}]}], ")"}]}]}], "\n", 
+   RowBox[{
+    RowBox[{"probability", "[", 
+     RowBox[{"\[CapitalOmega]_", ",", " ", "M_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"\[CapitalOmega]", " ", "/", " ", "M"}]}], "\n", 
+   RowBox[{
+    RowBox[{"entropy", "[", "\[CapitalOmega]_", "]"}], " ", ":=", " ", 
+    RowBox[{"1", " ", "*", " ", 
+     RowBox[{"Log", "[", "\[CapitalOmega]", "]"}]}]}], "\n", "\n", 
+   RowBox[{"(*", "\n", 
+    RowBox[{":", "Purpose", ":", " ", 
+     RowBox[{
+     "Compute", " ", "multiplicity", " ", "table", " ", "with", " ", 
+      "variable", " ", 
+      RowBox[{"macrostates", "."}]}], "\n", "\n", ":", 
+     RowBox[{
+     "param", " ", "macrostatesN_:", " ", "Number", " ", "of", " ", 
+      "macrostates", " ", "in", " ", "the", " ", 
+      RowBox[{"system", "."}]}], "\n", ":", 
+     RowBox[{
+     "param", " ", "state1_:", " ", "Define", " ", "a", " ", "state", " ", 
+      "a", " ", "particle", " ", "can", " ", "have", " ", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"e", ".", "g", ".", " ", "\"\<H\>\""}], ",", " ", "1", ",", 
+         " ", "\"\<L\>\"", ",", " ", 
+         RowBox[{"etc", "."}]}], ")"}], "."}]}], "\n", ":", 
+     RowBox[{
+     "param", " ", "state2_:", " ", "Define", " ", "another", " ", "state", 
+      " ", "a", " ", "particle", " ", "can", " ", 
+      RowBox[{"have", "."}]}], "\n", ":", 
+     RowBox[{
+     "param", " ", "q3_:", " ", "Should", " ", "be", " ", "True", " ", "for", 
+      " ", "question", " ", "3", " ", "and", " ", "changes", " ", "output", 
+      " ", "for", " ", "microstates", " ", 
+      RowBox[{"column", "."}]}], "\n", "\n", ":", "return", ":", " ", 
+     RowBox[{"<", 
+      RowBox[{"Table", " ", "object"}], ">", " ", 
+      RowBox[{"representing", " ", "multiplicity"}]}]}], "\n", "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"computeMultiplicityTable", "[", 
+     RowBox[{
+     "macrostatesN_", ",", " ", "state1_", ",", " ", "state2_", ",", " ", 
+      "q3_"}], "]"}], " ", ":=", " ", 
+    RowBox[{"(", "\n", "\t", 
+     RowBox[{
+      RowBox[{"multiplicityTable", " ", "=", " ", 
+       RowBox[{"Table", "[", 
+        RowBox[{"0", ",", " ", 
+         RowBox[{"macrostatesN", "+", "1"}], ",", " ", "5"}], "]"}]}], ";", 
+      "\n", "\t", 
+      RowBox[{"pos", " ", "=", " ", "1"}], ";", "\n", "\t", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"n", " ", "=", " ", "macrostatesN"}], ",", " ", 
+        RowBox[{"n", " ", ">=", " ", "0"}], ",", " ", 
+        RowBox[{"n", "--"}], ",", "  ", 
+        RowBox[{"(*", 
+         RowBox[{"'", 
+          RowBox[{"n", "'"}], " ", "the", " ", "number", " ", "of", " ", 
+          "heads", " ", "for", " ", "a", " ", "given", " ", "macrostate", " ",
+           "varies"}], "*)"}], "\n", "\t\t", 
+        RowBox[{"(*", 
+         RowBox[{"Initial", " ", "macrostate"}], "*)"}], "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"macroList", " ", "=", " ", 
+          RowBox[{"List", "[", "]"}]}], ";", "\n", "\t", "\n", "\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+          "Write", " ", "\"\<H\>\"", " ", "to", " ", "list", " ", "based", 
+           " ", 
+           RowBox[{"on", " ", "'"}], 
+           RowBox[{"n", "'"}]}], "*)"}], "\n", "\t\t", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"i", " ", "\[LessEqual]", " ", "n"}], ",", " ", 
+           RowBox[{"i", "++"}], ",", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"macroList", ",", " ", "state1"}], "]"}], ";"}]}], "\n", 
+          "\t\t", "]"}], ";", "\n", "\t", "\n", "\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+          "Complete", " ", "list", " ", "with", " ", "\"\<T\>\"", "s"}], 
+          "*)"}], "\n", "\t\t", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"i", " ", "\[LessEqual]", " ", 
+            RowBox[{"macrostatesN", "-", "n"}]}], ",", " ", 
+           RowBox[{"i", "++"}], ",", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"macroList", ",", " ", "state2"}], "]"}], ";"}]}], "\n", 
+          "\t\t", "]"}], ";", "\n", "\t", "\n", "\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+          "List", " ", "of", " ", "microstates", " ", "corresponding", " ", 
+           "to", " ", "that", " ", "macrostate"}], "*)"}], "\n", "\t\t", 
+         RowBox[{"microList", " ", "=", " ", 
+          RowBox[{"Permutations", "[", "macroList", "]"}]}], ";", "\n", "\t", 
+         "\n", "\t\t", 
+         RowBox[{"(*", 
+          RowBox[{"Concatenated", " ", "microList"}], "*)"}], "\n", "\t\t", 
+         RowBox[{"concatenatedMicroList", " ", "=", " ", 
+          RowBox[{"List", "[", "]"}]}], ";", "\n", "\t\t", 
+         RowBox[{"microListDims", " ", "=", " ", 
+          RowBox[{"Dimensions", "[", "microList", "]"}]}], ";", "\n", "\t\t", 
+         
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"row", " ", "=", " ", "1"}], ",", " ", 
+           RowBox[{"row", " ", "\[LessEqual]", " ", 
+            RowBox[{"microListDims", "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], ",", " ", 
+           RowBox[{"row", "++"}], ",", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"AppendTo", "[", 
+             RowBox[{"concatenatedMicroList", ",", " ", 
+              RowBox[{"StringRiffle", "[", 
+               RowBox[{
+                RowBox[{"microList", "[", 
+                 RowBox[{"[", "row", "]"}], "]"}], ",", " ", "\"\<\>\""}], 
+               "]"}]}], "]"}], ";"}]}], "\n", "\t\t", "]"}], ";", "\n", 
+         "\t\t", "\n", "\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+          "Set", " ", "microstate", " ", "str", " ", "for", " ", "table"}], 
+          "*)"}], "\n", "\t\t", 
+         RowBox[{"omega", " ", "=", " ", 
+          RowBox[{"multiplicity", "[", 
+           RowBox[{"macrostatesN", ",", " ", "n"}], "]"}]}], ";", "\n", 
+         "\t\t", 
+         RowBox[{
+          RowBox[{"If", " ", "[", 
+           RowBox[{"q3", ",", "\n", "\t\t\t", 
+            RowBox[{"(*", "TRUE", "*)"}], " ", "\n", "\t\t\t", 
+            RowBox[{
+             RowBox[{"on", " ", "=", " ", "0"}], ";", "\n", "\t\t\t", 
+             RowBox[{"off", " ", "=", " ", "0"}], ";", "\n", "\t\t\t", 
+             RowBox[{"(*", 
+              RowBox[{
+              "Iterate", " ", "through", " ", "macrostate", " ", "string", 
+               " ", "and", " ", "count", " ", "number", " ", 
+               RowBox[{"of", " ", "'"}], 
+               RowBox[{"on", "'"}], " ", 
+               RowBox[{"and", " ", "'"}], 
+               RowBox[{"off", "'"}], " ", "states"}], "*)"}], "\n", "\t\t\t", 
+             
+             RowBox[{"For", " ", "[", 
+              RowBox[{
+               RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+               RowBox[{"i", " ", "\[LessEqual]", " ", "macrostatesN"}], ",", 
+               " ", 
+               RowBox[{"i", "++"}], ",", "\n", "\t\t\t\t", 
+               RowBox[{"If", " ", "[", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"ToString", "[", 
+                   RowBox[{"microList", "[", 
+                    RowBox[{"[", 
+                    RowBox[{"1", ",", " ", "i"}], "]"}], "]"}], "]"}], " ", 
+                  "\[Equal]", " ", "state1"}], ",", " ", 
+                 RowBox[{"on", "++"}], ",", " ", 
+                 RowBox[{"off", "++"}]}], "]"}]}], "\n", "\t\t\t", "]"}], ";",
+              "\n", "\t\t\t", 
+             RowBox[{"(*", 
+              RowBox[{"Set", " ", "the", " ", 
+               RowBox[{"on", "/", "off"}], " ", "string"}], "*)"}], "\n", 
+             "\t\t\t", 
+             RowBox[{"resultString", " ", "=", " ", 
+              RowBox[{
+               RowBox[{"ToString", "[", "on", "]"}], " ", "<>", " ", 
+               "\"\</\>\"", " ", "<>", " ", 
+               RowBox[{"ToString", "[", "off", "]"}]}]}], ";"}], ",", "\n", 
+            "\t\t\t", "\n", "\t\t\t", 
+            RowBox[{"(*", "FALSE", "*)"}], "\n", "\t\t\t", 
+            RowBox[{"(*", 
+             RowBox[{
+             "Create", " ", "column", " ", "microstate", " ", "string"}], 
+             "*)"}], "\n", "\t\t\t", 
+            RowBox[{
+             RowBox[{"resultString", " ", "=", " ", "\"\<\>\""}], ";", "\n", 
+             "\t\t\t", 
+             RowBox[{"For", "[", 
+              RowBox[{
+               RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+               RowBox[{"i", " ", "\[LessEqual]", " ", "omega"}], ",", " ", 
+               RowBox[{"i", "++"}], ",", "\n", "\t\t\t\t", 
+               RowBox[{
+                RowBox[{"resultString", " ", "=", " ", 
+                 RowBox[{"StringJoin", "[", 
+                  RowBox[{"resultString", ",", " ", 
+                   RowBox[{"ToString", "[", 
+                    RowBox[{"Part", "[", 
+                    RowBox[{"concatenatedMicroList", ",", " ", "i"}], "]"}], 
+                    "]"}]}], "]"}]}], ";", "\n", "\t\t\t\t", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"i", " ", "\[NotEqual]", " ", "omega"}], ",", " ", 
+                  RowBox[{"resultString", " ", "=", " ", 
+                   RowBox[{"StringJoin", "[", 
+                    RowBox[{"resultString", ",", " ", "\"\<\\n\>\""}], 
+                    "]"}]}]}], "]"}], ";"}]}], "\n", "\t\t\t", "]"}], ";"}]}],
+            "\n", "\t\t", "]"}], "\n", "\t\t", "\n", "\t\t", 
+          RowBox[{"(*", 
+           RowBox[{"Create", " ", "the", " ", "table"}], "*)"}], "\n", "\t\t", 
+          RowBox[{"capitalM", " ", "=", " ", 
+           RowBox[{"totalStatesM", "[", "macrostatesN", "]"}]}]}], ";", "\n", 
+         "\t\t", 
+         RowBox[{
+          RowBox[{"multiplicityTable", "[", 
+           RowBox[{"[", 
+            RowBox[{"pos", ",", " ", "1"}], "]"}], "]"}], " ", "=", " ", 
+          "n"}], ";", "                               ", 
+         RowBox[{"(*", "Macrostate", "*)"}], "\n", "\t\t", 
+         RowBox[{
+          RowBox[{"multiplicityTable", "[", 
+           RowBox[{"[", 
+            RowBox[{"pos", ",", "2"}], "]"}], "]"}], " ", "=", " ", 
+          "resultString"}], ";", "             ", 
+         RowBox[{"(*", "Microstates", "*)"}], "\n", "\t\t", 
+         RowBox[{
+          RowBox[{"multiplicityTable", "[", 
+           RowBox[{"[", 
+            RowBox[{"pos", ",", " ", "3"}], "]"}], "]"}], " ", "=", " ", 
+          "omega"}], ";", "                           ", "\n", "\t\t", 
+         RowBox[{
+          RowBox[{"multiplicityTable", "[", 
+           RowBox[{"[", 
+            RowBox[{"pos", ",", " ", "4"}], "]"}], "]"}], " ", "=", " ", 
+          RowBox[{"probability", "[", 
+           RowBox[{"omega", ",", " ", "capitalM"}], "]"}]}], ";", "    ", 
+         RowBox[{"(*", "Probabiltity", "*)"}], "\n", "\t\t", 
+         RowBox[{
+          RowBox[{"multiplicityTable", "[", 
+           RowBox[{"[", 
+            RowBox[{"pos", ",", " ", "5"}], "]"}], "]"}], " ", "=", " ", 
+          RowBox[{"SetPrecision", "[", 
+           RowBox[{
+            RowBox[{"entropy", "[", "omega", "]"}], ",", " ", "4"}], "]"}]}], 
+         ";", " ", 
+         RowBox[{"(*", "Entropy", "*)"}], "\n", "\t\t", 
+         RowBox[{"pos", "++"}], ";"}]}], "\n", "\t", "]"}], ";", "\n", "\n", 
+      "\t", 
+      RowBox[{"(*", 
+       RowBox[{"Return", " ", "the", " ", "table"}], "*)"}], "\n", "\t", 
+      RowBox[{"headerTable", " ", "=", " ", 
+       RowBox[{"Prepend", "[", 
+        RowBox[{"multiplicityTable", ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<Macrostate\>\"", ",", " ", "\"\<Microstates\>\"", ",", " ", 
+           "\"\<Multiplicity\>\"", ",", " ", "\"\<Probability\>\"", ",", " ", 
+           "\"\<Entropy\>\""}], "}"}]}], "]"}]}], ";", "\n", "\t", 
+      RowBox[{"Return", "[", 
+       RowBox[{"finalTable", " ", "=", " ", 
+        RowBox[{"Transpose", "[", "headerTable", "]"}]}], "]"}], ";"}], "\n", 
+     ")"}]}], "\n", "\n", "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(********************************************************************\
+******)\n                (*Part 1 -- The Multiplicity of Macrostates*)\n\
+(**************************************************************************)\>\
+\"", "]"}], "\n", 
+   RowBox[{
+    RowBox[{"tenCoinTable", " ", "=", " ", 
+     RowBox[{"computeMultiplicityTable", "[", 
+      RowBox[{
+      "10", ",", " ", "\"\<H\>\"", ",", " ", "\"\<T\>\"", ",", " ", "False"}],
+       "]"}]}], ";"}], "\n", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"tenCoinTable", ",", " ", 
+     RowBox[{"Frame", "->", "All"}]}], "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<Is the 10 coin distribution more peaked than the 4 coin \
+distribution?\\n\nYes, the 10 coin distribution is significantly more peaked \
+as 10 coins lends\nto a greater number of microstates per macrostate.\>\"", 
+    "]"}], "\n", "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   "      ", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Part", " ", 
+      RowBox[{"2", " ", "--"}], " ", "Evolution", " ", "of", " ", 
+      "Macrostates", " ", "for", " ", "a", " ", "non"}], "-", 
+     RowBox[{"isolated", " ", "system"}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Coin", " ", "flip", " ", "function"}], "*)"}], "\n", 
+   RowBox[{"coinFlip", " ", ":=", " ", 
+    RowBox[{"RandomChoice", "[", 
+     RowBox[{"{", 
+      RowBox[{"\"\<H\>\"", ",", "\"\<T\>\""}], "}"}], "]"}]}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Lists", " ", "for", " ", "results"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"yNumHeads", " ", "=", " ", 
+     RowBox[{"List", "[", "]"}]}], ";"}], "       ", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Counts", " ", "number", " ", "of", " ", "heads", " ", "after", " ", "a", 
+     " ", "given", " ", "toss"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"yNumTails", " ", "=", " ", 
+     RowBox[{"List", "[", "]"}]}], ";"}], "       ", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Counts", " ", "number", " ", "of", " ", "tails", " ", "after", " ", "a", 
+     " ", "given", " ", "toss"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"xNumTosses", " ", "=", " ", 
+     RowBox[{"Range", "[", "100", "]"}]}], ";"}], "  ", 
+   RowBox[{"(*", 
+    RowBox[{"1", " ", "to", " ", "100", "th", " ", "toss", " ", "list"}], 
+    "*)"}], "\n", "\n", "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(********************************************************************\
+******)\n      (*Part 2 -- Evolution of Macrostates for a non-isolated \
+system*)\n\
+(**************************************************************************)\>\
+\"", "]"}], "\n", "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<What macrostate will be reached in the process of flipping N ordered\
+\ncoins randomly starting from the NH state?\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Do", " ", "100", " ", "tosses"}], "*)"}], "\n", 
+   RowBox[{"For", " ", "[", 
+    RowBox[{
+     RowBox[{"toss", " ", "=", " ", "1"}], ",", " ", 
+     RowBox[{"toss", " ", "<=", " ", "100"}], ",", " ", 
+     RowBox[{"toss", "++"}], ",", "\n", "\t", 
+     RowBox[{
+      RowBox[{"cntHeads", " ", "=", " ", "0"}], ";", "\n", "\t", 
+      RowBox[{"cntTails", " ", "=", " ", "0"}], ";", "\n", "\t", 
+      RowBox[{"(*", 
+       RowBox[{"Do", " ", "100", " ", "coin", " ", "flips"}], "*)"}], "\n", 
+      "\t", 
+      RowBox[{"For", " ", "[", 
+       RowBox[{
+        RowBox[{"flip", " ", "=", " ", "1"}], ",", " ", 
+        RowBox[{"flip", " ", "\[LessEqual]", " ", "100"}], ",", " ", 
+        RowBox[{"flip", "++"}], ",", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"If", " ", "[", 
+          RowBox[{
+           RowBox[{"coinFlip", " ", "\[Equal]", " ", "\"\<H\>\""}], ",", " ", 
+           
+           RowBox[{"cntHeads", "++"}], ",", " ", 
+           RowBox[{"cntTails", "++"}]}], "]"}], ";"}]}], "\n", "\t", "]"}], 
+      ";", "\n", "\t", 
+      RowBox[{"(*", 
+       RowBox[{"Append", " ", "to", " ", "parallel", " ", "lists"}], "*)"}], 
+      "\n", "\t", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"yNumHeads", ",", " ", "cntHeads"}], "]"}], ";", "\n", "\t", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"yNumTails", ",", " ", "cntTails"}], "]"}], ";"}]}], "\n", 
+    "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Graph", " ", "results"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"headData", " ", "=", " ", 
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"xNumTosses", ",", " ", "yNumHeads"}], "}"}], "]"}]}], ";"}], 
+   " ", "\n", 
+   RowBox[{
+    RowBox[{"tailData", " ", "=", " ", 
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"xNumTosses", ",", " ", "yNumTails"}], "}"}], "]"}]}], ";"}], 
+   "\n", 
+   RowBox[{"ListPlot", " ", "[", "\n", "\t", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"headData", ",", " ", "tailData"}], "}"}], ",", "\n", "\t", 
+     RowBox[{"PlotRange", "\[Rule]", "Full"}], ",", "\n", "\t", 
+     RowBox[{"ImageSize", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"750", ",", " ", "750"}], "}"}]}], ",", "\n", "\t", 
+     RowBox[{"PlotLegends", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<Heads\>\"", ",", "\n", "\t\t\t\t ", "\"\<Tails\>\""}], 
+       "}"}]}], ",", "\n", "\t", 
+     RowBox[{
+     "PlotLabel", "\[Rule]", 
+      "\"\<Number of Coin Faces Appearing from 100 Flips vs. Number of \
+Simulations (Coin Tosses)\>\""}], ",", "\n", "\t", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<Number of Coin Tosses\>\"", ",", " ", "\"\<Number of Face\>\""}], 
+       "}"}]}]}], "\n", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Calculate", " ", "entropy"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"yEntropyList", " ", "=", " ", 
+     RowBox[{"List", "[", "]"}]}], ";"}], "\n", 
+   RowBox[{"For", " ", "[", 
+    RowBox[{
+     RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+     RowBox[{"i", " ", "\[LessEqual]", " ", 
+      RowBox[{"Length", "[", "yNumHeads", "]"}]}], ",", " ", 
+     RowBox[{"i", "++"}], ",", "\n", "\t", 
+     RowBox[{
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"yEntropyList", ",", " ", 
+        RowBox[{"entropy", "[", 
+         RowBox[{"multiplicity", "[", 
+          RowBox[{"100", ",", " ", 
+           RowBox[{"Part", "[", 
+            RowBox[{"yNumHeads", ",", " ", "i"}], "]"}]}], "]"}], "]"}]}], 
+       "]"}], ";"}]}], "\n", "]"}], "\n", "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Graph", " ", "entropy"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"entropyData", " ", "=", " ", 
+     RowBox[{"Transpose", "[", 
+      RowBox[{"{", 
+       RowBox[{"xNumTosses", ",", " ", "yEntropyList"}], "}"}], "]"}]}], 
+    ";"}], "\n", 
+   RowBox[{"ListPlot", "[", "\n", "\t", 
+    RowBox[{"entropyData", ",", "\n", "\t", 
+     RowBox[{"ImageSize", "\[Rule]", "Large"}], ",", "\n", "\t", 
+     RowBox[{
+     "PlotLabel", "\[Rule]", 
+      "\"\<Entropy vs. Number of Simulations (Coin Tosses)\>\""}], ",", "\n", 
+     "\t", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<Number of Coin Tosses\>\"", ",", " ", 
+        "\"\<S = k ln(\[CapitalOmega])\>\""}], "}"}]}]}], "\n", "]"}], "\n", 
+   "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<What pattern can you find during the process (how does the \
+macrostate evolve)? \nIs there a tendency toward equilibrium?\\nThe \
+macrostate generally oscillates around the \nexpected value for the \
+macrostate which is 50.\\n\\nWhat happens in terms of entropy?\\nThe entropy\n\
+also seems to remain in a constrained region on the graph, which is to be \
+expected if multiplicity\nis somewhat consistent.\n\>\"", "]"}], "\n", "\n", 
+   "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   "     ", 
+   RowBox[{"(*", 
+    RowBox[{"Part", " ", 
+     RowBox[{"3", " ", "--"}], " ", "Dependence", " ", "on", " ", 
+     "Statistical", " ", "Multiplicity", " ", "on", " ", "the", " ", 
+     "volume"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(********************************************************************\
+******)\n     (*Part 3 -- Dependence of Statistical Multiplicity on the \
+volume*)\n\
+(**************************************************************************)\>\
+\"", "]"}], "\n", 
+   RowBox[{"Print", "[", "\"\<Compute L/R Multiplicity for N=4\>\"", "]"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"volumeTable", " ", "=", " ", 
+     RowBox[{"computeMultiplicityTable", "[", 
+      RowBox[{
+      "4", ",", " ", "\"\<L\>\"", ",", " ", "\"\<R\>\"", ",", " ", "True"}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"volumeTable", ",", " ", 
+     RowBox[{"Frame", "->", "All"}]}], "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<Which macrostate is the largest multiplicity?\nn=2 macrostate has \
+the largest multiplicity of 6.\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<\\nDo your findings support that particles occupy the entire volume \
+after removing a restraint?\nYes, my findings support the statistical nature \
+of the observation that\nparticles spread out in the available volume.\>\"", 
+    "]"}], "\n", "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   "                        ", 
+   RowBox[{"(*", 
+    RowBox[{"Part", " ", 
+     RowBox[{"4", " ", "--"}], " ", "Gas", " ", "diffusion"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Initial", " ", "Lists"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"initMacrostate", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<A\>\"", ",", " ", "\"\<A\>\"", ",", " ", "\"\<A\>\"", ",", " ", 
+       "\"\<A\>\"", ",", " ", "\"\<B\>\"", ",", " ", "\"\<B\>\"", ",", " ", 
+       "\"\<B\>\"", ",", " ", "\"\<B\>\""}], "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"allPermutations", " ", "=", " ", 
+     RowBox[{"Permutations", "[", "initMacrostate", "]"}]}], ";"}], "\n", 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "This", " ", "will", " ", "be", " ", "a", " ", "list", " ", "of", " ", 
+     "strings", " ", "holding", " ", "all", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"?", "A"}], ",", " ", 
+       RowBox[{"?", 
+        RowBox[{"B", "/", 
+         RowBox[{"?", "A"}]}]}], ",", " ", 
+       RowBox[{"?", "B"}]}], "}"}], " ", "format"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"macrostateList", " ", "=", " ", 
+     RowBox[{"List", "[", "]"}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Each", " ", "row", " ", "in", " ", "allPermutations", " ", "is", " ", 
+     "a", " ", "list", " ", "with", " ", "8", " ", "columns", " ", 
+     "containing", " ", "permutations", " ", "of", " ", "AAAABBBB"}], "*)"}], 
+   "\n", 
+   RowBox[{"For", " ", "[", 
+    RowBox[{
+     RowBox[{"row", " ", "=", " ", "1"}], ",", " ", 
+     RowBox[{"row", " ", "\[LessEqual]", " ", 
+      RowBox[{"Length", "[", "allPermutations", "]"}]}], ",", " ", 
+     RowBox[{"row", "++"}], ",", "\n", "\t", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{
+       "Counting", " ", "macrostates", "\n", "\t", "OnLeft", " ", "is", " ", 
+        "defined", " ", "as", " ", "columns", " ", "1"}], "-", 
+       RowBox[{
+       "4", "\n", "\t", "OnRight", " ", "is", " ", "defined", " ", "as", " ", 
+        "columns", " ", "5"}], "-", "8"}], "\n", "\t", "*)"}], "\n", "\t", 
+     RowBox[{
+      RowBox[{"cntAOnLeft", " ", "=", " ", "0"}], ";", "    ", "\n", "\t", 
+      RowBox[{"cntAOnRight", " ", "=", " ", "0"}], ";", "\n", "\t", 
+      RowBox[{"cntBOnLeft", " ", "=", " ", "0"}], ";", "\n", "\t", 
+      RowBox[{"cntBOnRight", " ", "=", " ", "0"}], ";", "\n", "\t", "\n", 
+      "\t", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Macrostate", " ", "string", " ", "of", " ", "\"\<?A, ?B/?A, ?B\>\"", 
+        " ", "format"}], "*)"}], "\n", "\t", 
+      RowBox[{"macrostateString", " ", "=", " ", "\"\<\>\""}], ";", "\n", 
+      "\t", "\n", "\t", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Count", " ", "particles", " ", "on", " ", "left", " ", "side"}], 
+       "*)"}], "\n", "\t", 
+      RowBox[{"For", " ", "[", 
+       RowBox[{
+        RowBox[{"letter", " ", "=", " ", "1"}], ",", " ", 
+        RowBox[{"letter", " ", "\[LessEqual]", " ", "4"}], ",", " ", 
+        RowBox[{"letter", "++"}], ",", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"If", " ", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ToString", "[", 
+             RowBox[{"allPermutations", "[", 
+              RowBox[{"[", 
+               RowBox[{"row", ",", " ", "letter"}], "]"}], "]"}], "]"}], " ", 
+            "\[Equal]", " ", "\"\<A\>\""}], ",", " ", "\n", "\t\t", 
+           RowBox[{"cntAOnLeft", "++"}], ",", " ", "\n", "\t\t", 
+           RowBox[{"cntBOnLeft", "++"}]}], "\n", "\t\t", "]"}], ";"}]}], "\n",
+        "\t", "]"}], ";", "\n", "\t", "\n", "\t", 
+      RowBox[{"(*", 
+       RowBox[{
+       "Count", " ", "particles", " ", "on", " ", "right", " ", "side"}], 
+       "*)"}], "\n", "\t", 
+      RowBox[{"For", " ", "[", 
+       RowBox[{
+        RowBox[{"letter", " ", "=", " ", "5"}], ",", " ", 
+        RowBox[{"letter", " ", "\[LessEqual]", " ", "8"}], ",", " ", 
+        RowBox[{"letter", "++"}], ",", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"If", " ", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ToString", "[", 
+             RowBox[{"allPermutations", "[", 
+              RowBox[{"[", 
+               RowBox[{"row", ",", " ", "letter"}], "]"}], "]"}], "]"}], " ", 
+            "\[Equal]", " ", "\"\<A\>\""}], ",", " ", "\n", "\t\t\t", 
+           RowBox[{"cntAOnRight", "++"}], ",", " ", "\n", "\t\t\t", 
+           RowBox[{"cntBOnRight", "++"}]}], "\n", "\t\t", "]"}], ";"}]}], 
+       "\n", "\t", "]"}], ";", "\n", "\t", "\n", "\t", 
+      RowBox[{"(*", 
+       RowBox[{"Build", " ", "the", " ", "macrostateList"}], "*)"}], "\n", 
+      "\t", 
+      RowBox[{"toAdd", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"ToString", "[", "cntAOnLeft", "]"}], " ", "<>", " ", 
+        "\"\<A, \>\"", " ", "<>", " ", 
+        RowBox[{"ToString", "[", "cntBOnLeft", "]"}], " ", "<>", " ", 
+        "\"\<B/\>\"", " ", "<>", " ", 
+        RowBox[{"ToString", "[", "cntAOnRight", "]"}], " ", "<>", " ", 
+        "\"\<A, \>\"", " ", "<>", " ", 
+        RowBox[{"ToString", "[", "cntBOnRight", "]"}], " ", "<>", " ", 
+        "\"\<B\>\""}]}], ";", "\n", "\t", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"macrostateList", ",", " ", "toAdd"}], "]"}], ";"}]}], "\n", 
+    "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Count", " ", "multiplicity"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"noDuplicateMacrostatesList", " ", "=", " ", 
+     RowBox[{"DeleteDuplicates", "[", "macrostateList", "]"}]}], ";"}], "\n", 
+   
+   RowBox[{
+    RowBox[{"multiplicityCounterList", " ", "=", " ", 
+     RowBox[{"List", "[", "]"}]}], ";"}], "                               ", 
+   RowBox[{"(*", 
+    RowBox[{"Parallel", " ", "to", " ", "noDuplicateMacrostatesLists"}], 
+    "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Iterate", " ", "through", " ", "noDuplicateMacrostatesList", " ", "and", 
+     " ", "the", " ", "total", " ", "macrostateList", " ", "to", " ", "count",
+      " ", "multiplicity"}], "*)"}], "\n", 
+   RowBox[{"For", " ", "[", 
+    RowBox[{
+     RowBox[{"i", " ", "=", " ", "1"}], ",", " ", 
+     RowBox[{"i", " ", "\[LessEqual]", " ", 
+      RowBox[{"Length", "[", "noDuplicateMacrostatesList", "]"}]}], ",", " ", 
+     
+     RowBox[{"i", "++"}], ",", "\n", "\t", 
+     RowBox[{
+      RowBox[{"multiplicityCounter", " ", "=", " ", "0"}], ";", "\n", "\t", 
+      RowBox[{"For", " ", "[", 
+       RowBox[{
+        RowBox[{"mstate", " ", "=", " ", "1"}], ",", " ", 
+        RowBox[{"mstate", " ", "\[LessEqual]", " ", 
+         RowBox[{"Length", "[", "macrostateList", "]"}]}], ",", " ", 
+        RowBox[{"mstate", "++"}], ",", "\n", "\t\t", 
+        RowBox[{"(*", 
+         RowBox[{
+          RowBox[{
+          "If", " ", "the", " ", "current", " ", "macrostateList", " ", 
+           "element", " ", "matches", " ", "the", " ", "current", " ", 
+           "noDuplicateMacrostatesList", " ", "element"}], ",", " ", 
+          RowBox[{"multiplicityCounter", " ", "increments"}]}], "*)"}], "\n", 
+        "\t\t", 
+        RowBox[{
+         RowBox[{"If", " ", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Part", "[", 
+             RowBox[{"macrostateList", ",", " ", "mstate"}], "]"}], " ", 
+            "\[Equal]", " ", 
+            RowBox[{"Part", "[", 
+             RowBox[{"noDuplicateMacrostatesList", ",", " ", "i"}], "]"}]}], 
+           ",", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"multiplicityCounter", "++"}], ";"}]}], "\n", "\t\t", 
+          "]"}], ";"}]}], "\n", "\t", "]"}], ";", "\n", "\t", 
+      RowBox[{"AppendTo", "[", 
+       RowBox[{"multiplicityCounterList", ",", " ", "multiplicityCounter"}], 
+       "]"}], ";"}]}], "\n", "]"}], "\n", "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(********************************************************************\
+******)\n                        (*Part 4 -- Gas diffusion*)\n\
+(**************************************************************************)\>\
+\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Format", " ", "and", " ", "display", " ", "table"}], "*)"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"question4Table", " ", "=", " ", 
+     RowBox[{"Prepend", "[", 
+      RowBox[{
+       RowBox[{"Transpose", "[", 
+        RowBox[{"{", 
+         RowBox[{
+         "noDuplicateMacrostatesList", ",", " ", "multiplicityCounterList"}], 
+         "}"}], "]"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"\"\<Macrostate\>\"", ",", " ", "\"\<Multiplicity\>\""}], 
+        "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"question4Table", ",", " ", 
+     RowBox[{"Frame", "\[Rule]", "All"}]}], "]"}], "\n", "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<The equilibrium composition is 2A, 2B/2A, 2B based on the table \
+above.\>\"", "]"}], "\n", "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   "                          ", 
+   RowBox[{"(*", 
+    RowBox[{"Part", " ", 
+     RowBox[{"5", " ", "--"}], " ", "Heat", " ", "Flow"}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**",
+      "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", "**", 
+     "**", "**", "**", "**", "**", "**", "**", "**"}], "*******)"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(********************************************************************\
+******)\n                          (*Part 5 -- Heat Flow*)\n\
+(**************************************************************************)\>\
+\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<What are the total energies and multiplicities of the isolated \
+systems B {0111} and A {0011}?\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<The blue and gray columns represent system B and A, respectively. \
+The total energy\nof system B (n=3) is 3 and the multiplicity is 4. The total \
+energy of system\nA (n=2) is 2 and the multiplicity is 6.\\n\>\"", "]"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"isolatedSystems", " ", "=", " ", 
+     RowBox[{"computeMultiplicityTable", "[", 
+      RowBox[{
+      "4", ",", " ", "\"\<1\>\"", ",", " ", "\"\<0\>\"", ",", " ", "False"}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"isolatedSystems", ",", " ", 
+     RowBox[{"Frame", "\[Rule]", "All"}], ",", " ", 
+     RowBox[{"Background", " ", "->", " ", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{
+        "None", ",", " ", "None", ",", " ", "LightBlue", ",", " ", 
+         "LightGray", ",", " ", "None", ",", " ", "None"}], "}"}], "}"}]}]}], 
+    "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<Calculate the multiplicity of the overall system with total energy \
+of 5 units?\nWhat is the expected direction of heat flow?\>\"", "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<The brown column represents the combined system with total energy of \
+5. \nThe multiplicity of this system is 56 from the table. The direction of \
+heat flow is\nsuch that the total energy of the system is 4. This means heat \
+from either A or B  must be \nlost to the surroundings such that the overall \
+system only has 4 units of energy.\>\"", "]"}], "\n", 
+   RowBox[{
+    RowBox[{"combinedSystems", " ", "=", " ", 
+     RowBox[{"computeMultiplicityTable", "[", 
+      RowBox[{
+      "8", ",", " ", "\"\<1\>\"", ",", " ", "\"\<0\>\"", ",", " ", "False"}], 
+      "]"}]}], ";"}], "\n", 
+   RowBox[{"Grid", "[", 
+    RowBox[{"combinedSystems", ",", " ", 
+     RowBox[{"Frame", "\[Rule]", "All"}], ",", " ", 
+     RowBox[{"Background", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"{", 
+        RowBox[{
+        "None", ",", " ", "None", ",", " ", "None", ",", "None", ",", " ", 
+         "LightBrown"}], "}"}], "}"}]}]}], "]"}]}]}]], "Code",
+ CellChangeTimes->{{3.822407340471015*^9, 3.822407341474784*^9}, {
+   3.822407375087146*^9, 3.8224073955196247`*^9}, {3.82240777968477*^9, 
+   3.8224079308375463`*^9}, {3.8224097784667263`*^9, 3.822410246063477*^9}, {
+   3.822410277813244*^9, 3.822410442441285*^9}, {3.82241054271754*^9, 
+   3.8224105836914387`*^9}, {3.822410624422111*^9, 3.8224106535677423`*^9}, {
+   3.822410968431683*^9, 3.822410992719378*^9}, {3.822411072197398*^9, 
+   3.822411078514456*^9}, {3.8224111394987917`*^9, 3.822411206806748*^9}, {
+   3.822411305405384*^9, 3.822411324524785*^9}, {3.822411399860076*^9, 
+   3.822411405485859*^9}, {3.8224114654079123`*^9, 3.822411467423584*^9}, {
+   3.822411612729164*^9, 3.822411627690531*^9}, {3.822411712437457*^9, 
+   3.822411752153554*^9}, {3.8224117945298147`*^9, 3.822411846351038*^9}, {
+   3.822411883671193*^9, 3.822411927924192*^9}, {3.822411963161993*^9, 
+   3.822411968459819*^9}, {3.822412089618451*^9, 3.822412125741952*^9}, {
+   3.822412214821476*^9, 3.82241221560147*^9}, {3.822412286647591*^9, 
+   3.822412366926478*^9}, {3.82241264074819*^9, 3.8224127636091948`*^9}, {
+   3.822412869114408*^9, 3.8224130755851297`*^9}, {3.82241312803331*^9, 
+   3.8224131823376713`*^9}, {3.822413226568493*^9, 3.822413323206201*^9}, 
+   3.82241337319489*^9, {3.822413459109894*^9, 3.822413590738453*^9}, {
+   3.822413627311829*^9, 3.822413694431123*^9}, {3.822413756356927*^9, 
+   3.8224138086911383`*^9}, {3.822413942146559*^9, 3.8224141658767433`*^9}, {
+   3.82241422208853*^9, 3.822414235418849*^9}, {3.82241430173145*^9, 
+   3.822414304587433*^9}, {3.822414346543145*^9, 3.8224144184494457`*^9}, {
+   3.822414800446579*^9, 3.822414808727412*^9}, {3.822419551494318*^9, 
+   3.822419587582327*^9}, {3.822419680297291*^9, 3.8224197067695293`*^9}, {
+   3.822419751895646*^9, 3.822419919236252*^9}, {3.822419986259679*^9, 
+   3.8224200292479343`*^9}, {3.82242007814377*^9, 3.822420093755815*^9}, {
+   3.8224201934279222`*^9, 3.8224201978331213`*^9}, 3.822420300559339*^9, {
+   3.822420351275515*^9, 3.822420354956723*^9}, {3.822420397350265*^9, 
+   3.822420722057863*^9}, {3.822420773754674*^9, 3.822420814822041*^9}, {
+   3.8224210941796494`*^9, 3.8224210987710247`*^9}, {3.822421130948812*^9, 
+   3.822421140145967*^9}, {3.8224383080192347`*^9, 3.8224383187679768`*^9}, {
+   3.822438377428575*^9, 3.822438719076364*^9}, {3.822439303230427*^9, 
+   3.8224393058664303`*^9}, {3.8224393438973513`*^9, 3.822439358959607*^9}, {
+   3.822439438336534*^9, 3.822439586262566*^9}, {3.822439622866642*^9, 
+   3.8224397247080593`*^9}, {3.8224397766336308`*^9, 3.822439821192161*^9}, {
+   3.822439883941429*^9, 3.82243990391186*^9}, {3.822439946563486*^9, 
+   3.8224400651964808`*^9}, {3.822440161176983*^9, 3.822440165704056*^9}, {
+   3.822440236807199*^9, 3.822440288186816*^9}, {3.822440340590012*^9, 
+   3.822440507493289*^9}, {3.8224405870752497`*^9, 3.822440592424312*^9}, {
+   3.822440627655717*^9, 3.822440764142022*^9}, {3.822440805211995*^9, 
+   3.822440822912322*^9}, {3.822441778195139*^9, 3.8224418187218237`*^9}, {
+   3.822441866367427*^9, 3.82244191667257*^9}, 3.822441949640272*^9, {
+   3.8224424639151993`*^9, 3.8224425005588903`*^9}, {3.822442592691511*^9, 
+   3.82244270956258*^9}, {3.822442746081769*^9, 3.822442770728352*^9}, {
+   3.822442806441689*^9, 3.8224428557543697`*^9}, {3.822442892161117*^9, 
+   3.822442895517974*^9}, {3.82244295245852*^9, 3.8224429682856703`*^9}, {
+   3.822443027194331*^9, 3.822443140213958*^9}, {3.822443225757525*^9, 
+   3.822443331796254*^9}, {3.822443375031975*^9, 3.8224433932275343`*^9}, {
+   3.822443484946394*^9, 3.822443578869974*^9}, {3.822443624593917*^9, 
+   3.8224436636637907`*^9}, {3.822443794268046*^9, 3.822443831778119*^9}, {
+   3.822443866862056*^9, 3.822443972769679*^9}, {3.8224440055170193`*^9, 
+   3.822444053531596*^9}, {3.8224440835955*^9, 3.8224441402881937`*^9}, 
+   3.822444287536378*^9, {3.822473787707076*^9, 3.822473889807396*^9}, {
+   3.8224745956984377`*^9, 3.822474641522401*^9}, {3.8224746802340612`*^9, 
+   3.822474768351375*^9}, {3.822474805059423*^9, 3.82247502255624*^9}, {
+   3.822475056291394*^9, 3.822475148745418*^9}, {3.822475293226945*^9, 
+   3.822475402694165*^9}, {3.822475612708468*^9, 3.822475613212236*^9}, {
+   3.822475828970615*^9, 3.822475878269044*^9}, {3.822475912731309*^9, 
+   3.8224759639854794`*^9}, {3.822476004784996*^9, 3.82247600562628*^9}, {
+   3.822476317270944*^9, 3.8224763670131197`*^9}, {3.822476448297385*^9, 
+   3.822476464282773*^9}, {3.8224765055944366`*^9, 3.822476567209609*^9}, {
+   3.822476613029022*^9, 3.822476795305461*^9}, {3.82247690491537*^9, 
+   3.82247700748149*^9}, {3.822477063453553*^9, 3.822477182570525*^9}, {
+   3.8224772884990473`*^9, 3.822477294941609*^9}, {3.82247734517603*^9, 
+   3.822477742321381*^9}, {3.82247777595039*^9, 3.822477899054859*^9}, {
+   3.822477939397241*^9, 3.822478073970079*^9}, {3.82247810430208*^9, 
+   3.8224781817395477`*^9}, {3.822480464279063*^9, 3.822480488834445*^9}, {
+   3.82248115544945*^9, 3.822481237510315*^9}, {3.822481284475704*^9, 
+   3.822481330961776*^9}, {3.822481378393277*^9, 3.8224814132835503`*^9}, {
+   3.8224815065232277`*^9, 3.822481608202175*^9}, {3.822481881947041*^9, 
+   3.8224819509890823`*^9}, {3.822481998200553*^9, 3.822482449935874*^9}, {
+   3.822482487630768*^9, 3.8224824902847347`*^9}, {3.822482554485476*^9, 
+   3.822482601489336*^9}, {3.822482690267291*^9, 3.822482759799549*^9}, {
+   3.822482796290288*^9, 3.8224828666703053`*^9}, {3.822482900576833*^9, 
+   3.822482943169168*^9}, {3.82248299332823*^9, 3.82248306589356*^9}, {
+   3.822486997459248*^9, 3.822487147133762*^9}, {3.8224872217732697`*^9, 
+   3.822487283102968*^9}, {3.822487334697896*^9, 3.8224873704633303`*^9}, {
+   3.822487508694579*^9, 3.8224876030415077`*^9}, {3.822502948661613*^9, 
+   3.822502962120393*^9}, {3.8225041648455477`*^9, 3.822504319603936*^9}, {
+   3.822504693820758*^9, 3.822505006627112*^9}, {3.8225079444650393`*^9, 
+   3.822507981779439*^9}, {3.822508019520643*^9, 3.822508103231658*^9}, {
+   3.822508149623693*^9, 3.8225081922446136`*^9}, {3.822508505879931*^9, 
+   3.822508609986353*^9}, {3.822508670720986*^9, 3.82250873261131*^9}, {
+   3.8225087648319197`*^9, 3.822508888196252*^9}, {3.822508943309575*^9, 
+   3.8225089822069387`*^9}, {3.8225090141274357`*^9, 3.822509034894697*^9}, 
+   3.82250906931524*^9, 3.822509102170627*^9, {3.8225091526655807`*^9, 
+   3.822509232044003*^9}, {3.8225092770608473`*^9, 3.822509383619679*^9}, {
+   3.82250954632425*^9, 3.822509612687087*^9}, {3.822509731701434*^9, 
+   3.822509746372303*^9}, {3.822512543024547*^9, 3.822512594167303*^9}, {
+   3.8225128362190113`*^9, 3.822513087571156*^9}, {3.822513194533326*^9, 
+   3.822513355438745*^9}, {3.822513461819397*^9, 3.8225134801679573`*^9}, {
+   3.822513532047628*^9, 3.8225137104678087`*^9}, {3.8225137481389112`*^9, 
+   3.822514036841855*^9}, {3.8225140709179*^9, 3.822514090330838*^9}, {
+   3.822514263564193*^9, 3.822514270424258*^9}, {3.822530462125153*^9, 
+   3.8225304918766937`*^9}, {3.8225307791681433`*^9, 3.822530916733232*^9}, {
+   3.8225309784863234`*^9, 3.8225310168225927`*^9}, {3.822531048322298*^9, 
+   3.8225310617173147`*^9}, {3.822531093488269*^9, 3.822531093769565*^9}, {
+   3.822531155932962*^9, 3.822531253085616*^9}, {3.822531288242816*^9, 
+   3.822531313544908*^9}, {3.822531354818679*^9, 3.822531355643443*^9}, {
+   3.822531397847026*^9, 3.822531455478586*^9}, {3.822531519527068*^9, 
+   3.8225315328165407`*^9}, {3.822531604533428*^9, 3.822531633855194*^9}, {
+   3.822531776028556*^9, 3.822532130811331*^9}, {3.8225325036102667`*^9, 
+   3.822532566977364*^9}, {3.822532618644751*^9, 3.822532751889374*^9}, {
+   3.822532826358726*^9, 3.822532851191967*^9}, {3.8225328954518948`*^9, 
+   3.822532901791695*^9}, {3.8225330132557364`*^9, 3.8225330680866947`*^9}, {
+   3.84874688145074*^9, 3.8487468968079844`*^9}, {3.8487469294333706`*^9, 
+   3.848746953946973*^9}},
+ CellLabel->
+  "In[820]:=",ExpressionUUID->"b519f339-8fad-4fcf-b1d2-89d00178636b"],
+
+Cell[BoxData["\<\"(***********************************************************\
+***************)\\n                (*Part 1 -- The Multiplicity of \
+Macrostates*)\\n(*************************************************************\
+*************)\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469942739005`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"0a07daed-71f1-4164-b9a3-9db8650a3c10"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Macrostate\"\>", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1", 
+     "0"},
+    {"\<\"Microstates\"\>", "\<\"HHHHHHHHHH\"\>", \
+"\<\"HHHHHHHHHT\\nHHHHHHHHTH\\nHHHHHHHTHH\\nHHHHHHTHHH\\nHHHHHTHHHH\\\
+nHHHHTHHHHH\\nHHHTHHHHHH\\nHHTHHHHHHH\\nHTHHHHHHHH\\nTHHHHHHHHH\"\>", \
+"\<\"HHHHHHHHTT\\nHHHHHHHTHT\\nHHHHHHHTTH\\nHHHHHHTHHT\\nHHHHHHTHTH\\\
+nHHHHHHTTHH\\nHHHHHTHHHT\\nHHHHHTHHTH\\nHHHHHTHTHH\\nHHHHHTTHHH\\nHHHHTHHHHT\\\
+nHHHHTHHHTH\\nHHHHTHHTHH\\nHHHHTHTHHH\\nHHHHTTHHHH\\nHHHTHHHHHT\\nHHHTHHHHTH\\\
+nHHHTHHHTHH\\nHHHTHHTHHH\\nHHHTHTHHHH\\nHHHTTHHHHH\\nHHTHHHHHHT\\nHHTHHHHHTH\\\
+nHHTHHHHTHH\\nHHTHHHTHHH\\nHHTHHTHHHH\\nHHTHTHHHHH\\nHHTTHHHHHH\\nHTHHHHHHHT\\\
+nHTHHHHHHTH\\nHTHHHHHTHH\\nHTHHHHTHHH\\nHTHHHTHHHH\\nHTHHTHHHHH\\nHTHTHHHHHH\\\
+nHTTHHHHHHH\\nTHHHHHHHHT\\nTHHHHHHHTH\\nTHHHHHHTHH\\nTHHHHHTHHH\\nTHHHHTHHHH\\\
+nTHHHTHHHHH\\nTHHTHHHHHH\\nTHTHHHHHHH\\nTTHHHHHHHH\"\>", \
+"\<\"HHHHHHHTTT\\nHHHHHHTHTT\\nHHHHHHTTHT\\nHHHHHHTTTH\\nHHHHHTHHTT\\\
+nHHHHHTHTHT\\nHHHHHTHTTH\\nHHHHHTTHHT\\nHHHHHTTHTH\\nHHHHHTTTHH\\nHHHHTHHHTT\\\
+nHHHHTHHTHT\\nHHHHTHHTTH\\nHHHHTHTHHT\\nHHHHTHTHTH\\nHHHHTHTTHH\\nHHHHTTHHHT\\\
+nHHHHTTHHTH\\nHHHHTTHTHH\\nHHHHTTTHHH\\nHHHTHHHHTT\\nHHHTHHHTHT\\nHHHTHHHTTH\\\
+nHHHTHHTHHT\\nHHHTHHTHTH\\nHHHTHHTTHH\\nHHHTHTHHHT\\nHHHTHTHHTH\\nHHHTHTHTHH\\\
+nHHHTHTTHHH\\nHHHTTHHHHT\\nHHHTTHHHTH\\nHHHTTHHTHH\\nHHHTTHTHHH\\nHHHTTTHHHH\\\
+nHHTHHHHHTT\\nHHTHHHHTHT\\nHHTHHHHTTH\\nHHTHHHTHHT\\nHHTHHHTHTH\\nHHTHHHTTHH\\\
+nHHTHHTHHHT\\nHHTHHTHHTH\\nHHTHHTHTHH\\nHHTHHTTHHH\\nHHTHTHHHHT\\nHHTHTHHHTH\\\
+nHHTHTHHTHH\\nHHTHTHTHHH\\nHHTHTTHHHH\\nHHTTHHHHHT\\nHHTTHHHHTH\\nHHTTHHHTHH\\\
+nHHTTHHTHHH\\nHHTTHTHHHH\\nHHTTTHHHHH\\nHTHHHHHHTT\\nHTHHHHHTHT\\nHTHHHHHTTH\\\
+nHTHHHHTHHT\\nHTHHHHTHTH\\nHTHHHHTTHH\\nHTHHHTHHHT\\nHTHHHTHHTH\\nHTHHHTHTHH\\\
+nHTHHHTTHHH\\nHTHHTHHHHT\\nHTHHTHHHTH\\nHTHHTHHTHH\\nHTHHTHTHHH\\nHTHHTTHHHH\\\
+nHTHTHHHHHT\\nHTHTHHHHTH\\nHTHTHHHTHH\\nHTHTHHTHHH\\nHTHTHTHHHH\\nHTHTTHHHHH\\\
+nHTTHHHHHHT\\nHTTHHHHHTH\\nHTTHHHHTHH\\nHTTHHHTHHH\\nHTTHHTHHHH\\nHTTHTHHHHH\\\
+nHTTTHHHHHH\\nTHHHHHHHTT\\nTHHHHHHTHT\\nTHHHHHHTTH\\nTHHHHHTHHT\\nTHHHHHTHTH\\\
+nTHHHHHTTHH\\nTHHHHTHHHT\\nTHHHHTHHTH\\nTHHHHTHTHH\\nTHHHHTTHHH\\nTHHHTHHHHT\\\
+nTHHHTHHHTH\\nTHHHTHHTHH\\nTHHHTHTHHH\\nTHHHTTHHHH\\nTHHTHHHHHT\\nTHHTHHHHTH\\\
+nTHHTHHHTHH\\nTHHTHHTHHH\\nTHHTHTHHHH\\nTHHTTHHHHH\\nTHTHHHHHHT\\nTHTHHHHHTH\\\
+nTHTHHHHTHH\\nTHTHHHTHHH\\nTHTHHTHHHH\\nTHTHTHHHHH\\nTHTTHHHHHH\\nTTHHHHHHHT\\\
+nTTHHHHHHTH\\nTTHHHHHTHH\\nTTHHHHTHHH\\nTTHHHTHHHH\\nTTHHTHHHHH\\nTTHTHHHHHH\\\
+nTTTHHHHHHH\"\>", \
+"\<\"HHHHHHTTTT\\nHHHHHTHTTT\\nHHHHHTTHTT\\nHHHHHTTTHT\\nHHHHHTTTTH\\\
+nHHHHTHHTTT\\nHHHHTHTHTT\\nHHHHTHTTHT\\nHHHHTHTTTH\\nHHHHTTHHTT\\nHHHHTTHTHT\\\
+nHHHHTTHTTH\\nHHHHTTTHHT\\nHHHHTTTHTH\\nHHHHTTTTHH\\nHHHTHHHTTT\\nHHHTHHTHTT\\\
+nHHHTHHTTHT\\nHHHTHHTTTH\\nHHHTHTHHTT\\nHHHTHTHTHT\\nHHHTHTHTTH\\nHHHTHTTHHT\\\
+nHHHTHTTHTH\\nHHHTHTTTHH\\nHHHTTHHHTT\\nHHHTTHHTHT\\nHHHTTHHTTH\\nHHHTTHTHHT\\\
+nHHHTTHTHTH\\nHHHTTHTTHH\\nHHHTTTHHHT\\nHHHTTTHHTH\\nHHHTTTHTHH\\nHHHTTTTHHH\\\
+nHHTHHHHTTT\\nHHTHHHTHTT\\nHHTHHHTTHT\\nHHTHHHTTTH\\nHHTHHTHHTT\\nHHTHHTHTHT\\\
+nHHTHHTHTTH\\nHHTHHTTHHT\\nHHTHHTTHTH\\nHHTHHTTTHH\\nHHTHTHHHTT\\nHHTHTHHTHT\\\
+nHHTHTHHTTH\\nHHTHTHTHHT\\nHHTHTHTHTH\\nHHTHTHTTHH\\nHHTHTTHHHT\\nHHTHTTHHTH\\\
+nHHTHTTHTHH\\nHHTHTTTHHH\\nHHTTHHHHTT\\nHHTTHHHTHT\\nHHTTHHHTTH\\nHHTTHHTHHT\\\
+nHHTTHHTHTH\\nHHTTHHTTHH\\nHHTTHTHHHT\\nHHTTHTHHTH\\nHHTTHTHTHH\\nHHTTHTTHHH\\\
+nHHTTTHHHHT\\nHHTTTHHHTH\\nHHTTTHHTHH\\nHHTTTHTHHH\\nHHTTTTHHHH\\nHTHHHHHTTT\\\
+nHTHHHHTHTT\\nHTHHHHTTHT\\nHTHHHHTTTH\\nHTHHHTHHTT\\nHTHHHTHTHT\\nHTHHHTHTTH\\\
+nHTHHHTTHHT\\nHTHHHTTHTH\\nHTHHHTTTHH\\nHTHHTHHHTT\\nHTHHTHHTHT\\nHTHHTHHTTH\\\
+nHTHHTHTHHT\\nHTHHTHTHTH\\nHTHHTHTTHH\\nHTHHTTHHHT\\nHTHHTTHHTH\\nHTHHTTHTHH\\\
+nHTHHTTTHHH\\nHTHTHHHHTT\\nHTHTHHHTHT\\nHTHTHHHTTH\\nHTHTHHTHHT\\nHTHTHHTHTH\\\
+nHTHTHHTTHH\\nHTHTHTHHHT\\nHTHTHTHHTH\\nHTHTHTHTHH\\nHTHTHTTHHH\\nHTHTTHHHHT\\\
+nHTHTTHHHTH\\nHTHTTHHTHH\\nHTHTTHTHHH\\nHTHTTTHHHH\\nHTTHHHHHTT\\nHTTHHHHTHT\\\
+nHTTHHHHTTH\\nHTTHHHTHHT\\nHTTHHHTHTH\\nHTTHHHTTHH\\nHTTHHTHHHT\\nHTTHHTHHTH\\\
+nHTTHHTHTHH\\nHTTHHTTHHH\\nHTTHTHHHHT\\nHTTHTHHHTH\\nHTTHTHHTHH\\nHTTHTHTHHH\\\
+nHTTHTTHHHH\\nHTTTHHHHHT\\nHTTTHHHHTH\\nHTTTHHHTHH\\nHTTTHHTHHH\\nHTTTHTHHHH\\\
+nHTTTTHHHHH\\nTHHHHHHTTT\\nTHHHHHTHTT\\nTHHHHHTTHT\\nTHHHHHTTTH\\nTHHHHTHHTT\\\
+nTHHHHTHTHT\\nTHHHHTHTTH\\nTHHHHTTHHT\\nTHHHHTTHTH\\nTHHHHTTTHH\\nTHHHTHHHTT\\\
+nTHHHTHHTHT\\nTHHHTHHTTH\\nTHHHTHTHHT\\nTHHHTHTHTH\\nTHHHTHTTHH\\nTHHHTTHHHT\\\
+nTHHHTTHHTH\\nTHHHTTHTHH\\nTHHHTTTHHH\\nTHHTHHHHTT\\nTHHTHHHTHT\\nTHHTHHHTTH\\\
+nTHHTHHTHHT\\nTHHTHHTHTH\\nTHHTHHTTHH\\nTHHTHTHHHT\\nTHHTHTHHTH\\nTHHTHTHTHH\\\
+nTHHTHTTHHH\\nTHHTTHHHHT\\nTHHTTHHHTH\\nTHHTTHHTHH\\nTHHTTHTHHH\\nTHHTTTHHHH\\\
+nTHTHHHHHTT\\nTHTHHHHTHT\\nTHTHHHHTTH\\nTHTHHHTHHT\\nTHTHHHTHTH\\nTHTHHHTTHH\\\
+nTHTHHTHHHT\\nTHTHHTHHTH\\nTHTHHTHTHH\\nTHTHHTTHHH\\nTHTHTHHHHT\\nTHTHTHHHTH\\\
+nTHTHTHHTHH\\nTHTHTHTHHH\\nTHTHTTHHHH\\nTHTTHHHHHT\\nTHTTHHHHTH\\nTHTTHHHTHH\\\
+nTHTTHHTHHH\\nTHTTHTHHHH\\nTHTTTHHHHH\\nTTHHHHHHTT\\nTTHHHHHTHT\\nTTHHHHHTTH\\\
+nTTHHHHTHHT\\nTTHHHHTHTH\\nTTHHHHTTHH\\nTTHHHTHHHT\\nTTHHHTHHTH\\nTTHHHTHTHH\\\
+nTTHHHTTHHH\\nTTHHTHHHHT\\nTTHHTHHHTH\\nTTHHTHHTHH\\nTTHHTHTHHH\\nTTHHTTHHHH\\\
+nTTHTHHHHHT\\nTTHTHHHHTH\\nTTHTHHHTHH\\nTTHTHHTHHH\\nTTHTHTHHHH\\nTTHTTHHHHH\\\
+nTTTHHHHHHT\\nTTTHHHHHTH\\nTTTHHHHTHH\\nTTTHHHTHHH\\nTTTHHTHHHH\\nTTTHTHHHHH\\\
+nTTTTHHHHHH\"\>", \
+"\<\"HHHHHTTTTT\\nHHHHTHTTTT\\nHHHHTTHTTT\\nHHHHTTTHTT\\nHHHHTTTTHT\\\
+nHHHHTTTTTH\\nHHHTHHTTTT\\nHHHTHTHTTT\\nHHHTHTTHTT\\nHHHTHTTTHT\\nHHHTHTTTTH\\\
+nHHHTTHHTTT\\nHHHTTHTHTT\\nHHHTTHTTHT\\nHHHTTHTTTH\\nHHHTTTHHTT\\nHHHTTTHTHT\\\
+nHHHTTTHTTH\\nHHHTTTTHHT\\nHHHTTTTHTH\\nHHHTTTTTHH\\nHHTHHHTTTT\\nHHTHHTHTTT\\\
+nHHTHHTTHTT\\nHHTHHTTTHT\\nHHTHHTTTTH\\nHHTHTHHTTT\\nHHTHTHTHTT\\nHHTHTHTTHT\\\
+nHHTHTHTTTH\\nHHTHTTHHTT\\nHHTHTTHTHT\\nHHTHTTHTTH\\nHHTHTTTHHT\\nHHTHTTTHTH\\\
+nHHTHTTTTHH\\nHHTTHHHTTT\\nHHTTHHTHTT\\nHHTTHHTTHT\\nHHTTHHTTTH\\nHHTTHTHHTT\\\
+nHHTTHTHTHT\\nHHTTHTHTTH\\nHHTTHTTHHT\\nHHTTHTTHTH\\nHHTTHTTTHH\\nHHTTTHHHTT\\\
+nHHTTTHHTHT\\nHHTTTHHTTH\\nHHTTTHTHHT\\nHHTTTHTHTH\\nHHTTTHTTHH\\nHHTTTTHHHT\\\
+nHHTTTTHHTH\\nHHTTTTHTHH\\nHHTTTTTHHH\\nHTHHHHTTTT\\nHTHHHTHTTT\\nHTHHHTTHTT\\\
+nHTHHHTTTHT\\nHTHHHTTTTH\\nHTHHTHHTTT\\nHTHHTHTHTT\\nHTHHTHTTHT\\nHTHHTHTTTH\\\
+nHTHHTTHHTT\\nHTHHTTHTHT\\nHTHHTTHTTH\\nHTHHTTTHHT\\nHTHHTTTHTH\\nHTHHTTTTHH\\\
+nHTHTHHHTTT\\nHTHTHHTHTT\\nHTHTHHTTHT\\nHTHTHHTTTH\\nHTHTHTHHTT\\nHTHTHTHTHT\\\
+nHTHTHTHTTH\\nHTHTHTTHHT\\nHTHTHTTHTH\\nHTHTHTTTHH\\nHTHTTHHHTT\\nHTHTTHHTHT\\\
+nHTHTTHHTTH\\nHTHTTHTHHT\\nHTHTTHTHTH\\nHTHTTHTTHH\\nHTHTTTHHHT\\nHTHTTTHHTH\\\
+nHTHTTTHTHH\\nHTHTTTTHHH\\nHTTHHHHTTT\\nHTTHHHTHTT\\nHTTHHHTTHT\\nHTTHHHTTTH\\\
+nHTTHHTHHTT\\nHTTHHTHTHT\\nHTTHHTHTTH\\nHTTHHTTHHT\\nHTTHHTTHTH\\nHTTHHTTTHH\\\
+nHTTHTHHHTT\\nHTTHTHHTHT\\nHTTHTHHTTH\\nHTTHTHTHHT\\nHTTHTHTHTH\\nHTTHTHTTHH\\\
+nHTTHTTHHHT\\nHTTHTTHHTH\\nHTTHTTHTHH\\nHTTHTTTHHH\\nHTTTHHHHTT\\nHTTTHHHTHT\\\
+nHTTTHHHTTH\\nHTTTHHTHHT\\nHTTTHHTHTH\\nHTTTHHTTHH\\nHTTTHTHHHT\\nHTTTHTHHTH\\\
+nHTTTHTHTHH\\nHTTTHTTHHH\\nHTTTTHHHHT\\nHTTTTHHHTH\\nHTTTTHHTHH\\nHTTTTHTHHH\\\
+nHTTTTTHHHH\\nTHHHHHTTTT\\nTHHHHTHTTT\\nTHHHHTTHTT\\nTHHHHTTTHT\\nTHHHHTTTTH\\\
+nTHHHTHHTTT\\nTHHHTHTHTT\\nTHHHTHTTHT\\nTHHHTHTTTH\\nTHHHTTHHTT\\nTHHHTTHTHT\\\
+nTHHHTTHTTH\\nTHHHTTTHHT\\nTHHHTTTHTH\\nTHHHTTTTHH\\nTHHTHHHTTT\\nTHHTHHTHTT\\\
+nTHHTHHTTHT\\nTHHTHHTTTH\\nTHHTHTHHTT\\nTHHTHTHTHT\\nTHHTHTHTTH\\nTHHTHTTHHT\\\
+nTHHTHTTHTH\\nTHHTHTTTHH\\nTHHTTHHHTT\\nTHHTTHHTHT\\nTHHTTHHTTH\\nTHHTTHTHHT\\\
+nTHHTTHTHTH\\nTHHTTHTTHH\\nTHHTTTHHHT\\nTHHTTTHHTH\\nTHHTTTHTHH\\nTHHTTTTHHH\\\
+nTHTHHHHTTT\\nTHTHHHTHTT\\nTHTHHHTTHT\\nTHTHHHTTTH\\nTHTHHTHHTT\\nTHTHHTHTHT\\\
+nTHTHHTHTTH\\nTHTHHTTHHT\\nTHTHHTTHTH\\nTHTHHTTTHH\\nTHTHTHHHTT\\nTHTHTHHTHT\\\
+nTHTHTHHTTH\\nTHTHTHTHHT\\nTHTHTHTHTH\\nTHTHTHTTHH\\nTHTHTTHHHT\\nTHTHTTHHTH\\\
+nTHTHTTHTHH\\nTHTHTTTHHH\\nTHTTHHHHTT\\nTHTTHHHTHT\\nTHTTHHHTTH\\nTHTTHHTHHT\\\
+nTHTTHHTHTH\\nTHTTHHTTHH\\nTHTTHTHHHT\\nTHTTHTHHTH\\nTHTTHTHTHH\\nTHTTHTTHHH\\\
+nTHTTTHHHHT\\nTHTTTHHHTH\\nTHTTTHHTHH\\nTHTTTHTHHH\\nTHTTTTHHHH\\nTTHHHHHTTT\\\
+nTTHHHHTHTT\\nTTHHHHTTHT\\nTTHHHHTTTH\\nTTHHHTHHTT\\nTTHHHTHTHT\\nTTHHHTHTTH\\\
+nTTHHHTTHHT\\nTTHHHTTHTH\\nTTHHHTTTHH\\nTTHHTHHHTT\\nTTHHTHHTHT\\nTTHHTHHTTH\\\
+nTTHHTHTHHT\\nTTHHTHTHTH\\nTTHHTHTTHH\\nTTHHTTHHHT\\nTTHHTTHHTH\\nTTHHTTHTHH\\\
+nTTHHTTTHHH\\nTTHTHHHHTT\\nTTHTHHHTHT\\nTTHTHHHTTH\\nTTHTHHTHHT\\nTTHTHHTHTH\\\
+nTTHTHHTTHH\\nTTHTHTHHHT\\nTTHTHTHHTH\\nTTHTHTHTHH\\nTTHTHTTHHH\\nTTHTTHHHHT\\\
+nTTHTTHHHTH\\nTTHTTHHTHH\\nTTHTTHTHHH\\nTTHTTTHHHH\\nTTTHHHHHTT\\nTTTHHHHTHT\\\
+nTTTHHHHTTH\\nTTTHHHTHHT\\nTTTHHHTHTH\\nTTTHHHTTHH\\nTTTHHTHHHT\\nTTTHHTHHTH\\\
+nTTTHHTHTHH\\nTTTHHTTHHH\\nTTTHTHHHHT\\nTTTHTHHHTH\\nTTTHTHHTHH\\nTTTHTHTHHH\\\
+nTTTHTTHHHH\\nTTTTHHHHHT\\nTTTTHHHHTH\\nTTTTHHHTHH\\nTTTTHHTHHH\\nTTTTHTHHHH\\\
+nTTTTTHHHHH\"\>", \
+"\<\"HHHHTTTTTT\\nHHHTHTTTTT\\nHHHTTHTTTT\\nHHHTTTHTTT\\nHHHTTTTHTT\\\
+nHHHTTTTTHT\\nHHHTTTTTTH\\nHHTHHTTTTT\\nHHTHTHTTTT\\nHHTHTTHTTT\\nHHTHTTTHTT\\\
+nHHTHTTTTHT\\nHHTHTTTTTH\\nHHTTHHTTTT\\nHHTTHTHTTT\\nHHTTHTTHTT\\nHHTTHTTTHT\\\
+nHHTTHTTTTH\\nHHTTTHHTTT\\nHHTTTHTHTT\\nHHTTTHTTHT\\nHHTTTHTTTH\\nHHTTTTHHTT\\\
+nHHTTTTHTHT\\nHHTTTTHTTH\\nHHTTTTTHHT\\nHHTTTTTHTH\\nHHTTTTTTHH\\nHTHHHTTTTT\\\
+nHTHHTHTTTT\\nHTHHTTHTTT\\nHTHHTTTHTT\\nHTHHTTTTHT\\nHTHHTTTTTH\\nHTHTHHTTTT\\\
+nHTHTHTHTTT\\nHTHTHTTHTT\\nHTHTHTTTHT\\nHTHTHTTTTH\\nHTHTTHHTTT\\nHTHTTHTHTT\\\
+nHTHTTHTTHT\\nHTHTTHTTTH\\nHTHTTTHHTT\\nHTHTTTHTHT\\nHTHTTTHTTH\\nHTHTTTTHHT\\\
+nHTHTTTTHTH\\nHTHTTTTTHH\\nHTTHHHTTTT\\nHTTHHTHTTT\\nHTTHHTTHTT\\nHTTHHTTTHT\\\
+nHTTHHTTTTH\\nHTTHTHHTTT\\nHTTHTHTHTT\\nHTTHTHTTHT\\nHTTHTHTTTH\\nHTTHTTHHTT\\\
+nHTTHTTHTHT\\nHTTHTTHTTH\\nHTTHTTTHHT\\nHTTHTTTHTH\\nHTTHTTTTHH\\nHTTTHHHTTT\\\
+nHTTTHHTHTT\\nHTTTHHTTHT\\nHTTTHHTTTH\\nHTTTHTHHTT\\nHTTTHTHTHT\\nHTTTHTHTTH\\\
+nHTTTHTTHHT\\nHTTTHTTHTH\\nHTTTHTTTHH\\nHTTTTHHHTT\\nHTTTTHHTHT\\nHTTTTHHTTH\\\
+nHTTTTHTHHT\\nHTTTTHTHTH\\nHTTTTHTTHH\\nHTTTTTHHHT\\nHTTTTTHHTH\\nHTTTTTHTHH\\\
+nHTTTTTTHHH\\nTHHHHTTTTT\\nTHHHTHTTTT\\nTHHHTTHTTT\\nTHHHTTTHTT\\nTHHHTTTTHT\\\
+nTHHHTTTTTH\\nTHHTHHTTTT\\nTHHTHTHTTT\\nTHHTHTTHTT\\nTHHTHTTTHT\\nTHHTHTTTTH\\\
+nTHHTTHHTTT\\nTHHTTHTHTT\\nTHHTTHTTHT\\nTHHTTHTTTH\\nTHHTTTHHTT\\nTHHTTTHTHT\\\
+nTHHTTTHTTH\\nTHHTTTTHHT\\nTHHTTTTHTH\\nTHHTTTTTHH\\nTHTHHHTTTT\\nTHTHHTHTTT\\\
+nTHTHHTTHTT\\nTHTHHTTTHT\\nTHTHHTTTTH\\nTHTHTHHTTT\\nTHTHTHTHTT\\nTHTHTHTTHT\\\
+nTHTHTHTTTH\\nTHTHTTHHTT\\nTHTHTTHTHT\\nTHTHTTHTTH\\nTHTHTTTHHT\\nTHTHTTTHTH\\\
+nTHTHTTTTHH\\nTHTTHHHTTT\\nTHTTHHTHTT\\nTHTTHHTTHT\\nTHTTHHTTTH\\nTHTTHTHHTT\\\
+nTHTTHTHTHT\\nTHTTHTHTTH\\nTHTTHTTHHT\\nTHTTHTTHTH\\nTHTTHTTTHH\\nTHTTTHHHTT\\\
+nTHTTTHHTHT\\nTHTTTHHTTH\\nTHTTTHTHHT\\nTHTTTHTHTH\\nTHTTTHTTHH\\nTHTTTTHHHT\\\
+nTHTTTTHHTH\\nTHTTTTHTHH\\nTHTTTTTHHH\\nTTHHHHTTTT\\nTTHHHTHTTT\\nTTHHHTTHTT\\\
+nTTHHHTTTHT\\nTTHHHTTTTH\\nTTHHTHHTTT\\nTTHHTHTHTT\\nTTHHTHTTHT\\nTTHHTHTTTH\\\
+nTTHHTTHHTT\\nTTHHTTHTHT\\nTTHHTTHTTH\\nTTHHTTTHHT\\nTTHHTTTHTH\\nTTHHTTTTHH\\\
+nTTHTHHHTTT\\nTTHTHHTHTT\\nTTHTHHTTHT\\nTTHTHHTTTH\\nTTHTHTHHTT\\nTTHTHTHTHT\\\
+nTTHTHTHTTH\\nTTHTHTTHHT\\nTTHTHTTHTH\\nTTHTHTTTHH\\nTTHTTHHHTT\\nTTHTTHHTHT\\\
+nTTHTTHHTTH\\nTTHTTHTHHT\\nTTHTTHTHTH\\nTTHTTHTTHH\\nTTHTTTHHHT\\nTTHTTTHHTH\\\
+nTTHTTTHTHH\\nTTHTTTTHHH\\nTTTHHHHTTT\\nTTTHHHTHTT\\nTTTHHHTTHT\\nTTTHHHTTTH\\\
+nTTTHHTHHTT\\nTTTHHTHTHT\\nTTTHHTHTTH\\nTTTHHTTHHT\\nTTTHHTTHTH\\nTTTHHTTTHH\\\
+nTTTHTHHHTT\\nTTTHTHHTHT\\nTTTHTHHTTH\\nTTTHTHTHHT\\nTTTHTHTHTH\\nTTTHTHTTHH\\\
+nTTTHTTHHHT\\nTTTHTTHHTH\\nTTTHTTHTHH\\nTTTHTTTHHH\\nTTTTHHHHTT\\nTTTTHHHTHT\\\
+nTTTTHHHTTH\\nTTTTHHTHHT\\nTTTTHHTHTH\\nTTTTHHTTHH\\nTTTTHTHHHT\\nTTTTHTHHTH\\\
+nTTTTHTHTHH\\nTTTTHTTHHH\\nTTTTTHHHHT\\nTTTTTHHHTH\\nTTTTTHHTHH\\nTTTTTHTHHH\\\
+nTTTTTTHHHH\"\>", \
+"\<\"HHHTTTTTTT\\nHHTHTTTTTT\\nHHTTHTTTTT\\nHHTTTHTTTT\\nHHTTTTHTTT\\\
+nHHTTTTTHTT\\nHHTTTTTTHT\\nHHTTTTTTTH\\nHTHHTTTTTT\\nHTHTHTTTTT\\nHTHTTHTTTT\\\
+nHTHTTTHTTT\\nHTHTTTTHTT\\nHTHTTTTTHT\\nHTHTTTTTTH\\nHTTHHTTTTT\\nHTTHTHTTTT\\\
+nHTTHTTHTTT\\nHTTHTTTHTT\\nHTTHTTTTHT\\nHTTHTTTTTH\\nHTTTHHTTTT\\nHTTTHTHTTT\\\
+nHTTTHTTHTT\\nHTTTHTTTHT\\nHTTTHTTTTH\\nHTTTTHHTTT\\nHTTTTHTHTT\\nHTTTTHTTHT\\\
+nHTTTTHTTTH\\nHTTTTTHHTT\\nHTTTTTHTHT\\nHTTTTTHTTH\\nHTTTTTTHHT\\nHTTTTTTHTH\\\
+nHTTTTTTTHH\\nTHHHTTTTTT\\nTHHTHTTTTT\\nTHHTTHTTTT\\nTHHTTTHTTT\\nTHHTTTTHTT\\\
+nTHHTTTTTHT\\nTHHTTTTTTH\\nTHTHHTTTTT\\nTHTHTHTTTT\\nTHTHTTHTTT\\nTHTHTTTHTT\\\
+nTHTHTTTTHT\\nTHTHTTTTTH\\nTHTTHHTTTT\\nTHTTHTHTTT\\nTHTTHTTHTT\\nTHTTHTTTHT\\\
+nTHTTHTTTTH\\nTHTTTHHTTT\\nTHTTTHTHTT\\nTHTTTHTTHT\\nTHTTTHTTTH\\nTHTTTTHHTT\\\
+nTHTTTTHTHT\\nTHTTTTHTTH\\nTHTTTTTHHT\\nTHTTTTTHTH\\nTHTTTTTTHH\\nTTHHHTTTTT\\\
+nTTHHTHTTTT\\nTTHHTTHTTT\\nTTHHTTTHTT\\nTTHHTTTTHT\\nTTHHTTTTTH\\nTTHTHHTTTT\\\
+nTTHTHTHTTT\\nTTHTHTTHTT\\nTTHTHTTTHT\\nTTHTHTTTTH\\nTTHTTHHTTT\\nTTHTTHTHTT\\\
+nTTHTTHTTHT\\nTTHTTHTTTH\\nTTHTTTHHTT\\nTTHTTTHTHT\\nTTHTTTHTTH\\nTTHTTTTHHT\\\
+nTTHTTTTHTH\\nTTHTTTTTHH\\nTTTHHHTTTT\\nTTTHHTHTTT\\nTTTHHTTHTT\\nTTTHHTTTHT\\\
+nTTTHHTTTTH\\nTTTHTHHTTT\\nTTTHTHTHTT\\nTTTHTHTTHT\\nTTTHTHTTTH\\nTTTHTTHHTT\\\
+nTTTHTTHTHT\\nTTTHTTHTTH\\nTTTHTTTHHT\\nTTTHTTTHTH\\nTTTHTTTTHH\\nTTTTHHHTTT\\\
+nTTTTHHTHTT\\nTTTTHHTTHT\\nTTTTHHTTTH\\nTTTTHTHHTT\\nTTTTHTHTHT\\nTTTTHTHTTH\\\
+nTTTTHTTHHT\\nTTTTHTTHTH\\nTTTTHTTTHH\\nTTTTTHHHTT\\nTTTTTHHTHT\\nTTTTTHHTTH\\\
+nTTTTTHTHHT\\nTTTTTHTHTH\\nTTTTTHTTHH\\nTTTTTTHHHT\\nTTTTTTHHTH\\nTTTTTTHTHH\\\
+nTTTTTTTHHH\"\>", \
+"\<\"HHTTTTTTTT\\nHTHTTTTTTT\\nHTTHTTTTTT\\nHTTTHTTTTT\\nHTTTTHTTTT\\\
+nHTTTTTHTTT\\nHTTTTTTHTT\\nHTTTTTTTHT\\nHTTTTTTTTH\\nTHHTTTTTTT\\nTHTHTTTTTT\\\
+nTHTTHTTTTT\\nTHTTTHTTTT\\nTHTTTTHTTT\\nTHTTTTTHTT\\nTHTTTTTTHT\\nTHTTTTTTTH\\\
+nTTHHTTTTTT\\nTTHTHTTTTT\\nTTHTTHTTTT\\nTTHTTTHTTT\\nTTHTTTTHTT\\nTTHTTTTTHT\\\
+nTTHTTTTTTH\\nTTTHHTTTTT\\nTTTHTHTTTT\\nTTTHTTHTTT\\nTTTHTTTHTT\\nTTTHTTTTHT\\\
+nTTTHTTTTTH\\nTTTTHHTTTT\\nTTTTHTHTTT\\nTTTTHTTHTT\\nTTTTHTTTHT\\nTTTTHTTTTH\\\
+nTTTTTHHTTT\\nTTTTTHTHTT\\nTTTTTHTTHT\\nTTTTTHTTTH\\nTTTTTTHHTT\\nTTTTTTHTHT\\\
+nTTTTTTHTTH\\nTTTTTTTHHT\\nTTTTTTTHTH\\nTTTTTTTTHH\"\>", \
+"\<\"HTTTTTTTTT\\nTHTTTTTTTT\\nTTHTTTTTTT\\nTTTHTTTTTT\\nTTTTHTTTTT\\\
+nTTTTTHTTTT\\nTTTTTTHTTT\\nTTTTTTTHTT\\nTTTTTTTTHT\\nTTTTTTTTTH\"\>", \
+"\<\"TTTTTTTTTT\"\>"},
+    {"\<\"Multiplicity\"\>", "1", "10", "45", "120", "210", "252", "210", 
+     "120", "45", "10", "1"},
+    {"\<\"Probability\"\>", 
+     FractionBox["1", "1024"], 
+     FractionBox["5", "512"], 
+     FractionBox["45", "1024"], 
+     FractionBox["15", "128"], 
+     FractionBox["105", "512"], 
+     FractionBox["63", "256"], 
+     FractionBox["105", "512"], 
+     FractionBox["15", "128"], 
+     FractionBox["45", "1024"], 
+     FractionBox["5", "512"], 
+     FractionBox["1", "1024"]},
+    {"\<\"Entropy\"\>", "0", "2.302585092994045684`4.362215688699463", 
+     "3.8066624897703197574`4.580544372656708", 
+     "4.7874917427820459943`4.680108037928681", 
+     "5.3471075307174686805`4.728118917881463", 
+     "5.5294290875114233067`4.742680292797811", 
+     "5.3471075307174686805`4.728118917881463", 
+     "4.7874917427820459943`4.680108037928681", 
+     "3.8066624897703197574`4.580544372656708", 
+     "2.302585092994045684`4.362215688699463", "0"}
+   },
+   AutoDelete->False,
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.848746994327297*^9}},
+ CellLabel->
+  "Out[828]=",ExpressionUUID->"8ac84f20-75bd-421b-be03-37b853f54c57"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Is the 10 coin distribution more peaked than the 4 coin \
+distribution?\\n\\nYes, the 10 coin distribution is significantly more peaked \
+as 10 coins lends\\nto a greater number of microstates per macrostate.\"\>"], \
+"Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469943429203`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"18ffdd7f-a3ad-422d-921c-3d1298333565"],
+
+Cell[BoxData["\<\"(***********************************************************\
+***************)\\n      (*Part 2 -- Evolution of Macrostates for a \
+non-isolated \
+system*)\\n(******************************************************************\
+********)\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994358545*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"8a679792-495d-4fbf-8a7e-55a1809b743a"],
+
+Cell[BoxData["\<\"What macrostate will be reached in the process of flipping \
+N ordered\\ncoins randomly starting from the NH state?\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994358545*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"a2a1ec57-d73d-4b28-a6d7-dfd6a2ee86db"]
+}, Open  ]],
+
+Cell[BoxData[
+ TemplateBox[{GraphicsBox[{{}, {{{}, {
+        Hue[0.67, 0.6, 0.6], 
+        Directive[
+         PointSize[0.009166666666666668], 
+         RGBColor[0.368417, 0.506779, 0.709798], 
+         AbsoluteThickness[1.6]], 
+        PointBox[CompressedData["
+1:eJxdkklOAzEQRVusWLJgwYIFIIQQQoh5hpg5kBBCSBi2CNZcwUfrI3EEhrzX
+kqul1tdzucq/XJ5//xp8TlRV9fH7/+n4+279S75OLKBtdBLtolNjzbfwNNpB
+ZwLPprL+HHqBLhD3vMXAS/AdvIxab4X4FbyK6m8t+F9HrbeB3qObIb5FffvZ
+Rm/QneBvN9TbI66f/ZB/EPwest/4Eep9HIf8kxA/Jf8SboX9Ce2xT9bvGevU
+y7L+zku/GW7m61zhDGfr6+uu9Jmdj3O0vuz9e85NOLcd1snzHpv7dB/1mj49
+33P1Zd/60HdUfejTOp2w7jnmdUsfzqFZl/XfK/vIztH391Duz3Az/z7r9JNk
+/cj4r/ulr+qx7CfJ5svmh/3VoPSfZPMH4Xzj3u9TWT/J5svcXw038xnCxNOw
+9Jdlzw/7qxHK+0ijMp6Nc9+17Nyey/5S4Czjt5a9vxeYfhPcvBvjzLc27vt4
+LTnJvifZ/mXf0Rv72ukHnTKWrg==
+         "]]}, {
+        Hue[0.9060679774997897, 0.6, 0.6], 
+        Directive[
+         PointSize[0.009166666666666668], 
+         RGBColor[0.880722, 0.611041, 0.142051], 
+         AbsoluteThickness[1.6]], 
+        PointBox[CompressedData["
+1:eJxtk8suREEQhjtWlhYWFhaIiIiI+50pDOYcDI4Zl62w9gr9aOeR5hFc5v86
+qYpJJn++rq6uv6r7zL9/NZ8TKaWPn/+vjn+jzp/kG9OCtJZOSq+kU2PNPfG0
+9Fo6E3jW/Plz0nvpguKVeDHwkpjzlqW30hXF4VUp+WvB/7oU/xvSS+lmiG/p
+fPK3pfSzE/zthvP2FOe8/ZB/EPweaj/zP5LCxyH/JMRPlX8n7oT9Ju1qH4zf
+M63LT4bxf+79ZnG53wup7iOLc9fXZb6sZ+qjVVhnvtyD6pV7qf0+3gP3UubZ
+C/vwEetqfuUdMs/6/3NL/2gV1vHPO6UuPkMd/BQf+O8HH33vh++q+OI7w8eD
+r2sw/cDy14rLvTz6fgymH1j9tGF/arx/g8lvQn3izO3Jn28w+bDeRSsu9zAQ
+qx8beH8Zxn/Yn4ZSzd2GPp6Jq14L8+6ffX8WOMPkw7zzFzHzF3M/mbjm1RLn
+3b96Npj3AtM/zHf9pn2VfQONHJaD
+         "]]}, {}}}, {}, {}, {}, {}}, {
+    DisplayFunction -> Identity, PlotRangePadding -> {{
+        Scaled[0.02], 
+        Scaled[0.02]}, {
+        Scaled[0.05], 
+        Scaled[0.05]}}, AxesOrigin -> {0, 36.800000000000004`}, 
+     PlotRange -> {{0, 100.}, {38., 62.}}, PlotRangeClipping -> True, 
+     ImagePadding -> All, DisplayFunction -> Identity, AspectRatio -> 
+     NCache[GoldenRatio^(-1), 0.6180339887498948], Axes -> {True, True}, 
+     AxesLabel -> {
+       FormBox["\"Number of Coin Tosses\"", TraditionalForm], 
+       FormBox["\"Number of Face\"", TraditionalForm]}, 
+     AxesOrigin -> {0, 36.800000000000004`}, DisplayFunction :> Identity, 
+     Frame -> {{False, False}, {False, False}}, 
+     FrameLabel -> {{None, None}, {None, None}}, 
+     FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
+     GridLines -> {None, None}, GridLinesStyle -> Directive[
+       GrayLevel[0.5, 0.4]], ImageSize -> {750, 750}, 
+     Method -> {"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+           (Identity[#]& )[
+            Part[#, 1]], 
+           (Identity[#]& )[
+            Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+           (Identity[#]& )[
+            Part[#, 1]], 
+           (Identity[#]& )[
+            Part[#, 2]]}& )}}, PlotLabel -> 
+     FormBox["\"Number of Coin Faces Appearing from 100 Flips vs. Number of \
+Simulations (Coin Tosses)\"", TraditionalForm], 
+     PlotRange -> {{0, 100.}, {38., 62.}}, PlotRangeClipping -> True, 
+     PlotRangePadding -> {{
+        Scaled[0.02], 
+        Scaled[0.02]}, {
+        Scaled[0.05], 
+        Scaled[0.05]}}, Ticks -> {Automatic, Automatic}}],FormBox[
+    FormBox[
+     TemplateBox[{"\"Heads\"", "\"Tails\""}, "PointLegend", 
+      DisplayFunction -> (FormBox[
+        StyleBox[
+         StyleBox[
+          PaneBox[
+           TagBox[
+            GridBox[{{
+               TagBox[
+                GridBox[{{
+                   GraphicsBox[{{}, {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.33000000000000007`], 
+                    RGBColor[0.368417, 0.506779, 0.709798], 
+                    AbsoluteThickness[1.6]], {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.33000000000000007`], 
+                    RGBColor[0.368417, 0.506779, 0.709798], 
+                    AbsoluteThickness[1.6]], 
+                    PointBox[
+                    NCache[{
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}]}, {
+                    Scaled[{0.5, 0.5}]}]]}}}, AspectRatio -> Full, 
+                    ImageSize -> {10, 10}, PlotRangePadding -> None, 
+                    ImagePadding -> Automatic, 
+                    BaselinePosition -> (Scaled[0.1] -> Baseline)], #}, {
+                   GraphicsBox[{{}, {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.33000000000000007`], 
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    AbsoluteThickness[1.6]], {
+                    Directive[
+                    EdgeForm[
+                    Directive[
+                    Opacity[0.3], 
+                    GrayLevel[0]]], 
+                    PointSize[0.33000000000000007`], 
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    AbsoluteThickness[1.6]], 
+                    PointBox[
+                    NCache[{
+                    Scaled[{
+                    Rational[1, 2], 
+                    Rational[1, 2]}]}, {
+                    Scaled[{0.5, 0.5}]}]]}}}, AspectRatio -> Full, 
+                    ImageSize -> {10, 10}, PlotRangePadding -> None, 
+                    ImagePadding -> Automatic, 
+                    BaselinePosition -> (Scaled[0.1] -> Baseline)], #2}}, 
+                 GridBoxAlignment -> {
+                  "Columns" -> {Center, Left}, "Rows" -> {{Baseline}}}, 
+                 AutoDelete -> False, 
+                 GridBoxDividers -> {
+                  "Columns" -> {{False}}, "Rows" -> {{False}}}, 
+                 GridBoxItemSize -> {"Columns" -> {{All}}, "Rows" -> {{All}}},
+                  GridBoxSpacings -> {
+                  "Columns" -> {{0.5}}, "Rows" -> {{0.8}}}], "Grid"]}}, 
+             GridBoxAlignment -> {"Columns" -> {{Left}}, "Rows" -> {{Top}}}, 
+             AutoDelete -> False, 
+             GridBoxItemSize -> {
+              "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}, 
+             GridBoxSpacings -> {"Columns" -> {{1}}, "Rows" -> {{0}}}], 
+            "Grid"], Alignment -> Left, AppearanceElements -> None, 
+           ImageMargins -> {{5, 5}, {5, 5}}, ImageSizeAction -> 
+           "ResizeToFit"], LineIndent -> 0, StripOnInput -> False], {
+         FontFamily -> "Arial"}, Background -> Automatic, StripOnInput -> 
+         False], TraditionalForm]& ), 
+      InterpretationFunction :> (RowBox[{"PointLegend", "[", 
+         RowBox[{
+           RowBox[{"{", 
+             RowBox[{
+               RowBox[{"Directive", "[", 
+                 RowBox[{
+                   RowBox[{"PointSize", "[", "0.009166666666666668`", "]"}], 
+                   ",", 
+                   InterpretationBox[
+                    ButtonBox[
+                    TooltipBox[
+                    GraphicsBox[{{
+                    GrayLevel[0], 
+                    RectangleBox[{0, 0}]}, {
+                    GrayLevel[0], 
+                    RectangleBox[{1, -1}]}, {
+                    RGBColor[0.368417, 0.506779, 0.709798], 
+                    RectangleBox[{0, -1}, {2, 1}]}}, DefaultBaseStyle -> 
+                    "ColorSwatchGraphics", AspectRatio -> 1, Frame -> True, 
+                    FrameStyle -> 
+                    RGBColor[
+                    0.24561133333333335`, 0.3378526666666667, 
+                    0.4731986666666667], FrameTicks -> None, PlotRangePadding -> 
+                    None, ImageSize -> 
+                    Dynamic[{
+                    Automatic, 1.35 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], 
+                    StyleBox[
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.368417`", ",", "0.506779`", ",", "0.709798`"}],
+                     "]"}], NumberMarks -> False]], Appearance -> None, 
+                    BaseStyle -> {}, BaselinePosition -> Baseline, 
+                    DefaultBaseStyle -> {}, ButtonFunction :> 
+                    With[{Typeset`box$ = EvaluationBox[]}, 
+                    If[
+                    Not[
+                    AbsoluteCurrentValue["Deployed"]], 
+                    SelectionMove[Typeset`box$, All, Expression]; 
+                    FrontEnd`Private`$ColorSelectorInitialAlpha = 1; 
+                    FrontEnd`Private`$ColorSelectorInitialColor = 
+                    RGBColor[0.368417, 0.506779, 0.709798]; 
+                    FrontEnd`Private`$ColorSelectorUseMakeBoxes = True; 
+                    MathLink`CallFrontEnd[
+                    FrontEnd`AttachCell[Typeset`box$, 
+                    FrontEndResource["RGBColorValueSelector"], {
+                    0, {Left, Bottom}}, {Left, Top}, 
+                    "ClosingActions" -> {
+                    "SelectionDeparture", "ParentChanged", 
+                    "EvaluatorQuit"}]]]], BaseStyle -> Inherited, Evaluator -> 
+                    Automatic, Method -> "Preemptive"], 
+                    RGBColor[0.368417, 0.506779, 0.709798], Editable -> False,
+                     Selectable -> False], ",", 
+                   RowBox[{"AbsoluteThickness", "[", "1.6`", "]"}]}], "]"}], 
+               ",", 
+               RowBox[{"Directive", "[", 
+                 RowBox[{
+                   RowBox[{"PointSize", "[", "0.009166666666666668`", "]"}], 
+                   ",", 
+                   InterpretationBox[
+                    ButtonBox[
+                    TooltipBox[
+                    GraphicsBox[{{
+                    GrayLevel[0], 
+                    RectangleBox[{0, 0}]}, {
+                    GrayLevel[0], 
+                    RectangleBox[{1, -1}]}, {
+                    RGBColor[0.880722, 0.611041, 0.142051], 
+                    RectangleBox[{0, -1}, {2, 1}]}}, DefaultBaseStyle -> 
+                    "ColorSwatchGraphics", AspectRatio -> 1, Frame -> True, 
+                    FrameStyle -> 
+                    RGBColor[
+                    0.587148, 0.40736066666666665`, 0.09470066666666668], 
+                    FrameTicks -> None, PlotRangePadding -> None, ImageSize -> 
+                    Dynamic[{
+                    Automatic, 1.35 CurrentValue["FontCapHeight"]/
+                    AbsoluteCurrentValue[Magnification]}]], 
+                    StyleBox[
+                    RowBox[{"RGBColor", "[", 
+                    RowBox[{"0.880722`", ",", "0.611041`", ",", "0.142051`"}],
+                     "]"}], NumberMarks -> False]], Appearance -> None, 
+                    BaseStyle -> {}, BaselinePosition -> Baseline, 
+                    DefaultBaseStyle -> {}, ButtonFunction :> 
+                    With[{Typeset`box$ = EvaluationBox[]}, 
+                    If[
+                    Not[
+                    AbsoluteCurrentValue["Deployed"]], 
+                    SelectionMove[Typeset`box$, All, Expression]; 
+                    FrontEnd`Private`$ColorSelectorInitialAlpha = 1; 
+                    FrontEnd`Private`$ColorSelectorInitialColor = 
+                    RGBColor[0.880722, 0.611041, 0.142051]; 
+                    FrontEnd`Private`$ColorSelectorUseMakeBoxes = True; 
+                    MathLink`CallFrontEnd[
+                    FrontEnd`AttachCell[Typeset`box$, 
+                    FrontEndResource["RGBColorValueSelector"], {
+                    0, {Left, Bottom}}, {Left, Top}, 
+                    "ClosingActions" -> {
+                    "SelectionDeparture", "ParentChanged", 
+                    "EvaluatorQuit"}]]]], BaseStyle -> Inherited, Evaluator -> 
+                    Automatic, Method -> "Preemptive"], 
+                    RGBColor[0.880722, 0.611041, 0.142051], Editable -> False,
+                     Selectable -> False], ",", 
+                   RowBox[{"AbsoluteThickness", "[", "1.6`", "]"}]}], "]"}]}],
+              "}"}], ",", 
+           RowBox[{"{", 
+             RowBox[{#, ",", #2}], "}"}], ",", 
+           RowBox[{"LegendMarkers", "\[Rule]", 
+             RowBox[{"{", 
+               RowBox[{
+                 RowBox[{"{", 
+                   RowBox[{"False", ",", "Automatic"}], "}"}], ",", 
+                 RowBox[{"{", 
+                   RowBox[{"False", ",", "Automatic"}], "}"}]}], "}"}]}], ",", 
+           RowBox[{"Joined", "\[Rule]", 
+             RowBox[{"{", 
+               RowBox[{"False", ",", "False"}], "}"}]}], ",", 
+           RowBox[{"LabelStyle", "\[Rule]", 
+             RowBox[{"{", "}"}]}], ",", 
+           RowBox[{"LegendLayout", "\[Rule]", "\"Column\""}]}], "]"}]& ), 
+      Editable -> True], TraditionalForm], TraditionalForm]},
+  "Legended",
+  DisplayFunction->(GridBox[{{
+      TagBox[
+       ItemBox[
+        PaneBox[
+         TagBox[#, "SkipImageSizeLevel"], Alignment -> {Center, Baseline}, 
+         BaselinePosition -> Baseline], DefaultBaseStyle -> "Labeled"], 
+       "SkipImageSizeLevel"], 
+      ItemBox[#2, DefaultBaseStyle -> "LabeledLabel"]}}, 
+    GridBoxAlignment -> {"Columns" -> {{Center}}, "Rows" -> {{Center}}}, 
+    AutoDelete -> False, GridBoxItemSize -> Automatic, 
+    BaselinePosition -> {1, 1}]& ),
+  Editable->True,
+  InterpretationFunction->(RowBox[{"Legended", "[", 
+     RowBox[{#, ",", 
+       RowBox[{"Placed", "[", 
+         RowBox[{#2, ",", "After"}], "]"}]}], "]"}]& )]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.84874699447444*^9}},
+ CellLabel->
+  "Out[839]=",ExpressionUUID->"80e9b052-4f85-47f3-b6d0-0a3500cefa5f"],
+
+Cell[BoxData[
+ GraphicsBox[{{}, {{}, 
+    {RGBColor[0.368417, 0.506779, 0.709798], PointSize[0.009166666666666668], 
+     AbsoluteThickness[1.6], PointBox[CompressedData["
+1:eJxdlL1LQlEYxg+2BDU0OAg1WISEVJR92advfn979Xq9BgURBQ2SUNDQdIao
+wK0aWgKnNkGCaAm69Ee05VAQ5CQ0BA1RkSd4H+Eij+c9z/k973uP/Rvl3JZN
+CLH58/x+/31avoOnu5OdU43aP9Cus7vkqCndSTbj/rh8qHQPvdlaHa91pe1k
+dJW8jUulHaD7iPs7qflSeX58z7T1APgNgnbR9nmtaV0pPQQ8bvpaWzUbe0oP
+k909su++VnoU6scg3zh9VuuV23WlPbA+AfyTkG8K+KbBbwbyeGH/LPDOgd88
+8CzA/kVYX6Jk9cb1EVfaB/VERw+9ZxeetpYEvMucV4IWfs4r/dCfAO+3DABP
+kPPKIMwvBP4h4A9zLcOQP8L9ZAT6GYX9UTg/xnllDPoT534yDvkTwJ8A/iTk
+T0J/U8CfAv407E/Degb4MnC+xv1Jg3qN81ga5M9yP8oCT5bnt6Be5Hg9gZY5
+OD8H91fn/qTDfp3XWzrMJw/58/A+5IEf6oXB7w8ZMC+D+1lQLwo8H4GWBc5r
+gRYmnxeZfD7S5DyWCfejCP0HLYuQvwj/1yv/vN/vp6f7
+      "]]}, {}}, {}, {}, {}, {}},
+  
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->{True, True},
+  AxesLabel->{
+    FormBox["\"Number of Coin Tosses\"", TraditionalForm], 
+    FormBox["\"S = k ln(\[CapitalOmega])\"", TraditionalForm]},
+  AxesOrigin->{0, 63.76105294896679},
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  ImageSize->Large,
+  Method->{"CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        (Identity[#]& )[
+         Part[#, 1]], 
+        (Identity[#]& )[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        (Identity[#]& )[
+         Part[#, 1]], 
+        (Identity[#]& )[
+         Part[#, 2]]}& )}},
+  PlotLabel->FormBox[
+   "\"Entropy vs. Number of Simulations (Coin Tosses)\"", TraditionalForm],
+  PlotRange->{{0, 100.}, {63.90499526815968, 66.78384165201743}},
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.05], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.8487469945406284`*^9}},
+ CellLabel->
+  "Out[843]=",ExpressionUUID->"001d9d4c-a41b-4903-aa0f-f37daa64c409"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"What pattern can you find during the process (how does the \
+macrostate evolve)? \\nIs there a tendency toward equilibrium?\\nThe \
+macrostate generally oscillates around the \\nexpected value for the \
+macrostate which is 50.\\n\\nWhat happens in terms of entropy?\\nThe \
+entropy\\nalso seems to remain in a constrained region on the graph, which is \
+to be expected if multiplicity\\nis somewhat consistent.\\n\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469945562572`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"2fd09af5-cf12-4733-a69b-9dd075ee02f2"],
+
+Cell[BoxData["\<\"(***********************************************************\
+***************)\\n     (*Part 3 -- Dependence of Statistical Multiplicity on \
+the volume*)\\n(**************************************************************\
+************)\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469945718813`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"cd27c41b-92eb-41c3-950c-c047031a48f4"],
+
+Cell[BoxData["\<\"Compute L/R Multiplicity for N=4\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469945718813`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"cfb12faf-8c9d-4f27-89c9-4aff249231f0"]
+}, Open  ]],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Macrostate\"\>", "4", "3", "2", "1", "0"},
+    {"\<\"Microstates\"\>", "\<\"4/0\"\>", "\<\"3/1\"\>", "\<\"2/2\"\>", \
+"\<\"1/3\"\>", "\<\"0/4\"\>"},
+    {"\<\"Multiplicity\"\>", "1", "4", "6", "4", "1"},
+    {"\<\"Probability\"\>", 
+     FractionBox["1", "16"], 
+     FractionBox["1", "4"], 
+     FractionBox["3", "8"], 
+     FractionBox["1", "4"], 
+     FractionBox["1", "16"]},
+    {"\<\"Entropy\"\>", "0", "1.3862943611198906189`4.141855456709119", 
+     "1.7917594692280550008`4.253279708340476", 
+     "1.3862943611198906189`4.141855456709119", "0"}
+   },
+   AutoDelete->False,
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.8487469945718813`*^9}},
+ CellLabel->
+  "Out[848]=",ExpressionUUID->"345712cd-fbe2-49bc-95a3-cdb20b886935"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Which macrostate is the largest multiplicity?\\nn=2 \
+macrostate has the largest multiplicity of 6.\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994587505*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"90272364-b3d6-405f-8d0e-f82e907e71f6"],
+
+Cell[BoxData["\<\"\\nDo your findings support that particles occupy the \
+entire volume after removing a restraint?\\nYes, my findings support the \
+statistical nature of the observation that\\nparticles spread out in the \
+available volume.\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994587505*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"cde885b9-2dc9-4c6d-bdb2-b8c1407682c4"],
+
+Cell[BoxData["\<\"(***********************************************************\
+***************)\\n                        (*Part 4 -- Gas \
+diffusion*)\\n(***************************************************************\
+***********)\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994587505*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"8a8b5d63-8af9-46d8-abc6-1b556f4987b6"]
+}, Open  ]],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Macrostate\"\>", "\<\"Multiplicity\"\>"},
+    {"\<\"4A, 0B/0A, 4B\"\>", "1"},
+    {"\<\"3A, 1B/1A, 3B\"\>", "16"},
+    {"\<\"2A, 2B/2A, 2B\"\>", "36"},
+    {"\<\"1A, 3B/3A, 1B\"\>", "16"},
+    {"\<\"0A, 4B/4A, 0B\"\>", "1"}
+   },
+   AutoDelete->False,
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.848746994603134*^9}},
+ CellLabel->
+  "Out[860]=",ExpressionUUID->"aafef624-c3e2-465c-b03c-9fe819f64ad0"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"The equilibrium composition is 2A, 2B/2A, 2B based on the \
+table above.\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994603134*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"2f77c944-3117-43b3-abe1-aa0accd78591"],
+
+Cell[BoxData["\<\"(***********************************************************\
+***************)\\n                          (*Part 5 -- Heat \
+Flow*)\\n(********************************************************************\
+******)\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994612142*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"67dd520e-f050-4da0-ab85-c4c328c48543"],
+
+Cell[BoxData["\<\"What are the total energies and multiplicities of the \
+isolated systems B {0111} and A {0011}?\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994612142*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"c19d52c6-ea89-4614-bab9-7efc5aba7f49"],
+
+Cell[BoxData["\<\"The blue and gray columns represent system B and A, \
+respectively. The total energy\\nof system B (n=3) is 3 and the multiplicity \
+is 4. The total energy of system\\nA (n=2) is 2 and the multiplicity is 6.\\n\
+\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.848746994612142*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"453d4f17-218b-4b8b-8851-e2a8219ce14f"]
+}, Open  ]],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Macrostate\"\>", "4", "3", "2", "1", "0"},
+    {"\<\"Microstates\"\>", "\<\"1111\"\>", \
+"\<\"1110\\n1101\\n1011\\n0111\"\>", \
+"\<\"1100\\n1010\\n1001\\n0110\\n0101\\n0011\"\>", \
+"\<\"1000\\n0100\\n0010\\n0001\"\>", "\<\"0000\"\>"},
+    {"\<\"Multiplicity\"\>", "1", "4", "6", "4", "1"},
+    {"\<\"Probability\"\>", 
+     FractionBox["1", "16"], 
+     FractionBox["1", "4"], 
+     FractionBox["3", "8"], 
+     FractionBox["1", "4"], 
+     FractionBox["1", "16"]},
+    {"\<\"Entropy\"\>", "0", "1.3862943611198906189`4.141855456709119", 
+     "1.7917594692280550008`4.253279708340476", 
+     "1.3862943611198906189`4.141855456709119", "0"}
+   },
+   AutoDelete->False,
+   GridBoxBackground->{"Columns" -> {None, None, 
+       RGBColor[0.87, 0.94, 1], 
+       GrayLevel[0.85], None, None}},
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.848746994612142*^9}},
+ CellLabel->
+  "Out[866]=",ExpressionUUID->"23e2e417-16e7-430b-b28c-62ea653af6de"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Calculate the multiplicity of the overall system with total \
+energy of 5 units?\\nWhat is the expected direction of heat flow?\"\>"], \
+"Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469946277723`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"f4c503f1-f065-49bb-b33d-9b366a410ca2"],
+
+Cell[BoxData["\<\"The brown column represents the combined system with total \
+energy of 5. \\nThe multiplicity of this system is 56 from the table. The \
+direction of heat flow is\\nsuch that the total energy of the system is 4. \
+This means heat from either A or B  must be \\nlost to the surroundings such \
+that the overall system only has 4 units of energy.\"\>"], "Print",
+ CellChangeTimes->{{3.848746993710091*^9, 3.8487469946277723`*^9}},
+ CellLabel->
+  "During evaluation of \
+In[820]:=",ExpressionUUID->"a1537f6e-4384-4348-a268-1e657d12e485"]
+}, Open  ]],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Macrostate\"\>", "8", "7", "6", "5", "4", "3", "2", "1", "0"},
+    {"\<\"Microstates\"\>", "\<\"11111111\"\>", \
+"\<\"11111110\\n11111101\\n11111011\\n11110111\\n11101111\\n11011111\\\
+n10111111\\n01111111\"\>", \
+"\<\"11111100\\n11111010\\n11111001\\n11110110\\n11110101\\n11110011\\\
+n11101110\\n11101101\\n11101011\\n11100111\\n11011110\\n11011101\\n11011011\\\
+n11010111\\n11001111\\n10111110\\n10111101\\n10111011\\n10110111\\n10101111\\\
+n10011111\\n01111110\\n01111101\\n01111011\\n01110111\\n01101111\\n01011111\\\
+n00111111\"\>", \
+"\<\"11111000\\n11110100\\n11110010\\n11110001\\n11101100\\n11101010\\\
+n11101001\\n11100110\\n11100101\\n11100011\\n11011100\\n11011010\\n11011001\\\
+n11010110\\n11010101\\n11010011\\n11001110\\n11001101\\n11001011\\n11000111\\\
+n10111100\\n10111010\\n10111001\\n10110110\\n10110101\\n10110011\\n10101110\\\
+n10101101\\n10101011\\n10100111\\n10011110\\n10011101\\n10011011\\n10010111\\\
+n10001111\\n01111100\\n01111010\\n01111001\\n01110110\\n01110101\\n01110011\\\
+n01101110\\n01101101\\n01101011\\n01100111\\n01011110\\n01011101\\n01011011\\\
+n01010111\\n01001111\\n00111110\\n00111101\\n00111011\\n00110111\\n00101111\\\
+n00011111\"\>", \
+"\<\"11110000\\n11101000\\n11100100\\n11100010\\n11100001\\n11011000\\\
+n11010100\\n11010010\\n11010001\\n11001100\\n11001010\\n11001001\\n11000110\\\
+n11000101\\n11000011\\n10111000\\n10110100\\n10110010\\n10110001\\n10101100\\\
+n10101010\\n10101001\\n10100110\\n10100101\\n10100011\\n10011100\\n10011010\\\
+n10011001\\n10010110\\n10010101\\n10010011\\n10001110\\n10001101\\n10001011\\\
+n10000111\\n01111000\\n01110100\\n01110010\\n01110001\\n01101100\\n01101010\\\
+n01101001\\n01100110\\n01100101\\n01100011\\n01011100\\n01011010\\n01011001\\\
+n01010110\\n01010101\\n01010011\\n01001110\\n01001101\\n01001011\\n01000111\\\
+n00111100\\n00111010\\n00111001\\n00110110\\n00110101\\n00110011\\n00101110\\\
+n00101101\\n00101011\\n00100111\\n00011110\\n00011101\\n00011011\\n00010111\\\
+n00001111\"\>", \
+"\<\"11100000\\n11010000\\n11001000\\n11000100\\n11000010\\n11000001\\\
+n10110000\\n10101000\\n10100100\\n10100010\\n10100001\\n10011000\\n10010100\\\
+n10010010\\n10010001\\n10001100\\n10001010\\n10001001\\n10000110\\n10000101\\\
+n10000011\\n01110000\\n01101000\\n01100100\\n01100010\\n01100001\\n01011000\\\
+n01010100\\n01010010\\n01010001\\n01001100\\n01001010\\n01001001\\n01000110\\\
+n01000101\\n01000011\\n00111000\\n00110100\\n00110010\\n00110001\\n00101100\\\
+n00101010\\n00101001\\n00100110\\n00100101\\n00100011\\n00011100\\n00011010\\\
+n00011001\\n00010110\\n00010101\\n00010011\\n00001110\\n00001101\\n00001011\\\
+n00000111\"\>", \
+"\<\"11000000\\n10100000\\n10010000\\n10001000\\n10000100\\n10000010\\\
+n10000001\\n01100000\\n01010000\\n01001000\\n01000100\\n01000010\\n01000001\\\
+n00110000\\n00101000\\n00100100\\n00100010\\n00100001\\n00011000\\n00010100\\\
+n00010010\\n00010001\\n00001100\\n00001010\\n00001001\\n00000110\\n00000101\\\
+n00000011\"\>", \
+"\<\"10000000\\n01000000\\n00100000\\n00010000\\n00001000\\n00000100\\\
+n00000010\\n00000001\"\>", "\<\"00000000\"\>"},
+    {"\<\"Multiplicity\"\>", "1", "8", "28", "56", "70", "56", "28", "8", "1"},
+    {"\<\"Probability\"\>", 
+     FractionBox["1", "256"], 
+     FractionBox["1", "32"], 
+     FractionBox["7", "64"], 
+     FractionBox["7", "32"], 
+     FractionBox["35", "128"], 
+     FractionBox["7", "32"], 
+     FractionBox["7", "64"], 
+     FractionBox["1", "32"], 
+     FractionBox["1", "256"]},
+    {"\<\"Entropy\"\>", "0", "2.0794415416798359282`4.317946715764801", 
+     "3.332204510175203924`4.522731647871301", 
+     "4.0253516907351492333`4.604803830212749", 
+     "4.2484952420493589891`4.62823513621675", 
+     "4.0253516907351492333`4.604803830212749", 
+     "3.332204510175203924`4.522731647871301", 
+     "2.0794415416798359282`4.317946715764801", "0"}
+   },
+   AutoDelete->False,
+   GridBoxBackground->{"Columns" -> {None, None, None, None, 
+       RGBColor[0.94, 0.91, 0.88]}},
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{{3.8487469937882214`*^9, 3.8487469946277723`*^9}},
+ CellLabel->
+  "Out[870]=",ExpressionUUID->"eceb2af3-0e59-4722-8770-8863254a198d"]
+}, Open  ]]
+},
+WindowSize->{1920, 997},
+WindowMargins->{{-8, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 45284, 979, 5145, "Code",ExpressionUUID->"b519f339-8fad-4fcf-b1d2-89d00178636b"],
+Cell[45867, 1003, 433, 7, 59, "Print",ExpressionUUID->"0a07daed-71f1-4164-b9a3-9db8650a3c10"],
+Cell[46303, 1012, 15211, 213, 4896, "Output",ExpressionUUID->"8ac84f20-75bd-421b-be03-37b853f54c57"],
+Cell[CellGroupData[{
+Cell[61539, 1229, 418, 7, 77, "Print",ExpressionUUID->"18ffdd7f-a3ad-422d-921c-3d1298333565"],
+Cell[61960, 1238, 442, 8, 59, "Print",ExpressionUUID->"8a679792-495d-4fbf-8a7e-55a1809b743a"],
+Cell[62405, 1248, 321, 5, 41, "Print",ExpressionUUID->"a2a1ec57-d73d-4b28-a6d7-dfd6a2ee86db"]
+}, Open  ]],
+Cell[62741, 1256, 13675, 286, 769, "Output",ExpressionUUID->"80e9b052-4f85-47f3-b6d0-0a3500cefa5f"],
+Cell[76419, 1544, 2154, 52, 340, "Output",ExpressionUUID->"001d9d4c-a41b-4903-aa0f-f37daa64c409"],
+Cell[CellGroupData[{
+Cell[78598, 1600, 621, 9, 185, "Print",ExpressionUUID->"2fd09af5-cf12-4733-a69b-9dd075ee02f2"],
+Cell[79222, 1611, 443, 7, 59, "Print",ExpressionUUID->"cd27c41b-92eb-41c3-950c-c047031a48f4"],
+Cell[79668, 1620, 240, 4, 22, "Print",ExpressionUUID->"cfb12faf-8c9d-4f27-89c9-4aff249231f0"]
+}, Open  ]],
+Cell[79923, 1627, 937, 22, 124, "Output",ExpressionUUID->"345712cd-fbe2-49bc-95a3-cdb20b886935"],
+Cell[CellGroupData[{
+Cell[80885, 1653, 305, 5, 41, "Print",ExpressionUUID->"90272364-b3d6-405f-8d0e-f82e907e71f6"],
+Cell[81193, 1660, 429, 7, 77, "Print",ExpressionUUID->"cde885b9-2dc9-4c6d-bdb2-b8c1407682c4"],
+Cell[81625, 1669, 421, 7, 59, "Print",ExpressionUUID->"8a8b5d63-8af9-46d8-abc6-1b556f4987b6"]
+}, Open  ]],
+Cell[82061, 1679, 604, 15, 130, "Output",ExpressionUUID->"aafef624-c3e2-465c-b03c-9fe819f64ad0"],
+Cell[CellGroupData[{
+Cell[82690, 1698, 278, 5, 22, "Print",ExpressionUUID->"2f77c944-3117-43b3-abe1-aa0accd78591"],
+Cell[82971, 1705, 419, 7, 59, "Print",ExpressionUUID->"67dd520e-f050-4da0-ab85-c4c328c48543"],
+Cell[83393, 1714, 301, 5, 22, "Print",ExpressionUUID->"c19d52c6-ea89-4614-bab9-7efc5aba7f49"],
+Cell[83697, 1721, 418, 7, 77, "Print",ExpressionUUID->"453d4f17-218b-4b8b-8851-e2a8219ce14f"]
+}, Open  ]],
+Cell[84130, 1731, 1142, 27, 222, "Output",ExpressionUUID->"23e2e417-16e7-430b-b28c-62ea653af6de"],
+Cell[CellGroupData[{
+Cell[85297, 1762, 337, 6, 41, "Print",ExpressionUUID->"f4c503f1-f065-49bb-b33d-9b366a410ca2"],
+Cell[85637, 1770, 552, 8, 77, "Print",ExpressionUUID->"a1537f6e-4384-4348-a268-1e657d12e485"]
+}, Open  ]],
+Cell[86204, 1781, 4307, 74, 1438, "Output",ExpressionUUID->"eceb2af3-0e59-4722-8770-8863254a198d"]
+}, Open  ]]
+}
+]
+*)
+

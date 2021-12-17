@@ -1,0 +1,1651 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     74875,       1643]
+NotebookOptionsPosition[     72579,       1606]
+NotebookOutlinePosition[     72922,       1621]
+CellTagsIndexPosition[     72879,       1618]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Fitting", "-", "M2"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"Jared", " ", "Frazier"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{"09", "-", "20", "-", "20"}], "*)"}], "\n", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Description", ":", " ", "\n", 
+      RowBox[{
+      "First", " ", "derive", " ", "the", " ", "line", " ", "of", " ", "best",
+        " ", "fit", " ", "for", " ", "a", " ", "linear", " ", "equation", " ", 
+       OverscriptBox["y", "^"]}]}], " ", "=", " ", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "0"], " ", "+", " ", 
+      RowBox[{
+       SubscriptBox["\[Beta]", "1"], "X"}]}]}], ",", " ", 
+    RowBox[{
+    "that", " ", "is", " ", "\n", "derive", " ", "the", " ", "coffecients", 
+     " ", 
+     SubscriptBox["\[Beta]", "0"], " ", "and", " ", 
+     RowBox[{
+      SubscriptBox["\[Beta]", "1"], ".", " ", "Once"}], " ", "these", " ", 
+     "two", " ", "coefficients", " ", "are", " ", "derived"}], ",", " ", 
+    RowBox[{
+    "use", " ", "the", " ", "following", " ", "observations", "\n", "from", 
+     " ", "the", " ", "Cathode", " ", "Ray", " ", "experiment", " ", "to", 
+     " ", "derive", " ", "the", " ", "variables", " ", "associated", " ", 
+     "with", " ", "the", " ", "equation", " ", "modeling", " ", "stopping", 
+     " ", "\n", "voltage", " ", "and", " ", "frequency", " ", "of", " ", 
+     RowBox[{"light", ":", "\n", "\n", 
+      RowBox[{
+       RowBox[{"[", "1", "]"}], " ", "The", " ", "photoelectric", " ", 
+       "effect", " ", "is", " ", "the", " ", "emission", " ", "of", " ", 
+       "electrons", " ", "when", " ", "electromagnetic", " ", "radiation", 
+       " ", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"e", ".", "g", "."}], ",", " ", "light"}], ")"}]}]}]}], ",", 
+    "\n", 
+    RowBox[{"hits", " ", "a", " ", 
+     RowBox[{"material", ".", "\n", 
+      RowBox[{"[", "2", "]"}]}], " ", "The", " ", "expected", " ", "emission",
+      " ", "of", " ", "electrons", " ", "was", " ", "essentially", " ", 
+     "continuous"}], ",", " ", 
+    RowBox[{"meaning", " ", "as", " ", "the", " ", "intensity", " ", 
+     RowBox[{"(", 
+      RowBox[{
+      "average", " ", "power", " ", "transfer", " ", "over", " ", "\n", "one",
+        " ", "period", " ", "of", " ", "the", " ", "wave"}], ")"}], " ", "of",
+      " ", "light", " ", "increased"}], ",", " ", 
+    RowBox[{
+    "it", " ", "was", " ", "expected", " ", "that", " ", "the", " ", 
+     "kinetic", " ", "energy", " ", "of", " ", "emitted", " ", "electrons", 
+     " ", "would", " ", "be", "\n", 
+     RowBox[{"proportional", ".", " ", "This"}], " ", "expectation", " ", 
+     "was", " ", "refuted", " ", "with", " ", "experimental", " ", 
+     RowBox[{"results", ".", "\n", 
+      RowBox[{"[", "3", "]"}]}], " ", "Incident", " ", "light", " ", 
+     RowBox[{"(", "radiation", ")"}], " ", "had", " ", "to", " ", "have", " ",
+      "a", " ", "frequency", " ", "exceeding", " ", "a", " ", "certain", " ", 
+     "threshold", " ", "before", " ", "electrons", " ", "were", " ", 
+     RowBox[{"ejected", ".", "\n", 
+      RowBox[{"[", "4", "]"}]}], " ", "The", " ", "stopping", " ", 
+     "potential", " ", "V", " ", "is", " ", "the", " ", "voltage", " ", "at", 
+     " ", "which", " ", "no", " ", "electrons", " ", "that", " ", "are", " ", 
+     "emitted", " ", "from", " ", "the", " ", "metal", " ", "plate", " ", 
+     "subject", "\n", "to", " ", "incident", " ", "radiation", " ", "are", 
+     " ", "able", " ", "to", " ", "reach", " ", "another", " ", "plate", " ", 
+     
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"due", " ", "to", " ", "electron"}], "-", 
+        RowBox[{"electron", " ", "repulsion"}]}], ")"}], ".", " ", "The"}], 
+     " ", "stopping", " ", "voltage", "\n", "was", " ", "measured", " ", 
+     "for", " ", "different", " ", "frequencies", " ", "\[Nu]", " ", "of", 
+     " ", "the", " ", "incident", " ", 
+     RowBox[{"beam", ".", "\n", 
+      RowBox[{"[", "5", "]"}]}], " ", "Lastly"}], ",", " ", 
+    RowBox[{
+     RowBox[{
+     "it", " ", "is", " ", "observed", " ", "from", " ", "Einstein", " ", 
+      "and", " ", "the", " ", "Cathode", " ", "Ray", " ", "Experiment", " ", 
+      "that", " ", "the", " ", "kinetic", " ", "energy", " ", "of", " ", 
+      "the", " ", "ejected", "  ", "electrons", "\n", "must", " ", "be", " ", 
+      
+      SubscriptBox["E", "k"]}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       StyleBox[
+        RowBox[{
+         StyleBox["h",
+          FontSlant->"Italic"], "\[Nu]"}]], " ", "-", " ", "\[Phi]"}], " ", 
+      "=", " ", 
+      RowBox[{
+       StyleBox[
+        RowBox[{
+         StyleBox["h",
+          FontSlant->"Italic"], "\[Nu]"}]], " ", "-", " ", 
+       RowBox[{
+        SubscriptBox[
+         StyleBox[
+          RowBox[{
+           StyleBox["h",
+            FontSlant->"Italic"], "\[Nu]"}]], "0"], " ", "where", " ", "the", 
+        " ", "units", " ", "of", " ", 
+        SubscriptBox["E", "k"], " ", "are", " ", "the", " ", "electron", " ", 
+        "charge", " ", "e", " ", "and", " ", "the", " ", "voltage", " ", 
+        RowBox[{"V", ".", " ", "Solving"}], " ", "for", " ", "\n", 
+        "voltage"}]}]}]}], ",", " ", 
+    RowBox[{
+     RowBox[{
+     "the", " ", "stopping", " ", "voltage", " ", "becomes", " ", "a", " ", 
+      "simple", " ", "linear", " ", "equation", " ", "whose", " ", 
+      "parameters", " ", "can", " ", "be", " ", "determined", " ", "by", " ", 
+      "minimzizing", " ", "the", " ", "\n", "sum", " ", "of", " ", "squared", 
+      " ", "errors", " ", 
+      RowBox[{"w", ".", "r", ".", "t"}], " ", 
+      SubscriptBox["\[Beta]", "0"], " ", "and", " ", 
+      SubscriptBox["\[Beta]", "1"], " ", "such", " ", "that", " ", "V", 
+      RowBox[{"(", "\[Nu]", ")"}]}], " ", "=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        FractionBox[
+         StyleBox["h",
+          FontSlant->"Italic"], "e"], "\[Nu]"}], " ", "-", " ", 
+       RowBox[{
+        FractionBox[
+         StyleBox["h",
+          FontSlant->"Italic"], "e"], 
+        SubscriptBox["\[Nu]", "0"]}]}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          SubscriptBox["\[Beta]", "1"], "\[Nu]"}], " ", "+", " ", 
+         RowBox[{
+          SubscriptBox["\[Beta]", "0"], ".", "\n", "\n", 
+          RowBox[{"Refs", ":", "\n", "https", ":"}]}]}], "//", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"aklectures", ".", "com"}], "/", "lecture"}], "/", 
+          "photoelectric"}], "-", "effect", "-", "compton", "-", "effect", 
+         "-", "wave", "-", "particle", "-", 
+         RowBox[{"duality", "/", "stopping"}], "-", "voltage", "-", "and", 
+         "-", "work", "-", 
+         RowBox[{"function", "\n", 
+          RowBox[{"https", ":"}]}]}]}], "//", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"en", ".", "wikipedia", ".", "org"}], "/", "wiki"}], "/", 
+        "Photoelectric_effect"}]}]}]}]}], "*)"}], "\n", "\n", 
+  RowBox[{
+   RowBox[{"Clear", "[", "\"\<Global`\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Import", " ", "Notation", " ", "package", " ", "and", " ", "define", " ",
+      "symbols"}], "*)"}], "\[IndentingNewLine]", 
+   RowBox[{"<<", "Notation`"}], "\n", 
+   RowBox[{
+    RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "0"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"betaNaught"},
+      "NotationTemplateTag"]}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"betaOne"},
+      "NotationTemplateTag"]}], "]"}], "\n", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox[
+        OverscriptBox["Y", "^"], "k"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"yHat"},
+      "NotationTemplateTag"]}], "]"}], "\n", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox["Y", "k"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"yData"},
+      "NotationTemplateTag"]}], "]"}], "\n", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox["X", "k"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"xData"},
+      "NotationTemplateTag"]}], "]"}], "\n", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox["Y", "avg"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"yBar"},
+      "NotationTemplateTag"]}], "]"}], "\n", 
+   RowBox[{"Notation", "[", 
+    RowBox[{
+     TemplateBox[{SubscriptBox["X", "avg"]},
+      "NotationTemplateTag"], " ", "\[DoubleLongLeftRightArrow]", " ", 
+     TemplateBox[{"xBar"},
+      "NotationTemplateTag"]}], "]"}], "\[IndentingNewLine]", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Deriving", " ", "the", " ", "slope", " ", 
+     RowBox[{"(", 
+      SubscriptBox[
+       OverscriptBox["\[Beta]", "^"], "0"], ")"}], " ", "and", " ", 
+     "intercept", 
+     RowBox[{"(", 
+      SubscriptBox[
+       OverscriptBox["\[Beta]", "^"], "1"], ")"}]}], "*)"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "General", " ", "form", " ", "of", " ", "linear", " ", "regression", " ",
+       "equation"}], ",", " ", 
+     RowBox[{
+     "betaNaught", " ", "and", " ", "betaOne", " ", "are", " ", "unknown", 
+      " ", "constants", " ", "currently"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"yHat", " ", "=", " ", 
+     RowBox[{"betaNaught", " ", "+", " ", 
+      RowBox[{"betaOne", " ", "*", " ", "xData"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Define", " ", "the", " ", "general", " ", "form", " ", "for", " ", "the",
+      " ", "sum", " ", "of", " ", "square", " ", "errors"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"sse", " ", "=", " ", 
+     RowBox[{"Sum", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"yData", " ", "-", " ", "yHat"}], ")"}], "^", "2"}], ",", 
+       " ", 
+       RowBox[{"{", 
+        RowBox[{"k", ",", " ", "1", ",", " ", "N"}], "}"}]}], "]"}]}], ";"}], 
+   " ", "\n", 
+   RowBox[{
+    RowBox[{"sseSummand", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"yData", " ", "-", " ", "yHat"}], ")"}], "^", "2"}]}], ";"}], 
+   "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Display", " ", "logic"}], "*)"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<Part 1 - Derivation of slope 'a' \
+(\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(1\)]\)) and \
+intercept 'b' (\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(0\)]\)):\>\"", "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(1) Linear relationship between stopping voltage and frequency of \
+incident light\n\\tV(\[Nu]) = a\[Nu] + b can be modeled with the same \
+equation \!\(\*SubscriptBox[OverscriptBox[\(Y\), \(^\)], \(k\)]\) = \>\"", 
+     ",", " ", "yHat", ",", " ", 
+     "\"\< where \!\(\*SubscriptBox[OverscriptBox[\(Y\), \(^\)], \(k\)]\) is \
+the\n\\tpredicted response variable (V(\[Nu])) and \!\(\*SubscriptBox[\(X\), \
+\(k\)]\) is the kth explanatory variable (\[Nu]).\>\""}], "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(2) The sum of squared errors, also known as the mean squared error, \
+is\n\\tthe sum of the difference between all response values in the data set \
+(\!\(\*SubscriptBox[\(Y\), \(k\)]\)) and \n\\tpredicted response values (\!\(\
+\*SubscriptBox[OverscriptBox[\(Y\), \(^\)], \(k\)]\)) and is modeled by the \
+equation SSE = \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*SubscriptBox[\(Y\), \(k\)]\)-\!\(\*SubscriptBox[OverscriptBox[\
+\(Y\), \(^\)], \(k\)]\)\!\(\*SuperscriptBox[\()\), \(2\)]\) \n\\tfor the \!\(\
+\*SuperscriptBox[\(k\), \(th\)]\) term in a data set with N terms.\>\"", 
+    "]"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(3) Substituting the definition of \!\(\*SubscriptBox[OverscriptBox[\
+\(Y\), \(^\)], \(k\)]\) into SSE yields an equation which,\n\\tonce \
+differentiated with respect to \!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \
+\(^\)], \(1\)]\) and \!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(0\)]\) and set equal to 0, may be solved\n\\tsimultaneously to yield the \
+minimum values of \!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\) and \!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(0\)]\) \
+to minimize the 'distance' \n\\tbetween the prediction 'line' and values of \
+\!\(\*SubscriptBox[\(Y\), \(k\)]\): SSE = \
+\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*SubscriptBox[\(Y\), \
+\(k\)]\)-(\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(0\)]\) + \!\
+\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\))\!\(\*SuperscriptBox[\()\), \(2\)]\
+\)\>\"", "]"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Differentiate", " ", "with", " ", "respect", " ", "to", " ", 
+      SubscriptBox[
+       OverscriptBox["\[Beta]", "^"], "0"], " ", "and", " ", 
+      SubscriptBox[
+       OverscriptBox["\[Beta]", "^"], "1"]}], ",", " ", 
+     RowBox[{
+     "derivative", " ", "of", " ", "summation", " ", "is", " ", "sum", " ", 
+      "of", " ", "derivatives"}]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"summandDerivBetaNaught", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"sseSummand", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"betaNaught", ",", " ", "1"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   
+   RowBox[{
+    RowBox[{"summandDerivBetaOne", " ", "=", " ", 
+     RowBox[{"D", "[", 
+      RowBox[{"sseSummand", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"betaOne", ",", " ", "1"}], "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(4)  \!\(\*FractionBox[\(\[PartialD]SSE\), \
+\(\[PartialD]\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(0\)]\)]\)\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*SubscriptBox[\(Y\), \
+\(k\)]\)-(\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(0\)]\) + \!\
+\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\))\!\(\*SuperscriptBox[\()\), \(2\)]\
+\) = \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \(N\)]\)\>\"", ",", " ", 
+     "summandDerivBetaNaught", ",", " ", "\n", 
+     "\"\<\\tand \!\(\*FractionBox[\(\[PartialD]SSE\), \
+\(\[PartialD]\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)]\)\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*SubscriptBox[\(Y\), \
+\(k\)]\)-(\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(0\)]\) + \!\
+\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\))\!\(\*SuperscriptBox[\()\), \(2\)]\
+\) = \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \(N\)]\)\>\"", ",", " ", 
+     "summandDerivBetaOne"}], "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{
+     "Solve", " ", "partial", " ", "derivative", " ", "with", " ", "respect", 
+      " ", "to", " ", "betaNaught"}], " ", "\[Equal]", "  ", "0"}], "*)"}], 
+   "\n", 
+   RowBox[{
+    RowBox[{"soln1", " ", "=", " ", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"summandDerivBetaNaught", "\[Equal]", "0"}], "}"}], ",", " ", 
+       
+       RowBox[{"{", "betaNaught", "}"}]}], "]"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"storeSoln1", " ", "=", " ", 
+     RowBox[{"betaNaught", "/.", 
+      RowBox[{"soln1", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Summation", " ", "of", " ", "a", " ", "constant"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"summationRule", " ", "=", " ", 
+     RowBox[{"Sum", "[", 
+      RowBox[{"betaNaught", ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"k", ",", " ", "1", ",", " ", "N"}], "}"}]}], "]"}]}], ";"}], 
+   "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Display", " ", "solution", " ", "for", " ", 
+     SubscriptBox[
+      OverscriptBox["B", "^"], "0"], " ", "in", " ", "terms", " ", "of", " ", 
+     
+     SubscriptBox[
+      OverscriptBox["B", "^"], "1"]}], "*)"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(5) The solution for \>\"", ",", " ", "summationRule", ",", " ", 
+     "\"\< = \>\"", ",", " ", "storeSoln1", ",", " ", 
+     "\"\< for N values in the  \n\\tdata is equivalent to \
+\!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(0\)]\) = \
+\!\(\*OverscriptBox[\(Y\), \(_\)]\) - \!\(\*SubscriptBox[OverscriptBox[\(B\), \
+\(^\)], \(1\)]\)\!\(\*OverscriptBox[\(X\), \(_\)]\) where \
+\!\(\*OverscriptBox[\(Y\), \(_\)]\) and \!\(\*OverscriptBox[\(X\), \(_\)]\) \
+are the average of the X and \n\\tY values in the data.\>\""}], "]"}], "\n", 
+   "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Equivalent", " ", "solution", " ", "for", " ", 
+     SubscriptBox[
+      OverscriptBox["B", "^"], "0"]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"betaNaughtAvg", " ", "=", " ", 
+     RowBox[{"yBar", " ", "-", " ", 
+      RowBox[{"betaOne", "*", "xBar"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Solve", " ", "for", " ", 
+     SubscriptBox[
+      OverscriptBox["B", "^"], "1"], " ", "by", " ", "substituting", " ", 
+     SubscriptBox[
+      OverscriptBox["B", "^"], "0"], " ", "in", " ", "terms", " ", "of", " ", 
+     
+     SubscriptBox[
+      OverscriptBox["B", "^"], "1"], " ", "into", " ", 
+     FractionBox[
+      RowBox[{"\[PartialD]", "SSE"}], 
+      RowBox[{"\[PartialD]", 
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"]}]]}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"betaOneDerivOneVarSummand", " ", "=", " ", 
+     RowBox[{"xData", " ", "*", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "betaNaughtAvg"}], " ", "-", " ", 
+        RowBox[{"betaOne", "*", "xData"}], " ", "+", " ", "yData"}], 
+       ")"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Display", " ", "new", " ", "summation"}], "*)"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+     RowBox[{
+     "\"\<(6) Substituting \!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \
+\(0\)]\) in terms of \!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(1\)]\) \
+into \!\(\*FractionBox[\(\[PartialD]SSE\), \
+\(\[PartialD]\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(1\)]\)]\), \
+\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \(N\)]\)\>\"", " ", 
+      "betaOneDerivOneVarSummand"}], ",", " ", "\n", 
+     "\"\< which simplifies to \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = \
+1\), \(N\)]\)\>\"", ",", " ", 
+     RowBox[{"FullSimplify", "[", "betaOneDerivOneVarSummand", "]"}]}], " ", 
+    "]"}], "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Self", " ", "expand"}], "*)"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<(7) Expanding the summation using summation rules,\n\
+\\t\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\)(\!\(\*SubscriptBox[\(Y\), \
+\(k\)]\)-\!\(\*SubscriptBox[\(Y\), \(avg\)]\)) - \
+\!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \
+\(1\)]\)\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\)(\!\(\*SubscriptBox[\(X\), \
+\(k\)]\)-\!\(\*SubscriptBox[\(X\), \(avg\)]\))=0. Mathematica cannot \
+recognize that there are \n\\ttwo variables \!\(\*SubscriptBox[\(Y\), \
+\(k\)]\) and \!\(\*SubscriptBox[\(X\), \(k\)]\) in the simplified equation. \
+It treats all of them as \n\\tconstants and the syntax x[[k]] or y[[k]] \
+cannot be used either to indicate \n\\tthe \!\(\*SuperscriptBox[\(k\), \
+\(th\)]\) variable of a predefined list (requires actual data).\>\"", "]"}], 
+   "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(8) Therefore, \!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \
+\(1\)]\) = \!\(\*FractionBox[\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\*SubscriptBox[\(X\), \(k\)] \((\*SubscriptBox[\(Y\), \(k\)] - \
+\*SubscriptBox[\(Y\), \(avg\)])\)\), \(\*UnderoverscriptBox[\(\[Sum]\), \(k = \
+1\), \(N\)]\*SubscriptBox[\(X\), \(k\)] \((\*SubscriptBox[\(X\), \(k\)] - \
+\*SubscriptBox[\(X\), \(avg\)])\)\)]\) and \
+\!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(0\)]\) = \>\"", ",", " ", 
+     "betaNaughtAvg"}], "]"}], "\n", 
+   RowBox[{"Print", "[", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Function", " ", "to", " ", "convert", " ", "wavelength", " ", "to", " ", 
+     "frequency"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"toFrequency", "[", "wave_", "]"}], " ", ":=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"3", "*", 
+        RowBox[{"10", "^", "8"}]}], ")"}], "/", 
+      RowBox[{"(", 
+       RowBox[{"wave", "*", 
+        RowBox[{"10", "^", 
+         RowBox[{"(", 
+          RowBox[{"-", "9"}], ")"}]}]}], ")"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "x", " ", "and", " ", "y", " ", "values", " ", "in", " ", "photoelectric",
+      " ", "data", " ", "set"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"xList", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"toFrequency", "[", "365", "]"}], ",", " ", 
+       RowBox[{"toFrequency", "[", "405", "]"}], ",", " ", 
+       RowBox[{"toFrequency", "[", "436", "]"}], ",", " ", "\n", "         ", 
+       
+       RowBox[{"toFrequency", "[", "546", "]"}], ",", " ", 
+       RowBox[{"toFrequency", "[", "577", "]"}]}], "}"}]}], ";"}], " ", "\n", 
+   
+   RowBox[{
+    RowBox[{"yList", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+      "1.855", ",", " ", "1.366", ",", " ", "1.143", ",", " ", "0.618", ",", 
+       " ", "0.498"}], "}"}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"numEle", " ", "=", " ", "5"}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Use", " ", "derived", " ", "equations", " ", "to", " ", "calc", " ", 
+     "linear", " ", "equation"}], " ", "*)"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<Part 2 - Calculate slope and intercept of the equation for stopping \
+voltage as a function of frequency V(\[Nu]):\>\"", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Calculate", " ", "averages", " ", "of", " ", "x", " ", "and", " ", "y", 
+     " ", "lists"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"xAvg", " ", "=", " ", 
+     FractionBox[
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"xList", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "numEle"}], "}"}]}], "]"}], "numEle"]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"yAvg", " ", "=", " ", 
+     FractionBox[
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{"yList", "[", 
+         RowBox[{"[", "i", "]"}], "]"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "numEle"}], "}"}]}], "]"}], "numEle"]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"calcBetaOne", " ", "=", " ", 
+     FractionBox[
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"xList", "[", 
+          RowBox[{"[", "i", "]"}], "]"}], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"yList", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "-", "yAvg"}], ")"}]}], ",", " ", 
+        
+        RowBox[{"{", 
+         RowBox[{"i", ",", " ", "1", ",", " ", "numEle"}], "}"}]}], "]"}], 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"xList", "[", 
+          RowBox[{"[", "i", "]"}], "]"}], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"xList", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "-", "xAvg"}], ")"}]}], ",", " ", 
+        
+        RowBox[{"{", 
+         RowBox[{"i", ",", " ", "1", ",", " ", "numEle"}], "}"}]}], "]"}]]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{"calcBetaNaught", " ", "=", " ", 
+     RowBox[{"yAvg", "-", 
+      RowBox[{"calcBetaOne", "*", "xAvg"}]}]}], ";"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Line", " ", "of", " ", "best", " ", "fit"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"linEq", "[", "\[Nu]_", "]"}], " ", ":=", " ", 
+     RowBox[{"calcBetaNaught", " ", "+", " ", 
+      RowBox[{"calcBetaOne", "*", "\[Nu]"}]}]}], ";"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(1) My line of best fit is \!\(\*OverscriptBox[\(V\), \
+\(^\)]\)(\[Nu]) = \>\"", ",", " ", 
+     RowBox[{"linEq", "[", "\[Nu]", "]"}], ",", " ", 
+     "\"\< and Planck's constant\n\\th is \>\"", ",", " ", "calcBetaOne", ",",
+      " ", "\"\< eV*s which is close to the actual value\n\\t4.1357 \[Times] \
+\!\(\*SuperscriptBox[\(10\), \(-15\)]\) eV*s. Therefore, %error is \>\"", ",",
+      " ", 
+     RowBox[{"100", "*", 
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"Abs", "[", 
+         RowBox[{"calcBetaOne", "-", 
+          RowBox[{"4.13157", "*", 
+           RowBox[{"10", "^", 
+            RowBox[{"(", 
+             RowBox[{"-", "15"}], ")"}]}]}]}], "]"}], 
+        RowBox[{"4.13157", "*", 
+         RowBox[{"10", "^", 
+          RowBox[{"(", 
+           RowBox[{"-", "15"}], ")"}]}]}]], ")"}]}], ",", " ", "\"\<%\>\""}], 
+    "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Standard", " ", "Deviation", " ", "and", " ", "Correlation", " ", 
+     "coefficient", " ", "r"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"sx", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"xList", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], " ", "-", " ", "xAvg"}], ")"}], 
+           "^", "2"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "numEle"}], "}"}]}], "]"}], 
+        RowBox[{"numEle", "-", "1"}]], ")"}], "^", 
+      RowBox[{"(", 
+       RowBox[{"1", "/", "2"}], ")"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"sy", " ", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       FractionBox[
+        RowBox[{"Sum", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"yList", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], " ", "-", " ", "yAvg"}], ")"}], 
+           "^", "2"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "numEle"}], "}"}]}], "]"}], 
+        RowBox[{"numEle", "-", "1"}]], ")"}], "^", 
+      RowBox[{"(", 
+       RowBox[{"1", "/", "2"}], ")"}]}]}], ";"}], "\n", 
+   RowBox[{
+    RowBox[{"r", " ", "=", " ", 
+     RowBox[{
+      FractionBox["1", 
+       RowBox[{"numEle", "-", "1"}]], "*", 
+      RowBox[{"Sum", "[", 
+       RowBox[{
+        RowBox[{
+         FractionBox[
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"xList", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], " ", "-", " ", "xAvg"}], ")"}], 
+          "sx"], "*", 
+         FractionBox[
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"yList", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "-", "yAvg"}], ")"}], "sy"]}], 
+        ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "1", ",", "numEle"}], "}"}]}], "]"}]}]}], ";"}], 
+   "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{"Coefficient", " ", "of", " ", "determination"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"r2", " ", "=", " ", 
+     RowBox[{"r", "^", "2"}]}], ";"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(2) The coefficient of determination \!\(\*SuperscriptBox[\(R\), \(2\
+\)]\) = \>\"", ",", " ", "r2", ",", " ", 
+     "\"\< from R = \!\(\*FractionBox[\(1\), \(N - \
+1\)]\)*\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*FractionBox[\(\*SubscriptBox[\(X\), \(k\)] - \
+\*OverscriptBox[\(X\), \(_\)]\), SubscriptBox[\(S\), \
+\(x\)]]\))(\!\(\*FractionBox[\(\*SubscriptBox[\(Y\), \(k\)] - \
+\*OverscriptBox[\(Y\), \(_\)]\), SubscriptBox[\(S\), \(y\)]]\))\>\""}], "]"}],
+    "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "How", " ", "well", " ", "the", " ", "line", " ", "predicts", " ", 
+     "values"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"eqError", " ", "=", " ", 
+     RowBox[{"Sqrt", "[", 
+      FractionBox[
+       RowBox[{"Sum", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"yList", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "-", 
+            RowBox[{"linEq", "[", 
+             RowBox[{"xList", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "]"}]}], ")"}], "^", "2"}], ",",
+          " ", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", " ", "1", ",", " ", "numEle"}], "}"}]}], "]"}], 
+       RowBox[{"numEle", "-", "2"}]], "]"}]}], ";"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(3) The error associated with predicted value \
+\!\(\*OverscriptBox[\(V\), \(^\)]\)(\[Nu]) is modeled by the equation\n\\tS = \
+\!\(\*SqrtBox[FractionBox[\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\*SuperscriptBox[\((V \*SubscriptBox[\((\[Nu])\), \(k\)]\\\  - \\\ \
+\*OverscriptBox[\(V\), \(^\)] \*SubscriptBox[\((\[Nu])\), \(k\)])\), \
+\(2\)]\), \(N\\\  - \\\ 2\)]]\) = \[PlusMinus]\>\"", ",", " ", "eqError", ",",
+      " ", "\"\< Volts\>\""}], " ", "]"}], "\n", "\n", 
+   RowBox[{"(*", 
+    RowBox[{
+    "Plot", " ", "data", " ", "with", " ", "my", " ", "line", " ", "of", " ", 
+     "best", " ", "fit"}], "*)"}], "\n", 
+   RowBox[{"Print", "[", "]"}], "\n", 
+   RowBox[{
+    RowBox[{"xy2dList", " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"toFrequency", "[", "365", "]"}], ",", " ", "1.855"}], "}"}],
+        ",", 
+       RowBox[{"{", " ", 
+        RowBox[{
+         RowBox[{"toFrequency", "[", "405", "]"}], ",", " ", "1.366"}], "}"}],
+        ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"toFrequency", "[", "436", "]"}], ",", "1.143"}], " ", "}"}],
+        ",", "\n", "            ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"toFrequency", "[", "546", "]"}], ",", " ", "0.618"}], "}"}],
+        ",", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"toFrequency", "[", "577", "]"}], ",", " ", "0.498"}], 
+        "}"}]}], "}"}]}], ";"}], "\n", 
+   RowBox[{
+   "Print", "[", 
+    "\"\<Part 3 - Plot the data with my line of best fit and mathematicas \
+line of best fit:\>\"", "]"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(1) My line of best fit is \!\(\*OverscriptBox[\(V\), \
+\(^\)]\)(\[Nu]) = \>\"", ",", " ", 
+     RowBox[{"linEq", "[", "\[Nu]", "]"}], ",", " ", 
+     "\"\< and the plot is shown below:\>\""}], "]"}], "\n", 
+   RowBox[{"Show", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Plot", "[", 
+       RowBox[{
+        RowBox[{"linEq", "[", "x", "]"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", 
+          RowBox[{"toFrequency", "[", "577", "]"}], ",", 
+          RowBox[{"toFrequency", "[", "365", "]"}]}], "}"}], ",", " ", 
+        RowBox[{
+        "PlotLabel", "\[Rule]", 
+         "\"\<My Line of Best Fit for Photelectric Effect\>\""}], ",", "\n", 
+        RowBox[{"AxesLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<Frequency \[Nu] (\!\(\*SuperscriptBox[\(s\), \(-1\)]\))\>\"", 
+           ",", " ", "\"\<Stopping Voltage V\>\""}], "}"}]}], ",", " ", 
+        RowBox[{"ImageSize", "\[Rule]", "700"}]}], "]"}], ",", "  ", 
+      RowBox[{"ListPlot", "[", "xy2dList", "]"}]}], "}"}], "]"}], "\n", "\n", 
+   
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"Mathematica", "'"}], "s", " ", "line", " ", "of", " ", "best", 
+     " ", "fit", " ", "formula"}], "*)"}], "\n", 
+   RowBox[{
+    RowBox[{"mathematicaLinEq", " ", "=", " ", 
+     RowBox[{"LinearModelFit", "[", 
+      RowBox[{"xy2dList", ",", " ", "\[Nu]", ",", " ", "\[Nu]"}], "]"}]}], 
+    ";"}], "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"functionMathematicaLinEq", "[", "\[Nu]_", "]"}], " ", "=", " ", 
+     
+     RowBox[{"Normal", "[", "mathematicaLinEq", "]"}]}], ";"}], "\n", 
+   RowBox[{"Print", "[", 
+    RowBox[{
+    "\"\<(2) The equation mathematica finds for the line of best fit is\n\
+\\tV(\[Nu]) = \>\"", ",", " ", 
+     RowBox[{"Normal", "[", "mathematicaLinEq", "]"}], ",", " ", 
+     "\"\< which directly matches my line of best of fit, and the plot is \
+shown below:\>\""}], "]"}], "\n", 
+   RowBox[{"Show", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Plot", "[", 
+       RowBox[{
+        RowBox[{"functionMathematicaLinEq", "[", "x", "]"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", 
+          RowBox[{"toFrequency", "[", "577", "]"}], ",", 
+          RowBox[{"toFrequency", "[", "365", "]"}]}], "}"}], ",", " ", 
+        RowBox[{
+        "PlotLabel", "\[Rule]", 
+         "\"\<Mathematica's Line of Best Fit for Photelectric Effect\>\""}], 
+        ",", "\n", 
+        RowBox[{"AxesLabel", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+          "\"\<Frequency \[Nu] (\!\(\*SuperscriptBox[\(s\), \(-1\)]\))\>\"", 
+           ",", " ", "\"\<Stopping Voltage V\>\""}], "}"}]}], ",", " ", 
+        RowBox[{"ImageSize", "\[Rule]", "700"}]}], "]"}], ",", "  ", 
+      RowBox[{"ListPlot", "[", "xy2dList", "]"}]}], "}"}], "]"}], 
+   " "}]}]], "Code",
+ CellChangeTimes->{{3.8095014471826572`*^9, 3.809501517787739*^9}, {
+   3.80950159073604*^9, 3.809501681498406*^9}, {3.8095017170962057`*^9, 
+   3.8095017285073967`*^9}, {3.809501790898176*^9, 3.809501841516927*^9}, {
+   3.8095018947326517`*^9, 3.80950199939027*^9}, {3.809502036329341*^9, 
+   3.809502217138291*^9}, {3.8095022824872303`*^9, 3.809502338160866*^9}, {
+   3.8095023849937143`*^9, 3.809502420600172*^9}, {3.809502477746176*^9, 
+   3.809502699468322*^9}, {3.809502737041811*^9, 3.8095027605666428`*^9}, {
+   3.80950280506004*^9, 3.8095028384228897`*^9}, {3.809503279623773*^9, 
+   3.809503435751404*^9}, {3.809504281062359*^9, 3.809504288029622*^9}, {
+   3.809508365836492*^9, 3.809508417662446*^9}, {3.8095138061200037`*^9, 
+   3.809514005791967*^9}, {3.809514305572938*^9, 3.8095144642136307`*^9}, {
+   3.809514569012113*^9, 3.809514736187993*^9}, {3.8095165120926*^9, 
+   3.809516549420372*^9}, {3.809516602142066*^9, 3.809516724106463*^9}, {
+   3.809516857904291*^9, 3.809516897793593*^9}, {3.809516931292397*^9, 
+   3.809516965386372*^9}, {3.809517057845009*^9, 3.809517093209991*^9}, {
+   3.809517246050158*^9, 3.809517264996147*^9}, {3.809517345445168*^9, 
+   3.809517451119424*^9}, 3.809522176706922*^9, {3.8095231594979963`*^9, 
+   3.809523248459618*^9}, {3.809523292081512*^9, 3.809523308901999*^9}, {
+   3.809523355899652*^9, 3.809523451823702*^9}, {3.80952358459109*^9, 
+   3.8095237475541143`*^9}, {3.809523918924312*^9, 3.809523952196212*^9}, {
+   3.809524077074489*^9, 3.809524086324458*^9}, {3.809524120803261*^9, 
+   3.809524123546459*^9}, {3.809524291155725*^9, 3.809524349448374*^9}, 
+   3.809534754386063*^9, {3.809542522273102*^9, 3.809542526915679*^9}, 
+   3.8095431730883427`*^9, 3.80954388954053*^9, {3.809544109822111*^9, 
+   3.80954416346109*^9}, {3.80954421366229*^9, 3.809544246609701*^9}, {
+   3.809544323991355*^9, 3.809544525776527*^9}, {3.809544569752069*^9, 
+   3.809544642404043*^9}, {3.809544831719289*^9, 3.8095448395749702`*^9}, {
+   3.8095448736501627`*^9, 3.80954491126551*^9}, {3.809592880260293*^9, 
+   3.809593182434967*^9}, {3.8095932429861517`*^9, 3.8095932726558313`*^9}, {
+   3.80959333071251*^9, 3.809593550781312*^9}, {3.809593647031426*^9, 
+   3.809593832382999*^9}, {3.8095941549448013`*^9, 3.80959416582019*^9}, {
+   3.809594196823139*^9, 3.809594236166513*^9}, {3.809594282199547*^9, 
+   3.8095943212071238`*^9}, {3.8095944523543997`*^9, 
+   3.8095944996533327`*^9}, {3.809594541564003*^9, 3.8095946191020603`*^9}, {
+   3.809595039944521*^9, 3.809595054500804*^9}, {3.809595339645342*^9, 
+   3.80959536486314*^9}, {3.809595645979135*^9, 3.809595690467823*^9}, {
+   3.8095957773549337`*^9, 3.809595790920033*^9}, {3.80959636588938*^9, 
+   3.809596440485029*^9}, {3.809596491709325*^9, 3.809596491855599*^9}, {
+   3.809596552332251*^9, 3.809596655095738*^9}, {3.809596828585021*^9, 
+   3.8095968734720182`*^9}, {3.80959708251033*^9, 3.809597310519969*^9}, {
+   3.809597354812451*^9, 3.8095973767757263`*^9}, {3.809597421047217*^9, 
+   3.809597560991404*^9}, {3.809597595612876*^9, 3.8095976221141357`*^9}, {
+   3.80959766021467*^9, 3.8095976749998627`*^9}, {3.809597881507757*^9, 
+   3.809597902868634*^9}, {3.809597936561716*^9, 3.809597949223763*^9}, {
+   3.809598036462646*^9, 3.8095981725468187`*^9}, {3.809598627789385*^9, 
+   3.809598728465008*^9}, {3.809599221685227*^9, 3.809599223893252*^9}, {
+   3.8095992558081303`*^9, 3.8095993921896887`*^9}, {3.809599425762411*^9, 
+   3.809599448237636*^9}, {3.809599820462593*^9, 3.809599860601819*^9}, 
+   3.809600150213756*^9, {3.809600247236623*^9, 3.809600265292392*^9}, {
+   3.809600494646632*^9, 3.809600550016994*^9}, {3.809600605387796*^9, 
+   3.809600679381221*^9}, {3.809600710551652*^9, 3.8096007418494463`*^9}, {
+   3.809600912926469*^9, 3.809600925399748*^9}, {3.80960102031322*^9, 
+   3.8096011336084538`*^9}, {3.8096011660190268`*^9, 
+   3.8096011722919483`*^9}, {3.809601217993025*^9, 3.809601269064809*^9}, {
+   3.809601946174304*^9, 3.809601947728228*^9}, {3.809601994403818*^9, 
+   3.809602083720625*^9}, 3.80960212074502*^9, {3.809602156912394*^9, 
+   3.809602162705853*^9}, {3.809602260770973*^9, 3.809602333816288*^9}, {
+   3.8096024084449*^9, 3.809602422396838*^9}, {3.809602505117742*^9, 
+   3.809602608100565*^9}, {3.809602745323656*^9, 3.809602749804962*^9}, 
+   3.809602801832994*^9, {3.8096028588058643`*^9, 3.809602899628022*^9}, {
+   3.8096029619442053`*^9, 3.80960305594346*^9}, {3.809603192385982*^9, 
+   3.809603198247177*^9}, {3.8096032317551203`*^9, 3.809603335404818*^9}, {
+   3.809603402900481*^9, 3.8096034988426313`*^9}, {3.809603581115121*^9, 
+   3.80960359471484*^9}, {3.80960371415909*^9, 3.8096037438291063`*^9}, {
+   3.809603791169763*^9, 3.809603812627213*^9}, {3.809603857707312*^9, 
+   3.809603880243195*^9}, {3.809605543997938*^9, 3.809605555710804*^9}, {
+   3.809606274950301*^9, 3.809606298349126*^9}, {3.809606330667728*^9, 
+   3.8096064767254744`*^9}, {3.80960653987915*^9, 3.8096065622467327`*^9}, {
+   3.809606733136999*^9, 3.809606826114335*^9}, {3.809607049314392*^9, 
+   3.809607071250136*^9}, {3.809607124663526*^9, 3.8096071272195473`*^9}, {
+   3.809607178836142*^9, 3.8096071848993063`*^9}, {3.809607246836429*^9, 
+   3.80960725626854*^9}, {3.809607296313332*^9, 3.8096074761663322`*^9}, {
+   3.8096075334294043`*^9, 3.809607631480097*^9}, {3.809607674853036*^9, 
+   3.809607820192842*^9}, {3.809607855743494*^9, 3.809607866956348*^9}, {
+   3.8096079905243683`*^9, 3.809608001804778*^9}, 3.8096080470657463`*^9, {
+   3.8096082775897083`*^9, 3.809608413666553*^9}, {3.809608445824332*^9, 
+   3.8096085323121357`*^9}, {3.809608615749694*^9, 3.809608822733699*^9}, {
+   3.80960893221903*^9, 3.8096089685487223`*^9}, {3.8096090526242237`*^9, 
+   3.809609156095138*^9}, {3.8096092098104486`*^9, 3.809609264624906*^9}, {
+   3.809609322108886*^9, 3.809609342648039*^9}, {3.809609374240982*^9, 
+   3.809609404387898*^9}, {3.809609516174966*^9, 3.809609630793171*^9}, {
+   3.809609665447157*^9, 3.8096096659294558`*^9}, {3.809609744147236*^9, 
+   3.809609795291972*^9}, {3.8096098604118757`*^9, 3.809609906106495*^9}, {
+   3.809609969077581*^9, 3.809609993917191*^9}, {3.8096100355470123`*^9, 
+   3.8096102959215384`*^9}, {3.809610341821151*^9, 3.8096103739892063`*^9}, {
+   3.809610599511592*^9, 3.809610617878565*^9}, {3.809610767649387*^9, 
+   3.8096108467218924`*^9}, {3.809610925274768*^9, 3.809610990501408*^9}, {
+   3.809611074581603*^9, 3.8096111011359873`*^9}, {3.809611138004764*^9, 
+   3.809611186840767*^9}, {3.809611220645295*^9, 3.8096112504853773`*^9}, {
+   3.809611772462566*^9, 3.809611799366374*^9}, {3.809611836385357*^9, 
+   3.809611836545188*^9}, {3.8096120181360292`*^9, 3.809612196033889*^9}, {
+   3.8096122424150743`*^9, 3.809612277697275*^9}, {3.809612351985786*^9, 
+   3.809612382539852*^9}, {3.809613131258101*^9, 3.80961315938194*^9}, {
+   3.8096131990386553`*^9, 3.8096132572510757`*^9}, {3.809613299539021*^9, 
+   3.809613387327689*^9}, {3.8096134254658613`*^9, 3.809613458725498*^9}, {
+   3.809613580341971*^9, 3.80961358230536*^9}, {3.809613654408019*^9, 
+   3.8096138175497637`*^9}, {3.809613858395574*^9, 3.80961388608525*^9}, {
+   3.8096139383207493`*^9, 3.809613953464924*^9}, {3.8096139996016283`*^9, 
+   3.809614007331235*^9}, {3.809614082604355*^9, 3.809614089612793*^9}, {
+   3.80961414687635*^9, 3.809614277198949*^9}, {3.809614364079103*^9, 
+   3.809614391019409*^9}, {3.809614436698393*^9, 3.809614584358218*^9}, 
+   3.8096146936132803`*^9, {3.8096147251723213`*^9, 3.809614755347373*^9}, {
+   3.809614831525668*^9, 3.8096149297367687`*^9}, {3.809614973293117*^9, 
+   3.80961533771206*^9}, {3.809615386770863*^9, 3.809615408150923*^9}, {
+   3.8096154434213247`*^9, 3.809615444959996*^9}, {3.8096155495621853`*^9, 
+   3.809615740785747*^9}, {3.809615801805586*^9, 3.809615827443657*^9}, {
+   3.809615862021493*^9, 3.809615956331147*^9}, {3.80961599807199*^9, 
+   3.809616010672517*^9}, {3.809616053087542*^9, 3.809616121131695*^9}, {
+   3.809616168276095*^9, 3.809616257692844*^9}, {3.8096163049854727`*^9, 
+   3.809616309744803*^9}, {3.809616421076584*^9, 3.809616421462266*^9}, {
+   3.809616609543168*^9, 3.8096167536211567`*^9}, {3.809616810057892*^9, 
+   3.8096168443175077`*^9}, {3.848740697917447*^9, 3.848740710598419*^9}, {
+   3.8487407655105467`*^9, 3.8487408017966413`*^9}, {3.848740865475727*^9, 
+   3.848740896934818*^9}, {3.848740952919634*^9, 3.8487410710940933`*^9}, {
+   3.848741231263073*^9, 3.848741304256966*^9}, {3.8487413345692377`*^9, 
+   3.848741341771532*^9}, {3.848741444391409*^9, 3.8487415279833736`*^9}, {
+   3.848741572027069*^9, 3.84874161665418*^9}, {3.848741788017417*^9, 
+   3.8487418841644273`*^9}, {3.8487419236149693`*^9, 
+   3.8487419353856163`*^9}, {3.8487420473032665`*^9, 
+   3.8487420942907815`*^9}, {3.8487421462100153`*^9, 
+   3.8487421820010986`*^9}, {3.8487422835138135`*^9, 3.848742301904358*^9}, {
+   3.8487423873939605`*^9, 3.8487424043420544`*^9}, {3.8487424800626097`*^9, 
+   3.8487425442792006`*^9}, {3.8487425903056984`*^9, 3.848742630596531*^9}, {
+   3.84874310938435*^9, 3.848743116056245*^9}, {3.8487431481715307`*^9, 
+   3.8487432580322695`*^9}, {3.8487433284647627`*^9, 3.8487436025649614`*^9}},
+ 
+ CellLabel->
+  "In[115]:=",ExpressionUUID->"2724afcf-3319-4df1-a02e-a8f056470b68"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Part 1 - Derivation of slope 'a' \
+(\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(1\\)]\\)) \
+and intercept 'b' (\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \
+\\(^\\)], \\(0\\)]\\)):\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607224759*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"1d6ab4b9-81b1-4cb9-a52e-23292b65d13d"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(1) Linear relationship between stopping voltage and frequency \
+of incident light\\n\\tV(\[Nu]) = a\[Nu] + b can be modeled with the same \
+equation \\!\\(\\*SubscriptBox[OverscriptBox[\\(Y\\), \\(^\\)], \\(k\\)]\\) = \
+\"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    SubscriptBox[
+     OverscriptBox["\[Beta]", "^"], "0"], "+", 
+    RowBox[{
+     SubscriptBox[
+      OverscriptBox["\[Beta]", "^"], "1"], " ", 
+     SubscriptBox["X", "k"]}]}], 
+   "\[InvisibleSpace]", "\<\" where \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(Y\\), \\(^\\)], \\(k\\)]\\) is \
+the\\n\\tpredicted response variable (V(\[Nu])) and \
+\\!\\(\\*SubscriptBox[\\(X\\), \\(k\\)]\\) is the kth explanatory variable (\
+\[Nu]).\"\>"}],
+  SequenceForm[
+  "(1) Linear relationship between stopping voltage and frequency of incident \
+light\n\tV(\[Nu]) = a\[Nu] + b can be modeled with the same equation \
+\!\(\*SubscriptBox[OverscriptBox[\(Y\), \(^\)], \(k\)]\) = ", \
+$CellContext`betaNaught + $CellContext`betaOne $CellContext`xData, 
+   " where \!\(\*SubscriptBox[OverscriptBox[\(Y\), \(^\)], \(k\)]\) is the\n\t\
+predicted response variable (V(\[Nu])) and \!\(\*SubscriptBox[\(X\), \(k\)]\) \
+is the kth explanatory variable (\[Nu])."],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607224759*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"97483397-917f-462d-aa9d-ff3a1d760027"],
+
+Cell[BoxData["\<\"(2) The sum of squared errors, also known as the mean \
+squared error, is\\n\\tthe sum of the difference between all response values \
+in the data set (\\!\\(\\*SubscriptBox[\\(Y\\), \\(k\\)]\\)) and \
+\\n\\tpredicted response values (\\!\\(\\*SubscriptBox[OverscriptBox[\\(Y\\), \
+\\(^\\)], \\(k\\)]\\)) and is modeled by the equation SSE = \
+\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\)(\\!\\(\\*SubscriptBox[\\(Y\\), \
+\\(k\\)]\\)-\\!\\(\\*SubscriptBox[OverscriptBox[\\(Y\\), \\(^\\)], \
+\\(k\\)]\\)\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\) \\n\\tfor the \
+\\!\\(\\*SuperscriptBox[\\(k\\), \\(th\\)]\\) term in a data set with N \
+terms.\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607240382*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"8dcd7638-4a7d-48ff-b704-0d2b4e5fdcea"],
+
+Cell[BoxData["\<\"(3) Substituting the definition of \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(Y\\), \\(^\\)], \\(k\\)]\\) into SSE \
+yields an equation which,\\n\\tonce differentiated with respect to \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(1\\)]\\) and \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(0\\)]\\) and \
+set equal to 0, may be solved\\n\\tsimultaneously to yield the minimum values \
+of \\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(1\\)]\\) \
+and \\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(0\\)]\\) \
+to minimize the 'distance' \\n\\tbetween the prediction 'line' and values of \
+\\!\\(\\*SubscriptBox[\\(Y\\), \\(k\\)]\\): SSE = \
+\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\)(\\!\\(\\*SubscriptBox[\\(Y\\), \
+\\(k\\)]\\)-(\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \
+\\(0\\)]\\) + \\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \
+\\(1\\)]\\)\\!\\(\\*SubscriptBox[\\(X\\), \
+\\(k\\)]\\))\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\)\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607240382*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"b2988961-1930-43ea-aed1-91fa9b12102a"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(4)  \\!\\(\\*FractionBox[\\(\[PartialD]SSE\\), \\(\[PartialD]\
+\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \
+\\(0\\)]\\)]\\)\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\)(\\!\\(\\*SubscriptBox[\\(Y\\), \
+\\(k\\)]\\)-(\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \
+\\(0\\)]\\) + \\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \
+\\(1\\)]\\)\\!\\(\\*SubscriptBox[\\(X\\), \
+\\(k\\)]\\))\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\) = \
+\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \\(N\\)]\\)\"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{"-", "2"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "0"]}], "-", 
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"], " ", 
+       SubscriptBox["X", "k"]}], "+", 
+      SubscriptBox["Y", "k"]}], ")"}]}], 
+   "\[InvisibleSpace]", "\<\"\\tand \
+\\!\\(\\*FractionBox[\\(\[PartialD]SSE\\), \
+\\(\[PartialD]\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(1\\)]\
+\\)]\\)\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \\(N\\)]\\)(\\!\
+\\(\\*SubscriptBox[\\(Y\\), \\(k\\)]\\)-(\\!\\(\\*SubscriptBox[OverscriptBox[\
+\\(\[Beta]\\), \\(^\\)], \\(0\\)]\\) + \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \
+\\(1\\)]\\)\\!\\(\\*SubscriptBox[\\(X\\), \
+\\(k\\)]\\))\\!\\(\\*SuperscriptBox[\\()\\), \\(2\\)]\\) = \
+\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \\(N\\)]\\)\"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{"-", "2"}], " ", 
+    SubscriptBox["X", "k"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "0"]}], "-", 
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"], " ", 
+       SubscriptBox["X", "k"]}], "+", 
+      SubscriptBox["Y", "k"]}], ")"}]}]}],
+  SequenceForm[
+  "(4)  \!\(\*FractionBox[\(\[PartialD]SSE\), \
+\(\[PartialD]\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(0\)]\)]\)\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*SubscriptBox[\(Y\), \
+\(k\)]\)-(\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(0\)]\) + \!\
+\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\))\!\(\*SuperscriptBox[\()\), \(2\)]\
+\) = \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \(N\)]\)", (-2) \
+(-$CellContext`betaNaught - $CellContext`betaOne $CellContext`xData + \
+$CellContext`yData), 
+   "\tand \!\(\*FractionBox[\(\[PartialD]SSE\), \
+\(\[PartialD]\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)]\)\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)(\!\(\*SubscriptBox[\(Y\), \
+\(k\)]\)-(\!\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(0\)]\) + \!\
+\(\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \
+\(1\)]\)\!\(\*SubscriptBox[\(X\), \(k\)]\))\!\(\*SuperscriptBox[\()\), \(2\)]\
+\) = \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \(N\)]\)", (-2) \
+$CellContext`xData (-$CellContext`betaNaught - $CellContext`betaOne \
+$CellContext`xData + $CellContext`yData)],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436072625637`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"061ebbf8-8831-4907-87fb-57b4985414c2"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(5) The solution for \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    SubscriptBox[
+     OverscriptBox["\[Beta]", "^"], "0"], " ", "N"}], 
+   "\[InvisibleSpace]", "\<\" = \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", 
+      SubscriptBox[
+       OverscriptBox["\[Beta]", "^"], "1"]}], " ", 
+     SubscriptBox["X", "k"]}], "+", 
+    SubscriptBox["Y", "k"]}], 
+   "\[InvisibleSpace]", "\<\" for N values in the  \\n\\tdata is equivalent \
+to \\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \\(^\\)], \\(0\\)]\\) = \
+\\!\\(\\*OverscriptBox[\\(Y\\), \\(_\\)]\\) - \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \\(^\\)], \
+\\(1\\)]\\)\\!\\(\\*OverscriptBox[\\(X\\), \\(_\\)]\\) where \
+\\!\\(\\*OverscriptBox[\\(Y\\), \\(_\\)]\\) and \
+\\!\\(\\*OverscriptBox[\\(X\\), \\(_\\)]\\) are the average of the X and \
+\\n\\tY values in the data.\"\>"}],
+  SequenceForm[
+  "(5) The solution for ", $CellContext`betaNaught N, 
+   " = ", -$CellContext`betaOne $CellContext`xData + $CellContext`yData, 
+   " for N values in the  \n\tdata is equivalent to \
+\!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(0\)]\) = \
+\!\(\*OverscriptBox[\(Y\), \(_\)]\) - \!\(\*SubscriptBox[OverscriptBox[\(B\), \
+\(^\)], \(1\)]\)\!\(\*OverscriptBox[\(X\), \(_\)]\) where \
+\!\(\*OverscriptBox[\(Y\), \(_\)]\) and \!\(\*OverscriptBox[\(X\), \(_\)]\) \
+are the average of the X and \n\tY values in the data."],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436072625637`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"0a5cde15-4b59-4d1c-8965-758848f1bbc3"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{
+   RowBox[{"\<\"(6) Substituting \\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \
+\\(^\\)], \\(0\\)]\\) in terms of \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \\(^\\)], \\(1\\)]\\) into \
+\\!\\(\\*FractionBox[\\(\[PartialD]SSE\\), \
+\\(\[PartialD]\\*SubscriptBox[OverscriptBox[\\(\[Beta]\\), \\(^\\)], \\(1\\)]\
+\\)]\\), \\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \\(N\\)]\\)\"\
+\>", " ", 
+    SubscriptBox["X", "k"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"], " ", 
+       SubscriptBox["X", "avg"]}], "-", 
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"], " ", 
+       SubscriptBox["X", "k"]}], "-", 
+      SubscriptBox["Y", "avg"], "+", 
+      SubscriptBox["Y", "k"]}], ")"}]}], 
+   "\[InvisibleSpace]", "\<\" which simplifies to \
+\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \\(N\\)]\\)\"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{
+    SubscriptBox["X", "k"], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       SubscriptBox[
+        OverscriptBox["\[Beta]", "^"], "1"], " ", 
+       RowBox[{"(", 
+        RowBox[{
+         SubscriptBox["X", "avg"], "-", 
+         SubscriptBox["X", "k"]}], ")"}]}], "-", 
+      SubscriptBox["Y", "avg"], "+", 
+      SubscriptBox["Y", "k"]}], ")"}]}]}],
+  SequenceForm[
+  "(6) Substituting \!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(0\)]\) \
+in terms of \!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(1\)]\) into \
+\!\(\*FractionBox[\(\[PartialD]SSE\), \
+\(\[PartialD]\*SubscriptBox[OverscriptBox[\(\[Beta]\), \(^\)], \(1\)]\)]\), \
+\!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \(N\)]\)" $CellContext`xData \
+($CellContext`betaOne $CellContext`xBar - $CellContext`betaOne \
+$CellContext`xData - $CellContext`yBar + $CellContext`yData), 
+   " which simplifies to \!\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\)", $CellContext`xData ($CellContext`betaOne ($CellContext`xBar - \
+$CellContext`xData) - $CellContext`yBar + $CellContext`yData)],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607278202*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"861a1119-52d3-4a27-ad8d-42a02e87ba9d"],
+
+Cell[BoxData["\<\"(7) Expanding the summation using summation rules,\\n\\t\\!\
+\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\)\\!\\(\\*SubscriptBox[\\(X\\), \
+\\(k\\)]\\)(\\!\\(\\*SubscriptBox[\\(Y\\), \\(k\\)]\\)-\\!\\(\\*SubscriptBox[\
+\\(Y\\), \\(avg\\)]\\)) - \\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \
+\\(^\\)], \\(1\\)]\\)\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\)\\!\\(\\*SubscriptBox[\\(X\\), \
+\\(k\\)]\\)(\\!\\(\\*SubscriptBox[\\(X\\), \\(k\\)]\\)-\\!\\(\\*SubscriptBox[\
+\\(X\\), \\(avg\\)]\\))=0. Mathematica cannot recognize that there are \
+\\n\\ttwo variables \\!\\(\\*SubscriptBox[\\(Y\\), \\(k\\)]\\) and \
+\\!\\(\\*SubscriptBox[\\(X\\), \\(k\\)]\\) in the simplified equation. It \
+treats all of them as \\n\\tconstants and the syntax x[[k]] or y[[k]] cannot \
+be used either to indicate \\n\\tthe \\!\\(\\*SuperscriptBox[\\(k\\), \
+\\(th\\)]\\) variable of a predefined list (requires actual data).\"\>"], \
+"Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607278202*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"e90f3bfc-2f97-4a8f-8179-68cde22759db"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(8) Therefore, \\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \
+\\(^\\)], \\(1\\)]\\) = \\!\\(\\*FractionBox[\\(\\*UnderoverscriptBox[\\(\
+\[Sum]\\), \\(k = 1\\), \\(N\\)]\\*SubscriptBox[\\(X\\), \\(k\\)] \
+\\((\\*SubscriptBox[\\(Y\\), \\(k\\)] - \\*SubscriptBox[\\(Y\\), \
+\\(avg\\)])\\)\\), \\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\*SubscriptBox[\\(X\\), \\(k\\)] \\((\\*SubscriptBox[\\(X\\), \
+\\(k\\)] - \\*SubscriptBox[\\(X\\), \\(avg\\)])\\)\\)]\\) and \
+\\!\\(\\*SubscriptBox[OverscriptBox[\\(B\\), \\(^\\)], \\(0\\)]\\) = \"\>", 
+   "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", 
+      SubscriptBox[
+       OverscriptBox["\[Beta]", "^"], "1"]}], " ", 
+     SubscriptBox["X", "avg"]}], "+", 
+    SubscriptBox["Y", "avg"]}]}],
+  SequenceForm[
+  "(8) Therefore, \!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(1\)]\) = \
+\!\(\*FractionBox[\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\*SubscriptBox[\(X\), \(k\)] \((\*SubscriptBox[\(Y\), \(k\)] - \
+\*SubscriptBox[\(Y\), \(avg\)])\)\), \(\*UnderoverscriptBox[\(\[Sum]\), \(k = \
+1\), \(N\)]\*SubscriptBox[\(X\), \(k\)] \((\*SubscriptBox[\(X\), \(k\)] - \
+\*SubscriptBox[\(X\), \(avg\)])\)\)]\) and \
+\!\(\*SubscriptBox[OverscriptBox[\(B\), \(^\)], \(0\)]\) = ", \
+-$CellContext`betaOne $CellContext`xBar + $CellContext`yBar],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.848743607278202*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"4f57e601-1a02-47a0-98eb-7acd9b46e180"],
+
+Cell[BoxData["\<\"\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436072938194`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"a00e4f30-9ba5-4299-b966-d3b14af8beca"],
+
+Cell[BoxData["\<\"Part 2 - Calculate slope and intercept of the equation for \
+stopping voltage as a function of frequency V(\[Nu]):\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436072938194`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"37574398-052d-462c-b63c-81f065b366b9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(1) My line of best fit is \\!\\(\\*OverscriptBox[\\(V\\), \
+\\(^\\)]\\)(\[Nu]) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{"-", "1.7785911035196462`"}], "+", 
+    RowBox[{"4.329055904659079`*^-15", " ", "\[Nu]"}]}], 
+   "\[InvisibleSpace]", "\<\" and Planck's constant\\n\\th is \"\>", 
+   "\[InvisibleSpace]", "4.329055904659079`*^-15", 
+   "\[InvisibleSpace]", "\<\" eV*s which is close to the actual \
+value\\n\\t4.1357 \[Times] \\!\\(\\*SuperscriptBox[\\(10\\), \\(-15\\)]\\) \
+eV*s. Therefore, %error is \"\>", "\[InvisibleSpace]", "4.779923967379923`", 
+   "\[InvisibleSpace]", "\<\"%\"\>"}],
+  SequenceForm[
+  "(1) My line of best fit is \!\(\*OverscriptBox[\(V\), \(^\)]\)(\[Nu]) = ", \
+-1.7785911035196462` + 4.329055904659079*^-15 $CellContext`\[Nu], 
+   " and Planck's constant\n\th is ", 4.329055904659079*^-15, 
+   " eV*s which is close to the actual value\n\t4.1357 \[Times] \
+\!\(\*SuperscriptBox[\(10\), \(-15\)]\) eV*s. Therefore, %error is ", 
+   4.779923967379923, "%"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436072938194`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"ea7a242a-bad0-413d-b346-cf854d549db1"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(2) The coefficient of determination \
+\\!\\(\\*SuperscriptBox[\\(R\\), \\(2\\)]\\) = \"\>", "\[InvisibleSpace]", 
+   "0.9888433639652304`", 
+   "\[InvisibleSpace]", "\<\" from R = \\!\\(\\*FractionBox[\\(1\\), \\(N - 1\
+\\)]\\)*\\!\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \\(k = 1\\), \
+\\(N\\)]\\)(\\!\\(\\*FractionBox[\\(\\*SubscriptBox[\\(X\\), \\(k\\)] - \
+\\*OverscriptBox[\\(X\\), \\(_\\)]\\), SubscriptBox[\\(S\\), \
+\\(x\\)]]\\))(\\!\\(\\*FractionBox[\\(\\*SubscriptBox[\\(Y\\), \\(k\\)] - \
+\\*OverscriptBox[\\(Y\\), \\(_\\)]\\), SubscriptBox[\\(S\\), \
+\\(y\\)]]\\))\"\>"}],
+  SequenceForm[
+  "(2) The coefficient of determination \!\(\*SuperscriptBox[\(R\), \(2\)]\) \
+= ", 0.9888433639652304, 
+   " from R = \!\(\*FractionBox[\(1\), \(N - 1\)]\)*\!\(\*UnderoverscriptBox[\
+\(\[Sum]\), \(k = 1\), \(N\)]\)(\!\(\*FractionBox[\(\*SubscriptBox[\(X\), \(k\
+\)] - \*OverscriptBox[\(X\), \(_\)]\), SubscriptBox[\(S\), \
+\(x\)]]\))(\!\(\*FractionBox[\(\*SubscriptBox[\(Y\), \(k\)] - \
+\*OverscriptBox[\(Y\), \(_\)]\), SubscriptBox[\(S\), \(y\)]]\))"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436072938194`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"2c4902f5-67a8-45da-8ff7-55f67a962297"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(3) The error associated with predicted value \
+\\!\\(\\*OverscriptBox[\\(V\\), \\(^\\)]\\)(\[Nu]) is modeled by the equation\
+\\n\\tS = \\!\\(\\*SqrtBox[FractionBox[\\(\\*UnderoverscriptBox[\\(\[Sum]\\), \
+\\(k = 1\\), \\(N\\)]\\*SuperscriptBox[\\((V \\*SubscriptBox[\\((\[Nu])\\), \
+\\(k\\)]\\\\  - \\\\ \\*OverscriptBox[\\(V\\), \\(^\\)] \\*SubscriptBox[\\((\
+\[Nu])\\), \\(k\\)])\\), \\(2\\)]\\), \\(N\\\\  - \\\\ 2\\)]]\\) = \
+\[PlusMinus]\"\>", "\[InvisibleSpace]", "0.06783278538638914`", 
+   "\[InvisibleSpace]", "\<\" Volts\"\>"}],
+  SequenceForm[
+  "(3) The error associated with predicted value \!\(\*OverscriptBox[\(V\), \
+\(^\)]\)(\[Nu]) is modeled by the equation\n\tS = \
+\!\(\*SqrtBox[FractionBox[\(\*UnderoverscriptBox[\(\[Sum]\), \(k = 1\), \
+\(N\)]\*SuperscriptBox[\((V \*SubscriptBox[\((\[Nu])\), \(k\)]\\  - \\ \
+\*OverscriptBox[\(V\), \(^\)] \*SubscriptBox[\((\[Nu])\), \(k\)])\), \
+\(2\)]\), \(N\\  - \\ 2\)]]\) = \[PlusMinus]", 0.06783278538638914, " Volts"],
+  
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436073094435`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"a135243e-cb8d-42b7-a657-233cbe891240"],
+
+Cell[BoxData["\<\"\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436073094435`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"8aad1930-1d6e-4432-8ac7-3db62e61b232"],
+
+Cell[BoxData["\<\"Part 3 - Plot the data with my line of best fit and \
+mathematicas line of best fit:\"\>"], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436073094435`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"cbc0e7d8-e1bf-4822-8b62-a343800c2644"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(1) My line of best fit is \\!\\(\\*OverscriptBox[\\(V\\), \
+\\(^\\)]\\)(\[Nu]) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{"-", "1.7785911035196462`"}], "+", 
+    RowBox[{"4.329055904659079`*^-15", " ", "\[Nu]"}]}], 
+   "\[InvisibleSpace]", "\<\" and the plot is shown below:\"\>"}],
+  SequenceForm[
+  "(1) My line of best fit is \!\(\*OverscriptBox[\(V\), \(^\)]\)(\[Nu]) = ", \
+-1.7785911035196462` + 4.329055904659079*^-15 $CellContext`\[Nu], 
+   " and the plot is shown below:"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436073250675`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"c617b0ac-49ee-4c5a-83a3-d97e575b7fac"]
+}, Open  ]],
+
+Cell[BoxData[
+ GraphicsBox[{{{{}, {}, 
+     TagBox[
+      {RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[1.6], 
+       Opacity[1.], LineBox[CompressedData["
+1:eJwVzX0wlAkcB/Bnd+0+Xprzeh1XWCqR1+Gw5/Cr55fJaYlyEpKktKVTVwmp
+qZD2puRKeWk6rZq2qCU5VyeqvXVNBiOpi7IhUt7CLnbts9zeH9/5zmfmO/O1
+S0zduJNJEESoLv/3YkXrQ/qclkq4OrH1BU8OnLa+pz+d11JPJAkWO0AO07em
+n0sKtBT3SXuzMkgOnfHW3QkXtdSb/mpfy01yuNCcMicr1lLhjgdMt+2Tg3G5
+0Q/nrmup4PuTslGRHPQjfnxk/VBLOT6fctY3eg8aiawxcEBLqZRKdWDPezCP
+ptyla+apyADeUE5HL3yzttLTvGSeupMntgsX94EtQ15/d3yeSjAQNY0f6YfY
+yqJq4foFimv/mu0f8wGyi/15XuULVJLUf3Gq6wCkfl/7tTFBYK1aLg03GwQb
+Y/eNTm4ERu826mIrBgFP20av2kLgiXjB42uyj8A89NK8JU+3H2FSw+Ih8GVp
+iyPvE7ibaCu0yvoE45lGfQw5gen8ZRFL+Z8BBD3yDYsYWOxee7vVdRg46uU3
+c3wZyCtN60giRiB5wX1ZzC4GDlw5VFQxMAIh47Y7IgsZONFJN/0tG4Xrx3NT
+vB8zMP1SnUx6aQwu5Uqc/xxjoP5Y5bb96eOgdQ2ttbVi4tKWjmYW/wss8Kum
+HIOZaCP69nO55QRkR84ootKYKJ8tELkKJ+CYtqZxr4iJMWZcynlqAkytvcCu
+nYkJqhYPImkSlsgdhQ0aJjqUXyCD2yZBnMe6fNyBhcXJ1hczfKagVSyK7o1k
+YaGqKeWUeAoEgj8GHE+wMCw0z23eRAFlorMOZlUsLNi3KzAiWwGbpcHO3B4W
+Hr9tyMpXKCA3J1Ntoa+HbrefVQXEKYHfkHqswkcPEw+VV8halSAs6m52SNTD
+KNblc42+0xAcs+rts7N6qLobtqK8bBpEFwNEBvV6yF2+wmiryQzs//kfD8+P
+eqgfb9H1a8YMdD02S9NYsDFzh930+ZEZeFDTmVO5mo0VLuvUZNQsWOUfjTqx
+l41nTD1rBI2zYNE72DNdwsbRp34Py91VkPuyyW1jExvNfOJuhZWooCBA4L1B
+ycbGw1cGXxipYWnB5Px+ew4uflH2b2CWGmxzvvyWEcpBj4lH92wG1VA/Xt1t
+n8XB9u7ZrldRc9A6NzRaI+agm3D98MKTOdj+hSVN7uCg36akKnMnDZyP+cBv
+IEhs+1QqnS/RgFcyT6R2JtGeGm6IY9HQmZ9X9ZcLib+vdvDzYtOQVve64agr
+iTaQWGdA0vCAfbhb60aipX+3pM6QBv8b98yZniQu8mkuMzGjIahv1WlDHokq
+p4qTMi4Nm2Ot9y5Zq/sz3RPkEkiD6lRKxjudQ0xuPmWupqG0oj7vahCJzV/1
+B3StoeGdessN23UkyoxifE4H0ZBQfLlnWQiJD9ghK3v5NAheGYe7hJN4Q+1k
+UBhLg6E2Pn5MZ65qZ+6erTTcWS5JkUSQeG1GxFizjYbxg3yhxyYSSxVWc2OJ
+NPxiJpR+F0Vi/pjByLo9NJj7vWmf1nnRaFCyTQoNtdtXvq/bTOKZ4ZMflPto
+mKlu0vC2kHhqSP1WdICGojcWhnM6Ex+9o9MP0sAjkizrY0jMGjjQGXaYhu6V
+9x2yYkmk+++GrzhCw9ENTO+AOBIz+z63aNJp+A+xYUMD
+        "]]},
+      Annotation[#, "Charting`Private`Tag$7911#1"]& ]}, {}, {}}, {{}, {{}, 
+     {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+      0.012833333333333334`], AbsoluteThickness[1.6], 
+      PointBox[{{8.219178082191781*^14, 1.855}, {7.407407407407408*^14, 
+       1.366}, {6.880733944954129*^14, 1.143}, {5.4945054945054944`*^14, 
+       0.618}, {5.199306759098787*^14, 0.498}}]}, {}}, {}, {}, {}, {}}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->{True, True},
+  AxesLabel->{
+    FormBox[
+    "\"Frequency \[Nu] (\\!\\(\\*SuperscriptBox[\\(s\\), \\(-1\\)]\\))\"", 
+     TraditionalForm], 
+    FormBox["\"Stopping Voltage V\"", TraditionalForm]},
+  AxesOrigin->NCache[{
+     Rational[300000000000000000, 577], 0.472217885721383}, {
+    5.199306759098787*^14, 0.472217885721383}],
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, 
+     Charting`ScaledFrameTicks[{Identity, Identity}]}, {Automatic, 
+     Charting`ScaledFrameTicks[{Identity, Identity}]}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  ImageSize->700,
+  Method->{
+   "DefaultBoundaryStyle" -> Automatic, "DefaultMeshStyle" -> 
+    AbsolutePointSize[6], "ScalingFunctions" -> None, 
+    "CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        (Identity[#]& )[
+         Part[#, 1]], 
+        (Identity[#]& )[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        (Identity[#]& )[
+         Part[#, 1]], 
+        (Identity[#]& )[
+         Part[#, 2]]}& )}},
+  PlotLabel->FormBox[
+   "\"My Line of Best Fit for Photelectric Effect\"", TraditionalForm],
+  PlotRange->NCache[{{
+      Rational[300000000000000000, 577], 
+      Rational[60000000000000000, 73]}, {0.472217885721383, 
+     1.779537010616052}}, {{5.199306759098787*^14, 8.219178082191781*^14}, {
+    0.472217885721383, 1.779537010616052}}],
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.05], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.8487404919280176`*^9, 3.8487404941255984`*^9}, 
+   3.848743607478736*^9},
+ CellLabel->
+  "Out[167]=",ExpressionUUID->"698d81b5-1ac6-41e9-a34e-aa9b818d7a1f"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"(2) The equation mathematica finds for the line of best fit is\
+\\n\\tV(\[Nu]) = \"\>", "\[InvisibleSpace]", 
+   RowBox[{
+    RowBox[{"-", "1.7785911035196476`"}], "+", 
+    RowBox[{"4.329055904659082`*^-15", " ", "\[Nu]"}]}], 
+   "\[InvisibleSpace]", "\<\" which directly matches my line of best of fit, \
+and the plot is shown below:\"\>"}],
+  SequenceForm[
+  "(2) The equation mathematica finds for the line of best fit is\n\tV(\[Nu]) \
+= ", -1.7785911035196476` + 4.329055904659082*^-15 $CellContext`\[Nu], 
+   " which directly matches my line of best of fit, and the plot is shown \
+below:"],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8487404914554615`*^9, 3.8487404939224606`*^9}, 
+   3.8487436074943643`*^9},
+ CellLabel->
+  "During evaluation of \
+In[115]:=",ExpressionUUID->"ed89db59-4cc7-43ff-a9bd-a17cf6a3af90"],
+
+Cell[BoxData[
+ GraphicsBox[{{{{}, {}, 
+     TagBox[
+      {RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[1.6], 
+       Opacity[1.], LineBox[CompressedData["
+1:eJwVzX0wlAkcB/Bnd+0+4SYs1+XKa5J3hrDX4afnl8nVqiUnLamktKWjq5SS
+KZHclFzJSy+jVZPiWpJzdaLaW9dlaCR12bIRUl427C6WZ9e5P77znc/Md+Zr
+F58csYNJEETYXP7vBarWB/RZHbXr6ujmFzwFcJ73PPnxnI76R7LVYjsoQHNL
+80ySr6OcHrc1q0MU0BFnJd96QUd1f6j2X7hBAeebk6ZlxToq2mmf2Za9CjAp
+M/7+7HUdJbg3JhsWK2Be+A8PrR7oKK9n467zjN/DjETWGNSnowiNWhvU9R7M
+oylP6Uo9FR3IG8hq74ZvVlV6m5foqeqccjtBeQ/YMBT1d5R6KsFQ3KQ89AFi
+Kouqc9fOUg72r9kBwl44WRzA8ymbpXZJAxYku/dB8ne1X5sQBN7XKqQCbj9Y
+m3hGOHsQGLvLuJOt6gc8ZRPtsonArDjRo2uyj8A88NK8JWduP8SkBssHwJ+l
+K468R2AK8bzAMv0TKI8Y9zAUBKbzl4Qv5n8GEHUp1n/FwCuetbdb3QeBo3W4
+meXPwIBLqe0JxBAkznouEe5k4PDlA0UVfUOwRmmzPbKAgeoOuukv2TBcz8hO
+8n3EwPSLdTLpxRG4mC1x/WOEgaYjlVtSDitB5x5Wa2PJRNuW9mYW/wvM8qvG
+nUKZaC/+9nPZwlE4GTmhikplYvdkvtg9dxSO6Woa94iZGMe1pVzHR8HMygfs
+2piYMNXiRSSMwSKFU27DDBNdys6Toc/HoDyHVZjhyMIriVYX0vzGobVcHN0d
+ycLCqaakzPJxEIl+73M6zsKIsBwPvakKSsVnHLlVLCzYuzMo/KQKNkpDXW27
+WJh524iVp1JBdtYRrcU8A/S+/bQqMFYN/IbkYxV+BrjzQFmFrFUNuUXyZsd4
+AxSyCs82+msgVOjy9ukZA6TvrFtaVqoB8YVAsWG9ATo4LDXebDoBKT/97eX9
+0QDnx1l0/pI2AZ2PuKkzFmzM2G6nOTc0AfdrOrIqg9kocVutJaMmwTLvaNTx
+PWw8Y+ZdI2qcBIvu/i5NCRvHn6x4UOY5Bdkvmzwimti4wC/21rqSKcgPFPmu
+V7NRdvBy/wtjLSzOH9On2HNw8YvSf4PStWCT9eXXtDAO+o0+vGvdr4V6ZbXc
+Pp2DHfLJzldR09A6PTBcU87B5blrB2cfT8O2LyxpYjsHgzckVJk7z8A5YS+/
+gSCx49Mlqb5kBnwSeWKtK4lO1GBDLIuGjrycqj/dSLwR7LjCh01Dat3rhqPu
+JDpAfJ0hScN99kG5zoNE6wC5pM6IhoAbd82Z3iRy/ZpLTbk0hPS4nDLikah3
+rjghs6VhY4zVnkWr5v7Mdoe4BdEwlZmU9m7OAtObT5jBNFyqqM+5GkJi2/wP
+gZ0raXin3XTDZjWJzcZCv1MhNGwtLuxasobERvaaZd18GkSvTARuAhIrtM6G
+BTE0GOni4kbm7Di1I3v3Zhp+c5AkScJJvDkhZqzcQoNyPz/XawOJ11SW0yPx
+NPzMzZUujyKxYMRwaPVuGsxXvGnTzJk7HJJonURD7bZl7+s2kpg3eKJXvZeG
+ieqmGd4mEk8PaN+K99FQ9MbCaHrOnI++0Yf308AjEhbWC0nM7NvXse4gDfJl
+9xzTY0hk9t4RLD1Ew9H1TN/AWBIzej63zBym4T8YT0Kd
+        "]]},
+      Annotation[#, "Charting`Private`Tag$8006#1"]& ]}, {}, {}}, {{}, {{}, 
+     {RGBColor[0.368417, 0.506779, 0.709798], PointSize[
+      0.012833333333333334`], AbsoluteThickness[1.6], 
+      PointBox[{{8.219178082191781*^14, 1.855}, {7.407407407407408*^14, 
+       1.366}, {6.880733944954129*^14, 1.143}, {5.4945054945054944`*^14, 
+       0.618}, {5.199306759098787*^14, 0.498}}]}, {}}, {}, {}, {}, {}}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->{True, True},
+  AxesLabel->{
+    FormBox[
+    "\"Frequency \[Nu] (\\!\\(\\*SuperscriptBox[\\(s\\), \\(-1\\)]\\))\"", 
+     TraditionalForm], 
+    FormBox["\"Stopping Voltage V\"", TraditionalForm]},
+  AxesOrigin->NCache[{
+     Rational[300000000000000000, 577], 0.47221788572138346`}, {
+    5.199306759098787*^14, 0.47221788572138346`}],
+  DisplayFunction->Identity,
+  Frame->{{False, False}, {False, False}},
+  FrameLabel->{{None, None}, {None, None}},
+  FrameTicks->{{Automatic, 
+     Charting`ScaledFrameTicks[{Identity, Identity}]}, {Automatic, 
+     Charting`ScaledFrameTicks[{Identity, Identity}]}},
+  GridLines->{None, None},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  ImageSize->700,
+  Method->{
+   "DefaultBoundaryStyle" -> Automatic, "DefaultMeshStyle" -> 
+    AbsolutePointSize[6], "ScalingFunctions" -> None, 
+    "CoordinatesToolOptions" -> {"DisplayFunction" -> ({
+        (Identity[#]& )[
+         Part[#, 1]], 
+        (Identity[#]& )[
+         Part[#, 2]]}& ), "CopiedValueFunction" -> ({
+        (Identity[#]& )[
+         Part[#, 1]], 
+        (Identity[#]& )[
+         Part[#, 2]]}& )}},
+  PlotLabel->FormBox[
+   "\"Mathematica's Line of Best Fit for Photelectric Effect\"", 
+    TraditionalForm],
+  PlotRange->NCache[{{
+      Rational[300000000000000000, 577], 
+      Rational[60000000000000000, 73]}, {0.47221788572138346`, 
+     1.7795370106160529`}}, {{5.199306759098787*^14, 8.219178082191781*^14}, {
+    0.47221788572138346`, 1.7795370106160529`}}],
+  PlotRangeClipping->True,
+  PlotRangePadding->{{
+     Scaled[0.02], 
+     Scaled[0.02]}, {
+     Scaled[0.05], 
+     Scaled[0.05]}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.8487404919280176`*^9, 3.8487404941255984`*^9}, 
+   3.848743607590207*^9},
+ CellLabel->
+  "Out[171]=",ExpressionUUID->"21a42c72-fdc4-4724-9b2a-bcadddd33cac"]
+}, Open  ]]
+},
+WindowSize->{1920, 997},
+WindowMargins->{{-8, Automatic}, {Automatic, -8}},
+FrontEndVersion->"11.3 for Microsoft Windows (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 42435, 936, 3684, "Code",ExpressionUUID->"2724afcf-3319-4df1-a02e-a8f056470b68"],
+Cell[CellGroupData[{
+Cell[43040, 962, 443, 8, 26, "Print",ExpressionUUID->"1d6ab4b9-81b1-4cb9-a52e-23292b65d13d"],
+Cell[43486, 972, 1484, 31, 62, "Print",ExpressionUUID->"97483397-917f-462d-aa9d-ff3a1d760027"],
+Cell[44973, 1005, 903, 15, 114, "Print",ExpressionUUID->"8dcd7638-4a7d-48ff-b704-0d2b4e5fdcea"],
+Cell[45879, 1022, 1301, 20, 121, "Print",ExpressionUUID->"b2988961-1930-43ea-aed1-91fa9b12102a"],
+Cell[47183, 1044, 3425, 74, 57, "Print",ExpressionUUID->"061ebbf8-8831-4907-87fb-57b4985414c2"],
+Cell[50611, 1120, 1679, 36, 67, "Print",ExpressionUUID->"0a5cde15-4b59-4d1c-8965-758848f1bbc3"],
+Cell[52293, 1158, 2316, 55, 57, "Print",ExpressionUUID->"861a1119-52d3-4a27-ad8d-42a02e87ba9d"],
+Cell[54612, 1215, 1185, 19, 131, "Print",ExpressionUUID->"e90f3bfc-2f97-4a8f-8179-68cde22759db"],
+Cell[55800, 1236, 1612, 32, 56, "Print",ExpressionUUID->"4f57e601-1a02-47a0-98eb-7acd9b46e180"],
+Cell[57415, 1270, 238, 5, 22, "Print",ExpressionUUID->"a00e4f30-9ba5-4299-b966-d3b14af8beca"],
+Cell[57656, 1277, 352, 6, 22, "Print",ExpressionUUID->"37574398-052d-462c-b63c-81f065b366b9"],
+Cell[58011, 1285, 1284, 25, 65, "Print",ExpressionUUID->"ea7a242a-bad0-413d-b346-cf854d549db1"],
+Cell[59298, 1312, 1337, 25, 55, "Print",ExpressionUUID->"2c4902f5-67a8-45da-8ff7-55f67a962297"],
+Cell[60638, 1339, 1269, 23, 98, "Print",ExpressionUUID->"a135243e-cb8d-42b7-a657-233cbe891240"],
+Cell[61910, 1364, 238, 5, 22, "Print",ExpressionUUID->"8aad1930-1d6e-4432-8ac7-3db62e61b232"],
+Cell[62151, 1371, 322, 6, 22, "Print",ExpressionUUID->"cbc0e7d8-e1bf-4822-8b62-a343800c2644"],
+Cell[62476, 1379, 778, 17, 26, "Print",ExpressionUUID->"c617b0ac-49ee-4c5a-83a3-d97e575b7fac"]
+}, Open  ]],
+Cell[63269, 1399, 4188, 90, 413, "Output",ExpressionUUID->"698d81b5-1ac6-41e9-a34e-aa9b818d7a1f"],
+Cell[67460, 1491, 880, 19, 42, "Print",ExpressionUUID->"ed89db59-4cc7-43ff-a9bd-a17cf6a3af90"],
+Cell[68343, 1512, 4220, 91, 413, "Output",ExpressionUUID->"21a42c72-fdc4-4724-9b2a-bcadddd33cac"]
+}, Open  ]]
+}
+]
+*)
+
